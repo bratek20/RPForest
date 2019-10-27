@@ -12,16 +12,10 @@ ModelPtr Model::createEmpty() {
 }
 
 Model::Model(const Config& c) {
-    string fullScenePath = Assets::validPath(c.loadScenePath);
-    if (loadModel(fullScenePath)) {
-        for(auto& lc : c.lights) {
-            meshes.push_back(lc.createMesh());
-        }
-        createTriangles();
-        cout << "Scene model: " << fullScenePath << " loaded!" << endl;
-    } else {
-        cerr << "Scene model: " << fullScenePath << " loading failed!" << endl;
+    for(auto& lc : c.lights) {
+        meshes.push_back(lc.createMesh());
     }
+    createTriangles();
 }
 
 void Model::addMesh(const Mesh& mesh, bool rebuild) {

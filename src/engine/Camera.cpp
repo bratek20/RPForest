@@ -22,11 +22,11 @@ CameraPtr Camera::create(const CameraConfig &c) {
     CameraPtr camera = CameraPtr(new Camera());
     camera->addChilds({camera->lookPoint, camera->leftTop, camera->leftBottom,
                        camera->rightTop, camera->rightBottom});
-    camera->setPosition(c.viewPoint);
+    camera->setPosition(c.pos);
 
     float xView = Window::getRatio() * c.yView;
     camera->lookPoint->setPosition(INIT_DIR);
-    glm::vec3 lookDir = c.lookAt - c.viewPoint;
+    glm::vec3 lookDir = c.lookAt - c.pos;
     camera->allignToVector(INIT_DIR, lookDir);
     camera->up = c.up;
     camera->setCornerPoints(xView, c.yView,

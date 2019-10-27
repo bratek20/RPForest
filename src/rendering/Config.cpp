@@ -4,11 +4,9 @@
 
 using namespace std;
 
-Material LightConfig::DEFAULT_MAT = Material(Color(0.8f, 0.8f, 0.8f), 
-                                    Color(0.8f, 0.8f, 0.8f),
-                                    Color(0.0f, 0.0f, 0.0f),
-                                    glm::vec3(17, 12, 4),
-                                    10);
+Material LightConfig::DEFAULT_MAT =
+    Material(Color(0.8f, 0.8f, 0.8f), Color(0.8f, 0.8f, 0.8f),
+             Color(0.0f, 0.0f, 0.0f), glm::vec3(17, 12, 4), 10);
 
 Mesh LightConfig::createMesh() const {
     return Mesh({v1, v2, v3}, {0, 1, 2}, LightConfig::DEFAULT_MAT);
@@ -21,19 +19,28 @@ bool Config::load(const string &path) {
         return false;
     }
 
-    getline(file, comment);
-    getline(file, loadScenePath);
-    getline(file, photoName);
-    file >> k;
-    file >> xRes >> yRes;
-    camera.viewPoint = readVec3(file);
-    camera.lookAt = readVec3(file);
-    camera.up = readVec3(file);
-    file >> camera.yView;
-
     string type;
     while (file >> type) {
-        if (type == "L") {
+        if (type == "#") {
+            // comments
+            string comment;
+            getline(file, comment);
+            (void)comment;
+        } else if (type == "NAME") {
+            file >> photoName;
+        } else if (type == "K") {
+            file >> k;
+        } else if (type == "RES") {
+            file >> xRes >> yRes;
+        } else if (type == "POS") {
+            camera.pos = readVec3(file);
+        } else if (type == "LOOK_AT") {
+            camera.lookAt = readVec3(file);
+        } else if (type == "UP") {
+            camera.up = readVec3(file);
+        } else if (type == "YVIEW") {
+            file >> camera.yView;
+        } else if (type == "L") {
             LightConfig lc;
             lc.v1 = Vertex(readVec3(file));
             lc.v2 = Vertex(readVec3(file));

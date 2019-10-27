@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 		cerr << "Bad config! Specify it as first argument." << endl;
 		return -1;
 	}
-    if(!Window::open("Lab1", c)){
+    if(!Window::open("RPForest", c)){
         return -1;
     }
 

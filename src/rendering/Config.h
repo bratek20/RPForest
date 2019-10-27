@@ -25,7 +25,7 @@ struct LightConfig {
 };
 
 struct CameraConfig {
-    glm::vec3 viewPoint;
+    glm::vec3 pos;
     glm::vec3 lookAt;
     glm::vec3 up;
     float yView;
@@ -33,8 +33,6 @@ struct CameraConfig {
 };
 
 struct Config {
-    std::string comment;
-    std::string loadScenePath;
     std::string photoName;
     int k;
     int xRes, yRes;

@@ -1,4 +1,4 @@
-set(EXE_FILE "pathtracer.exe")
+set(EXE_FILE "rpforest.exe")
 
 file(GLOB_RECURSE ALL_SRC
     "*.h"
