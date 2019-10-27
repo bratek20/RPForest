@@ -30,6 +30,7 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
+    auto res = Generator(Symbol::S<HondaA>(10, 1), 10).generate();
     Timer::stop();
     return scene;
 }

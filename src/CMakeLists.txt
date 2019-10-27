@@ -8,6 +8,9 @@ file(GLOB_RECURSE ALL_SRC
 include_directories(utils)
 include_directories(engine)
 include_directories(rendering)
+include_directories(generating)
+include_directories(generating/lsystems)
+include_directories(generating/lsystems/honda)
 
 add_executable(${EXE_FILE} ${ALL_SRC})
 

@@ -11,7 +11,8 @@
 #include <algorithm>
 
 #include "Random.h"
-
+#include "Generator.h"
+#include "HondaA.h"
 using namespace std;
 
 ScenePtr scene;
@@ -41,7 +42,7 @@ int main(int argc, char* argv[]){
 	Globals::init(c);
 
 	scene = Scene::create(c);
-	
+
 	if(c.debugMode){	
 		Assets::init();
 		Input::init();
