@@ -18,7 +18,6 @@ public:
     void render();
 
     CameraPtr getCamera() const;
-    void takePhotoRayTracing(const Config& c);
     void takePhotoPathTracing(const Config& c);
     void debugRay(const Config& c);
 

@@ -1,0 +1,22 @@
+
+
+#ifndef VERTEX_H
+#define VERTEX_H
+
+#include <glm/glm.hpp>
+
+struct Vertex {
+    static const glm::vec3 NORMAL_NOT_SET;
+
+    glm::vec3 position;
+    glm::vec3 normal;
+
+    Vertex() = default;
+    Vertex(glm::vec3 position);
+
+    bool hasNormal() const;
+};
+
+
+#endif
+

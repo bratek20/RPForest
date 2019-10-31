@@ -10,7 +10,7 @@ float Honda::d = 137.5;
 float Honda::wr = 0.707;
 
 Honda::Honda() : Generator(Symbol::S<HondaA>(1, 1), n) {
-    load4();
+    load2();
 }
 
 void Honda::load1() {

@@ -9,6 +9,7 @@ cd ../$BUILD_FOLDER
 
 if [ "$1" = "--clean" ] || [ "$1" = "-c" ]; then
 	make clean
+	cmake ..
 fi
 make
 cd ../bin
