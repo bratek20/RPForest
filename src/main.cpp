@@ -9,10 +9,9 @@
 #include <gli/gli.hpp>
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
 
 #include "Random.h"
-#include "Generator.h"
-#include "HondaA.h"
 using namespace std;
 
 ScenePtr scene;
@@ -43,6 +42,13 @@ int main(int argc, char* argv[]){
 
 	scene = Scene::create(c);
 
+	auto ans = glm::mat3x3({1,2,3,4,5,6,7,8,9}) * glm::mat3x3({1,2,3,4,5,6,7,8,9});
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			cout << setw(5) << ans[i][j] << " ";
+		}
+		cout << endl;
+	}
 	if(c.debugMode){	
 		Assets::init();
 		Input::init();

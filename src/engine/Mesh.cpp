@@ -173,6 +173,18 @@ glm::vec3 Triangle::getCenter() const {
     return (v1.position + v2.position + v3.position) / 3.0f;
 }
 
+Mesh::Mesh(std::vector<glm::vec3> vertices) {
+    drawLines = true;
+    for(auto& v : vertices){
+        this->vertices.push_back(Vertex(v));
+    }
+    for(int i=0;i<vertices.size();i++){
+        indices.push_back(i);
+    }
+    material = LightConfig::DEFAULT_MAT;
+    setupMesh();
+}
+
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, const Material &material)
     : vertices(move(vertices)), indices(move(indices)),
       material(material){
@@ -186,11 +198,14 @@ void Mesh::draw(Shader &shader) {
 
     // draw mesh
     glBindVertexArray(VAO);
-    if(indices.size() < 3){
+    if(indices.empty()) {
+        glDrawArrays(GL_LINES, 0, VAO);
+    }
+    else if(indices.size() < 3){
         glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
     }
     else {
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(drawLines ? GL_LINES : GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
 
@@ -199,7 +214,7 @@ void Mesh::draw(Shader &shader) {
 }
 void Mesh::setupMesh() {
     triangles.clear();
-    if(indices.size() > 2) {
+    if(indices.size() % 3 == 0) {
         for (unsigned i = 0; i < indices.size(); i += 3) {
             triangles.emplace_back(vertices[indices[i]], vertices[indices[i + 1]],
                                     vertices[indices[i + 2]], material);

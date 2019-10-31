@@ -1,14 +1,24 @@
 #ifndef HONDA_H
 #define HONDA_H
 
-struct Honda {
-    static const int n;
-    static const float r1;
-    static const float r2;
-    static const float a0;
-    static const float a2;
-    static const float d;
-    static const float wr;
+#include "Generator.h"
+
+class Honda : public Generator {
+public:
+    static int n;
+    static float r1;
+    static float r2;
+    static float a0;
+    static float a2;
+    static float d;
+    static float wr;
+
+    Honda();
+
+    static void load1();
+    static void load2();
+    static void load3();
+    static void load4();
 };
 
 #endif

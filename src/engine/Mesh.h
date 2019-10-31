@@ -98,9 +98,11 @@ public:
     std::vector<Triangle> triangles;
     Material material;
     unsigned int VAO;
+    bool drawLines = false;
     /*  Functions  */
     // constructor
     Mesh() = default;
+    Mesh(std::vector<glm::vec3> vertices);
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, const Material& material);
 
     // render the mesh

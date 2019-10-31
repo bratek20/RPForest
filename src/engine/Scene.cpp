@@ -13,6 +13,8 @@
 
 #include "bitmap_image.h"
 
+#include "Honda.h"
+
 #define USE_EMBREE 1
 
 using namespace std;
@@ -30,7 +32,8 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
-    auto res = Generator(Symbol::S<HondaA>(10, 1), 10).generate();
+    auto res = Honda().generate();
+    scene->getModel()->addMesh(Mesh(res.verticies), false);
     Timer::stop();
     return scene;
 }
