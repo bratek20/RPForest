@@ -1,8 +1,8 @@
 
 
 #include "Mesh.h"
-#include "Utils.h"
 #include "Globals.h"
+#include "Utils.h"
 
 #include <iostream>
 
@@ -10,37 +10,36 @@ using namespace std;
 
 Mesh::Mesh(std::vector<glm::vec3> vertices) {
     drawLines = true;
-    for(auto& v : vertices){
+    for (auto& v : vertices) {
         this->vertices.push_back(Vertex(v));
     }
-    for(int i=0;i<vertices.size();i++){
+    for (int i = 0; i < vertices.size(); i++) {
         indices.push_back(i);
     }
-    material = LightConfig::DEFAULT_MAT;
+    material = Material::DEFAULT;
     setupMesh();
 }
 
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, const Material &material)
-    : vertices(move(vertices)), indices(move(indices)),
-      material(material){
-    // now that we have all the required data, set the vertex buffers and its
-    // attribute pointers.
+Mesh::Mesh(vector<Vertex> vertices,
+           vector<unsigned int> indices,
+           Material material)
+    : vertices(move(vertices)), indices(move(indices)), material(material) {
+
     setupMesh();
 }
 
-void Mesh::draw(Shader &shader) {
+void Mesh::draw(Shader& shader) {
     material.apply(shader);
 
     // draw mesh
     glBindVertexArray(VAO);
-    if(indices.empty()) {
+    if (indices.empty()) {
         glDrawArrays(GL_LINES, 0, VAO);
-    }
-    else if(indices.size() < 3){
+    } else if (indices.size() < 3) {
         glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
-    }
-    else {
-        glDrawElements(drawLines ? GL_LINES : GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    } else {
+        glDrawElements(drawLines ? GL_LINES : GL_TRIANGLES, indices.size(),
+                       GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
 
@@ -49,14 +48,15 @@ void Mesh::draw(Shader &shader) {
 }
 void Mesh::setupMesh() {
     triangles.clear();
-    if(indices.size() % 3 == 0) {
+    if (indices.size() % 3 == 0) {
         for (unsigned i = 0; i < indices.size(); i += 3) {
-            triangles.emplace_back(vertices[indices[i]], vertices[indices[i + 1]],
-                                    vertices[indices[i + 2]], material);
+            triangles.emplace_back(vertices[indices[i]],
+                                   vertices[indices[i + 1]],
+                                   vertices[indices[i + 2]], material);
         }
     }
 
-    if(!Globals::debug){
+    if (!Globals::debug) {
         return;
     }
     // create buffers/arrays
@@ -81,11 +81,11 @@ void Mesh::setupMesh() {
     // set the vertex attribute pointers
     // vertex Positions
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
     // vertex normals
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          (void *)offsetof(Vertex, normal));
+                          (void*)offsetof(Vertex, normal));
 
     // vertex texture coords
     // glEnableVertexAttribArray(2);
@@ -103,8 +103,18 @@ void Mesh::setupMesh() {
     glBindVertexArray(0);
 }
 
-const vector<Triangle> &Mesh::getTriangles() const { return triangles; }
+std::vector<Vertex>& Mesh::getVertices() {
+    return vertices;
+}
 
-TrianglePtr Mesh::getTriangle(int idx) const{
+std::vector<unsigned int>& Mesh::getIndices() {
+    return indices;
+}
+
+const vector<Triangle>& Mesh::getTriangles() const {
+    return triangles;
+}
+
+TrianglePtr Mesh::getTriangle(int idx) const {
     return &triangles[idx];
 }

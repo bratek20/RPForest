@@ -20,8 +20,7 @@ struct LightConfig {
     float intensity;
     glm::vec3 coefficients;
     
-    static Material DEFAULT_MAT;
-    Mesh createMesh() const;
+    MeshPtr createMesh() const;
 };
 
 struct CameraConfig {

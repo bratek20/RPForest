@@ -4,6 +4,7 @@
 
 using namespace std;
 
+const float Utils::PI = 3.14159265;
 const float Utils::INF = std::numeric_limits<float>::max();
 const array<Utils::Axis, 3> Utils::AXES { Utils::Axis::X, Utils::Axis::Y, Utils::Axis::Z};
 

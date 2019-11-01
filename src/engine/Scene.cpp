@@ -9,12 +9,8 @@
 #include "LightSampler.h"
 #include "EmbreeWrapper.h"
 #include "DebugActor.h"
-
-#include "bitmap_image.h"
-
+#include "Shapes.h"
 #include "Honda.h"
-
-#define USE_EMBREE 1
 
 using namespace std;
 
@@ -23,7 +19,7 @@ Scene::Scene(ModelPtr sceneModel) : Actor(sceneModel) {}
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
     DebugActorPtr debugActor = DebugActor::create();
-    ScenePtr scene = ScenePtr(new Scene(Model::create(c)));
+    ScenePtr scene = ScenePtr(new Scene(Model::New(c)));
     scene->addChild(debugActor);
 
     scene->lightSampler = LightSampler(scene->getModel()->getTriangles());
@@ -32,7 +28,8 @@ ScenePtr Scene::create(const Config &c) {
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
     auto res = Honda().generate();
-    scene->getModel()->addMesh(Mesh(res.verticies), false);
+    scene->getModel()->addMesh(Mesh::New(res.verticies), false);
+    scene->getModel()->addMesh(Shapes::genCylinder(1, 10), false);
     Timer::stop();
     return scene;
 }

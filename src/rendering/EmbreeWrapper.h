@@ -8,19 +8,19 @@
 #include <embree3/rtcore.h>
 
 class EmbreeWrapper : public AccStruct {
-    const std::vector<Mesh>& meshes;
+    const std::vector<MeshPtr>& meshes;
 
     RTCDevice device;
     RTCScene scene;
 
 public:
-    EmbreeWrapper(const std::vector<Mesh>& meshes);
+    EmbreeWrapper(const std::vector<MeshPtr>& meshes);
     ~EmbreeWrapper() override;
 
     HitData cast(Ray r, float maxDistance) override;
 
 private:
-    void createMeshGeometry(const Mesh& mesh);
+    void createMeshGeometry(MeshPtr mesh);
 };
 
 #endif

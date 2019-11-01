@@ -3,9 +3,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "Config.h"
 #include "Mesh.h"
 #include "Shader.h"
-#include "Config.h"
 #include "Texture.h"
 
 #include <fstream>
@@ -19,28 +19,25 @@
 class Model;
 using ModelPtr = std::shared_ptr<Model>;
 
-class Model {
-    std::vector<TexturePtr> textures;
+class Model : public Ptr<Model, ModelPtr> {
     std::vector<Material> materials;
-    std::vector<Mesh> meshes;
+    std::vector<MeshPtr> meshes;
     std::vector<TrianglePtr> triangles;
     std::vector<LightConfig> lights;
 
   public:
-    static ModelPtr create(const Config& c);
-    static ModelPtr createEmpty();
+    Model() = default;
+    Model(const Config &c);
 
-    void addMesh(const Mesh& mesh, bool rebuild);
+    void addMesh(MeshPtr mesh, bool rebuild);
     void clearMeshes();
-    
+
     void draw(Shader shader);
     const std::vector<TrianglePtr> &getTriangles() const;
     const std::vector<LightConfig> &getLights() const;
-    const std::vector<Mesh> &getMeshes() const;
+    const std::vector<MeshPtr> &getMeshes() const;
 
   private:
-    Model() = default;
-    Model(const Config& c);
     void createTriangles();
 };
 #endif

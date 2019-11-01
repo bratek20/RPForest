@@ -2,7 +2,7 @@
 
 DebugActorPtr DebugActor::instance = nullptr;
 
-DebugActor::DebugActor() : Actor(Model::createEmpty()) {}
+DebugActor::DebugActor() : Actor(Model::New()) {}
 
 DebugActorPtr DebugActor::create() {
     instance = DebugActorPtr(new DebugActor());
@@ -14,7 +14,6 @@ DebugActorPtr DebugActor::get() {
 }
 
 void DebugActor::drawLine(glm::vec3 v1, glm::vec3 v2) {
-    Material mat;
-    Mesh mesh({v1, v2}, {0, 1}, mat);
+    MeshPtr mesh = Mesh::New(std::vector<Vertex>{v1, v2}, std::vector<unsigned int>{0, 1});
     getModel()->addMesh(mesh, false);
 }

@@ -1,5 +1,14 @@
+#ifndef SHAPES_H
+#define SHAPES_H
+
 #include "Mesh.h"
 
 class Shapes {
-    
+public:
+    static MeshPtr genCylinder(float radius, float height);
+
+private:
+    static std::vector<glm::vec3> genCirclePoints(int pointsNum, float radius, float y);
 };
+
+#endif

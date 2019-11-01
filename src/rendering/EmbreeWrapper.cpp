@@ -2,7 +2,7 @@
 
 using namespace std;
 
-EmbreeWrapper::EmbreeWrapper(const vector<Mesh>& meshes) : meshes(meshes) {
+EmbreeWrapper::EmbreeWrapper(const vector<MeshPtr>& meshes) : meshes(meshes) {
     device = rtcNewDevice(NULL);
     scene = rtcNewScene(device);
     for(auto& mesh : meshes){
@@ -21,25 +21,28 @@ struct TriangleWrapper{
     int v0, v1, v2;
 };
 
-void EmbreeWrapper::createMeshGeometry(const Mesh& mesh)
+void EmbreeWrapper::createMeshGeometry(MeshPtr mesh)
 {
+    auto& mVertices = mesh->getVertices();
+    auto& mIndices = mesh->getIndices();
+    
     RTCGeometry geometry = rtcNewGeometry(device, RTC_GEOMETRY_TYPE_TRIANGLE);
 
     glm::vec3* vertices = (glm::vec3*) rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX,
-                            0, RTC_FORMAT_FLOAT3, sizeof(glm::vec3), mesh.vertices.size());
+                            0, RTC_FORMAT_FLOAT3, sizeof(glm::vec3), mVertices.size());
 
     TriangleWrapper* indices = (TriangleWrapper*) rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_INDEX,
-                            0, RTC_FORMAT_UINT3, sizeof(TriangleWrapper), mesh.indices.size()/3);
+                            0, RTC_FORMAT_UINT3, sizeof(TriangleWrapper), mIndices.size()/3);
 
 
-    for(unsigned i=0;i<mesh.vertices.size();i++){
-        vertices[i] = mesh.vertices[i].position;
+    for(unsigned i=0;i<mesh->getVertices().size();i++){
+        vertices[i] = mVertices[i].position;
     }
 
-    for(unsigned i=0;i<mesh.indices.size()/3;i++){
-        indices[i].v0 = mesh.indices[3*i];
-        indices[i].v1 = mesh.indices[3*i+1];
-        indices[i].v2 = mesh.indices[3*i+2];
+    for(unsigned i=0;i<mIndices.size()/3;i++){
+        indices[i].v0 = mIndices[3*i];
+        indices[i].v1 = mIndices[3*i+1];
+        indices[i].v2 = mIndices[3*i+2];
     }
 
     rtcCommitGeometry(geometry);
@@ -61,7 +64,7 @@ HitData EmbreeWrapper::cast(Ray r, float maxDistance) {
     HitData ans;
     if (hit.hit.geomID != RTC_INVALID_GEOMETRY_ID)
     {
-        ans.triangle = meshes[hit.hit.geomID].getTriangle(hit.hit.primID);
+        ans.triangle = meshes[hit.hit.geomID]->getTriangle(hit.hit.primID);
         ans.baryPos = glm::vec2(hit.hit.u, hit.hit.v);
         ans.distance = hit.ray.tfar;
         ans.pos = r.origin + ans.distance * r.direction;

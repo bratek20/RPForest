@@ -4,12 +4,8 @@
 
 using namespace std;
 
-Material LightConfig::DEFAULT_MAT =
-    Material(Color(0.8f, 0.8f, 0.8f), Color(0.8f, 0.8f, 0.8f),
-             Color(0.0f, 0.0f, 0.0f), glm::vec3(17, 12, 4), 10);
-
-Mesh LightConfig::createMesh() const {
-    return Mesh({v1, v2, v3}, {0, 1, 2}, LightConfig::DEFAULT_MAT);
+MeshPtr LightConfig::createMesh() const {
+    return Mesh::New(vector<Vertex>{v1, v2, v3}, vector<unsigned int>{0, 1, 2}, Material::DEFAULT_LIGHT);
 }
 
 bool Config::load(const string &path) {

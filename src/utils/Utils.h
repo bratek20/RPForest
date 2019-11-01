@@ -23,6 +23,7 @@ public:
         MAX
     };
 
+    static const float PI;
     static const float INF;
     static const std::array<Axis, 3> AXES;
     static Axis next(Axis axis, int step = 1);

@@ -13,6 +13,7 @@ struct Vertex {
 
     Vertex() = default;
     Vertex(glm::vec3 position);
+    Vertex(glm::vec3 position, glm::vec3 normal);
 
     bool hasNormal() const;
 };
