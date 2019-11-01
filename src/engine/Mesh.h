@@ -23,6 +23,7 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
          std::vector<unsigned int> indices,
          Material material = Material::DEFAULT);
 
+    void apply(const glm::mat4& m);
     void draw(Shader& shader);
 
     std::vector<Vertex>& getVertices();

@@ -28,6 +28,14 @@ Mesh::Mesh(vector<Vertex> vertices,
     setupMesh();
 }
 
+void Mesh::apply(const glm::mat4& m) {
+    for(auto& v : vertices) {
+        v.apply(m);
+    }
+
+    setupMesh();
+}
+
 void Mesh::draw(Shader& shader) {
     material.apply(shader);
 

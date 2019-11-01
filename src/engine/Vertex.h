@@ -15,6 +15,7 @@ struct Vertex {
     Vertex(glm::vec3 position);
     Vertex(glm::vec3 position, glm::vec3 normal);
 
+    void apply(const glm::mat4& m);
     bool hasNormal() const;
 };
 

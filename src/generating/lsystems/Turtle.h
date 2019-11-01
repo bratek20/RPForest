@@ -13,21 +13,23 @@ struct Turtle {
 
     glm::vec3 rotation = glm::vec3(0);
 
-    float width = 1; 
+    float width = 1;
 
     void move(float length);
 
     void rotateFront(float angle);
     void rotateLeft(float angle);
-    void rotateUp(float angle);  
-    void centerLeft();  
+    void rotateUp(float angle);
+    void centerLeft();
 
+    glm::mat4 getWorldMat() const;
     void debug(const std::string& label);
 
-private:
+   private:
     glm::mat3 toMat() const;
     void apply(const glm::mat3& mat);
     glm::mat4 getRotationMat() const;
+    glm::mat4 getPositionMat() const;
 };
 
 #endif

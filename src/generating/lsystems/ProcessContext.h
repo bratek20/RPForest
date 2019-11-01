@@ -2,13 +2,12 @@
 #define PROCESS_CONTEXT_H
 
 #include "Turtle.h"
-
-#include <vector>
+#include "Mesh.h"
 
 struct ProcessContext {
     Turtle current;
     std::vector<Turtle> stack;
-    std::vector<glm::vec3> verticies;
+    std::vector<MeshPtr> meshes; 
 };
 
 #endif

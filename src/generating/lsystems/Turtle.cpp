@@ -3,8 +3,9 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/quaternion.hpp>
-//#include <glm/common.hpp>
+#include <glm/common.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 
@@ -74,6 +75,13 @@ void Turtle::debug(const std::string& label) {
     cout << "up: " << up << endl;
 }
 
+glm::mat4 Turtle::getWorldMat() const{
+    return getPositionMat() * getRotationMat();
+}
+
+glm::mat4 Turtle::getPositionMat() const{
+    return glm::translate(glm::mat4(1.0f), pos);
+}
 
 glm::mat4 Turtle::getRotationMat() const{
     static const glm::vec3 xAxis = glm::vec3(1,0,0);

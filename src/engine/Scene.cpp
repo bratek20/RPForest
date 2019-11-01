@@ -28,8 +28,9 @@ ScenePtr Scene::create(const Config &c) {
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
     auto res = Honda().generate();
-    scene->getModel()->addMesh(Mesh::New(res.verticies), false);
-    scene->getModel()->addMesh(Shapes::genCylinder(1, 10), false);
+    for(auto mesh : res.meshes){
+        scene->getModel()->addMesh(mesh, true);
+    }
     Timer::stop();
     return scene;
 }
