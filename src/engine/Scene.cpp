@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include "Assets.h"
 #include "Color.h"
-#include "KDTree.h"
 #include "PhotoSaver.h"
 #include "SimpleAccStruct.h"
 #include "Timer.h"
@@ -11,6 +10,7 @@
 #include "DebugActor.h"
 #include "Shapes.h"
 #include "Honda.h"
+#include "Ternary.h"
 
 using namespace std;
 
@@ -27,7 +27,8 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
-    auto res = Honda().generate();
+    auto res = Ternary().generate();
+    //auto res = Honda().generate();
     for(auto mesh : res.meshes){
         scene->getModel()->addMesh(mesh, true);
     }
@@ -60,11 +61,7 @@ void Scene::takePhotoPathTracing(const Config &c) {
     cout << "Samples per pixel: " << c.samplesNum << endl;
     
     Timer::start("Building accStruct");
-    #ifdef USE_EMBREE
     EmbreeWrapper accStruct(meshes);
-    #else
-    KDTree accStruct(triangles);
-    #endif
     Timer::stop();
 
     Timer::start("Path tracing");

@@ -4,7 +4,9 @@
 #include <glm/glm.hpp>
 #include <string>
 
-struct Turtle {
+class Turtle {
+    static const float RADIUS_NOT_SET;
+
     glm::vec3 pos = glm::vec3(0);
 
     glm::vec3 front = glm::vec3(0, 0, -1);
@@ -13,19 +15,25 @@ struct Turtle {
 
     glm::vec3 rotation = glm::vec3(0);
 
-    float width = 1;
+    float radius = RADIUS_NOT_SET;
 
+   public:
     void move(float length);
 
     void rotateFront(float angle);
     void rotateLeft(float angle);
     void rotateUp(float angle);
     void centerLeft();
+    void bend(glm::vec3 T, float e);
+
+    void setRadius(float radius);
+    float getRadius(float defaultValue = 1) const;
 
     glm::mat4 getWorldMat() const;
     void debug(const std::string& label);
 
    private:
+    glm::vec3 getFront() const;
     glm::mat3 toMat() const;
     void apply(const glm::mat3& mat);
     glm::mat4 getRotationMat() const;

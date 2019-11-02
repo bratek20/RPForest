@@ -46,6 +46,7 @@
         "optional": "cpp",
         "algorithm": "cpp",
         "thread": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "random": "cpp"
     }
 }

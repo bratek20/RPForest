@@ -11,7 +11,7 @@ public:
     ForwardDraw(float length) : length(length) {} 
 
     void process(ProcessContext& pc) override {
-        auto mesh = Shapes::genCylinder(pc.current.width/2, length); 
+        auto mesh = Shapes::genCone(pc.current.getRadius(), pc.current.getRadius(), length); 
         mesh->apply(pc.current.getWorldMat());
         pc.current.move(length);
         pc.meshes.push_back(mesh);

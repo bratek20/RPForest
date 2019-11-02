@@ -5,11 +5,15 @@ if [ "$1" = "--debug" ] || [ "$1" = "-d" ]; then
 	BUILD_FOLDER=debug
 fi
 
-cd ../$BUILD_FOLDER
-
+cd ..
 if [ "$1" = "--clean" ] || [ "$1" = "-c" ]; then
-	make clean
+	rm -rf $BUILD_FOLDER
+	mkdir $BUILD_FOLDER
+	cd $BUILD_FOLDER
 	cmake ..
+else
+	cd $BUILD_FOLDER
 fi
+
 make
 cd ../bin

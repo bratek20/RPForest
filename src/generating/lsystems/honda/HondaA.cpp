@@ -5,8 +5,7 @@
 
 std::vector<SymbolPtr> HondaA::produce() {
     return {
-        S<SetWidth>(w),
-        S<ForwardDraw>(l),
+        S<ForwardConeDraw>(l, w),
         S<StartBranch>(),
         S<Pitch>(Honda::a0),
         S<HondaB>(l * Honda::r2, w * Honda::wr),

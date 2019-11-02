@@ -4,10 +4,10 @@
 using namespace std;
 using namespace glm;
 
-MeshPtr Shapes::genCylinder(float radius, float height) {
-    static const int POINTS_NUM = 16;
-    auto down = genCirclePoints(POINTS_NUM, radius, 0);
-    auto up = genCirclePoints(POINTS_NUM, radius, height);
+MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
+    static const int POINTS_NUM = 8;
+    auto down = genCirclePoints(POINTS_NUM, downRadius, 0);
+    auto up = genCirclePoints(POINTS_NUM, upRadius, height);
 
     vec3 center = vec3(0, height/2, 0);
     vector<Vertex> vertices(POINTS_NUM * 2);

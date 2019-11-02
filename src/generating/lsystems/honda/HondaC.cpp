@@ -5,7 +5,7 @@
 
 std::vector<SymbolPtr> HondaC::produce() {
     return {
-        S<SetWidth>(w),
+        S<ForwardConeDraw>(l, w),
         S<ForwardDraw>(l),
         S<StartBranch>(),
         S<Turn>(Honda::a2),

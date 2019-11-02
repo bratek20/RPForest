@@ -5,7 +5,7 @@
 
 class Shapes {
 public:
-    static MeshPtr genCylinder(float radius, float height);
+    static MeshPtr genCone(float downRadius, float upRadius, float height);
 
 private:
     static std::vector<glm::vec3> genCirclePoints(int pointsNum, float radius, float y);

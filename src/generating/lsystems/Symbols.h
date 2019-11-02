@@ -7,8 +7,9 @@
 #include "ForwardMove.h"
 #include "Pitch.h"
 #include "Roll.h"
-#include "SetWidth.h"
+#include "SetRadius.h"
 #include "StartBranch.h"
 #include "Turn.h"
+#include "ForwardConeDraw.h"
 
 #endif
