@@ -35,7 +35,7 @@ void EmbreeWrapper::createMeshGeometry(MeshPtr mesh)
                             0, RTC_FORMAT_UINT3, sizeof(TriangleWrapper), mIndices.size()/3);
 
 
-    for(unsigned i=0;i<mesh->getVertices().size();i++){
+    for(unsigned i=0;i<mVertices.size();i++){
         vertices[i] = mVertices[i].position;
     }
 

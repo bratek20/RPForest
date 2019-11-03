@@ -1,7 +1,7 @@
 #include "Ternary.h"
 #include "TernaryAxiom.h"
 
-int Ternary::n = 6;
+int Ternary::n = 3;
 float Ternary::d1;
 float Ternary::d2;
 float Ternary::a;

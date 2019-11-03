@@ -43,3 +43,9 @@ const vector<TrianglePtr> &Model::getTriangles() const { return triangles; }
 const vector<LightConfig> &Model::getLights() const { return lights; }
 const vector<MeshPtr> &Model::getMeshes() const { return meshes; }
 
+void Model::debug() {
+    for(auto& m : meshes) {
+        m->debug();
+    }
+}
+

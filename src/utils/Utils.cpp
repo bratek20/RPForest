@@ -6,6 +6,7 @@ using namespace std;
 
 const float Utils::PI = 3.14159265;
 const float Utils::INF = std::numeric_limits<float>::max();
+const glm::vec3 Utils::UP = glm::vec3(0, 1, 0);
 const array<Utils::Axis, 3> Utils::AXES { Utils::Axis::X, Utils::Axis::Y, Utils::Axis::Z};
 
 Utils::Axis Utils::next(Axis axis, int step){

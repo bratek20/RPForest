@@ -37,6 +37,8 @@ class Model : public Ptr<Model, ModelPtr> {
     const std::vector<LightConfig> &getLights() const;
     const std::vector<MeshPtr> &getMeshes() const;
 
+    void debug();
+
   private:
     void createTriangles();
 };

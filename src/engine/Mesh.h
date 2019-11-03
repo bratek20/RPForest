@@ -31,6 +31,8 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
     const std::vector<Triangle>& getTriangles() const;
     TrianglePtr getTriangle(int idx) const;
 
+    void debug();
+    
    private:
     unsigned int VAO, VBO, EBO;
 

@@ -6,7 +6,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/../bin/rpforest.exe",
-      "args": ["${workspaceFolder}/../bin/config.rtc"],
+      "args": ["${workspaceFolder}/../bin/configLight.rtc"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

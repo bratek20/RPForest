@@ -7,11 +7,11 @@ const float Input::MOUSE_SENSIVITY = 20;
 
 void Input::init(){
     // Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(Window::getPtr(), GLFW_STICKY_KEYS, GL_TRUE);
+	//glfwSetInputMode(Window::getPtr(), GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetKeyCallback(Window::getPtr(), onKeyClicked);
     glfwSetCursorPosCallback(Window::getPtr(), onMouseMoved);
     glfwSetMouseButtonCallback(Window::getPtr(), onMouseClicked);
-    glfwSetInputMode(Window::getPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(Window::getPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     onKeyPressed(GLFW_KEY_ESCAPE, [](){glfwSetWindowShouldClose(Window::getPtr(), GL_TRUE);});
 }
 

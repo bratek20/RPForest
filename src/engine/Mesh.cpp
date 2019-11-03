@@ -126,3 +126,9 @@ const vector<Triangle>& Mesh::getTriangles() const {
 TrianglePtr Mesh::getTriangle(int idx) const {
     return &triangles[idx];
 }
+
+void Mesh::debug() {
+    for(auto& v: vertices) {
+        v.debug();
+    }
+}

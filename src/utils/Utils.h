@@ -25,6 +25,7 @@ public:
 
     static const float PI;
     static const float INF;
+    static const glm::vec3 UP;
     static const std::array<Axis, 3> AXES;
     static Axis next(Axis axis, int step = 1);
 

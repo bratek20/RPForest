@@ -17,6 +17,8 @@ struct Vertex {
 
     void apply(const glm::mat4& m);
     bool hasNormal() const;
+
+    void debug();
 };
 
 
