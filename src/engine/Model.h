@@ -6,7 +6,6 @@
 #include "Config.h"
 #include "Mesh.h"
 #include "Shader.h"
-#include "Texture.h"
 
 #include <fstream>
 #include <iostream>
