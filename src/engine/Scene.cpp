@@ -27,14 +27,14 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
-    auto res = Ternary().generate();
-    //auto res = Honda().generate();
+    //auto res = Ternary().generate();
+    auto res = Honda().generate();
     for(auto mesh : res.meshes){
         scene->getModel()->addMesh(mesh, false);
     }
     //scene->getModel()->addMesh(Shapes::genCone(2, 1, 5), true);
     scene->getModel()->addMesh(Shapes::genPlane(20, 20), true);
-    scene->getModel()->debug();
+    //scene->getModel()->debug();
     Timer::stop();
     return scene;
 }

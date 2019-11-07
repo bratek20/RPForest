@@ -51,7 +51,12 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
         indices.push_back(POINTS_NUM + next(i));
         indices.push_back(POINTS_NUM + i);
     }
-    return Mesh::New(vertices, indices);
+    Material mat = Material(Color(0.5f, 0.25f, 0.0f),
+                                         Color(0.5f, 0.25f, 0.0f),
+                                         Color(0.0f, 0.0f, 0.0f),
+                                         glm::vec3(0, 0, 0),
+                                         10);
+    return Mesh::New(vertices, indices, mat);
 }
 
 vector<vec3> Shapes::genCirclePoints(int pointsNum, float radius, float y) {
