@@ -8,6 +8,7 @@ struct ProcessContext {
     Turtle current;
     std::vector<Turtle> stack;
     std::vector<MeshPtr> meshes; 
+    std::vector<glm::vec3> vertices;
 };
 
 #endif

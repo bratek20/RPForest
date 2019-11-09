@@ -34,6 +34,7 @@ ScenePtr Scene::create(const Config &c) {
     }
     //scene->getModel()->addMesh(Shapes::genCone(2, 1, 5), true);
     scene->getModel()->addMesh(Shapes::genPlane(20, 20), true);
+    //scene->getModel()->addMesh(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();
     return scene;

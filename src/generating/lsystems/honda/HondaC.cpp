@@ -6,7 +6,6 @@
 std::vector<SymbolPtr> HondaC::produce() {
     return {
         S<ForwardConeDraw>(l, w),
-        S<ForwardDraw>(l),
         S<StartBranch>(),
         S<Turn>(Honda::a2),
         S<CenterLeft>(),

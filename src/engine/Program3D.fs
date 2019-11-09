@@ -66,6 +66,6 @@ void main(){
 
 	if (length(Normal_cameraspace) < 0.1)
 	{
-		color = vec3(1, 0.1, 0.5);
+		//color = vec3(1, 0.1, 0.5);
 	}
 }

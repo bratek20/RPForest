@@ -7,17 +7,15 @@
 class Turtle {
     static const float RADIUS_NOT_SET;
 
-    glm::vec3 pos = glm::vec3(0);
-
-    glm::vec3 front = glm::vec3(0, 0, -1);
+    glm::vec3 front = glm::vec3(0, 1, 0);
     glm::vec3 left = glm::vec3(-1, 0, 0);
-    glm::vec3 up = glm::vec3(0, 1, 0);
-
-    glm::vec3 rotation = glm::vec3(0);
+    glm::vec3 up = glm::vec3(0, 0, 1);
 
     float radius = RADIUS_NOT_SET;
 
    public:
+    glm::vec3 pos = glm::vec3(0, 0, 0);
+
     void move(float length);
 
     void rotateFront(float angle);
@@ -30,7 +28,7 @@ class Turtle {
     float getRadius(float defaultValue = 1) const;
 
     glm::mat4 getWorldMat() const;
-    void debug(const std::string& label);
+    void debug();
 
    private:
     glm::vec3 getFront() const;

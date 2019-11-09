@@ -9,10 +9,10 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     float hd = depth /2;
 
     vector<Vertex> vertices(4);
-    vertices[0] = Vertex(vec3(-hw, 0, -hd), Utils::UP);
-    vertices[1] = Vertex(vec3(hw, 0, -hd), Utils::UP);
-    vertices[2] = Vertex(vec3(-hw, 0, hd), Utils::UP);
-    vertices[3] = Vertex(vec3(hw, 0, hd), Utils::UP);
+    vertices[0] = Vertex(vec3(-hw, 0, -hd), Utils::VY);
+    vertices[1] = Vertex(vec3(hw, 0, -hd), Utils::VY);
+    vertices[2] = Vertex(vec3(-hw, 0, hd), Utils::VY);
+    vertices[3] = Vertex(vec3(hw, 0, hd), Utils::VY);
 
     vector<unsigned int> indices = {0,1,2, 3,2,1}; 
     return Mesh::New(vertices, indices);
