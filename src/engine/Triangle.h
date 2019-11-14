@@ -25,6 +25,7 @@ struct Triangle {
     glm::vec3 getEdge12() const;
     glm::vec3 getEdge13() const;
     glm::vec3 getNormal(glm::vec2 baryPos) const;
+    glm::vec3 getNormal(glm::vec3 pos) const;
     glm::vec3 getNormal() const;
     std::vector<glm::vec3> getPositions() const;
     Bounds getBounds() const;

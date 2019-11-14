@@ -5,7 +5,7 @@
 #include "SimpleAccStruct.h"
 #include "Timer.h"
 #include "PathTracer.h"
-#include "LightSampler.h"
+#include "SkyLightSampler.h"
 #include "EmbreeWrapper.h"
 #include "DebugActor.h"
 #include "Shapes.h"
@@ -18,11 +18,12 @@ Scene::Scene(ModelPtr sceneModel) : Actor(sceneModel) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
+    float worldSize = 20;
     DebugActorPtr debugActor = DebugActor::create();
     ScenePtr scene = ScenePtr(new Scene(Model::New(c)));
     scene->addChild(debugActor);
 
-    scene->lightSampler = LightSampler(scene->getModel()->getTriangles());
+    scene->lightSampler = SkyLightSampler(worldSize/2);
     scene->camera = Camera::create(c.camera);
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());
@@ -33,7 +34,7 @@ ScenePtr Scene::create(const Config &c) {
         scene->getModel()->addMesh(mesh, false);
     }
     //scene->getModel()->addMesh(Shapes::genCone(2, 1, 5), true);
-    scene->getModel()->addMesh(Shapes::genPlane(20, 20), true);
+    scene->getModel()->addMesh(Shapes::genPlane(worldSize, worldSize), true);
     //scene->getModel()->addMesh(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();

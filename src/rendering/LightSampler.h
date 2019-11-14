@@ -1,24 +1,22 @@
 #ifndef LIGHT_SAMPLER_H
 #define LIGHT_SAMPLER_H
 
-#include "Mesh.h"
-#include "Config.h"
+#include "Triangle.h"
+
+struct LightSampleData{
+    glm::vec3 point;
+    glm::vec3 normal;
+    Material material;
+    float probability;
+
+    TrianglePtr triangle = nullptr;
+};
 
 class LightSampler {
-    std::vector<TrianglePtr> lightSources;
-    std::vector<float> thresholds;
+public:    
+    virtual ~LightSampler(){}
 
-public:
-    struct SampleData{
-        glm::vec3 point;
-        TrianglePtr source;
-        float probability;
-    };
-
-    LightSampler() = default;
-    LightSampler(const std::vector<TrianglePtr>& triangles);
-
-    SampleData sample();
+    virtual LightSampleData sample() {};
 };
 
 #endif

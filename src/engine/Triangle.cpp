@@ -50,6 +50,10 @@ glm::vec3 Triangle::getNormal(glm::vec2 baryPos) const {
     }
 }
 
+glm::vec3 Triangle::getNormal(glm::vec3 pos) const {
+    return getNormal(); // TODO_BR implement it properly
+}
+
 glm::vec3 Triangle::getNormal() const {
     return glm::normalize(
         glm::cross(v2.position - v1.position, v3.position - v1.position));

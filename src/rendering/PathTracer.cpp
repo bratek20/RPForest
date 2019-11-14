@@ -9,20 +9,24 @@ using namespace glm;
 
 bool PathTracer::drawLines = false;
 
-PathTracer::CastData PathTracer::cast(Ray r, int k, AccStruct &accStruct, LightSampler& lightSampler) {
+PathTracer::CastData PathTracer::cast(Ray r, int k, AccStruct &accStruct, SkyLightSampler& lightSampler) {
     if (k <= 0) {
         return CastData();
     }
 
-    HitData hit = accStruct.cast(r);
+    HitData hit = accStruct.cast(r);    
     if (!hit.intersects()) {
-        return CastData();
+        CastData skyCast;
+        skyCast.hit = true;
+        skyCast.emittance = lightSampler.cast(r);
+        return skyCast;
     }
+    
     bool isBounced = Random::tossCoin(hit.triangle->mat.diffuse.getAverage());
     if(!isBounced){
         return CastData();
     }
-
+    
     CastData ans;
     ans.hit = true;
     ans.emittance = hit.triangle->mat.emissive 
@@ -31,29 +35,28 @@ PathTracer::CastData PathTracer::cast(Ray r, int k, AccStruct &accStruct, LightS
     return ans;
 }
 
-vec3 PathTracer::calcDirectLight(HitData& hit, AccStruct &accStruct, LightSampler& lightSampler){
+vec3 PathTracer::calcDirectLight(HitData& hit, AccStruct &accStruct, SkyLightSampler& lightSampler){
     auto lightSample = lightSampler.sample();
     vec3 lightPoint = lightSample.point;
-    TrianglePtr source = lightSample.source;
     vec3 rayDir = normalize(lightPoint - hit.pos);
 
     HitData visibleHit = accStruct.cast(Ray(hit.pos, rayDir, true));
-    if(!visibleHit.intersects() || visibleHit.triangle != source){
+    if(visibleHit.intersects()) {
         return vec3(0);
     }
 
     vec3 BRDF = hit.triangle->mat.diffuse / M_PI;
 
     float cosX = clamp(dot(rayDir, hit.triangle->getNormal(hit.baryPos)), 0.0f, 1.0f);
-    float cosY = clamp(dot(-rayDir, source->getNormal(visibleHit.baryPos)), 0.0f, 1.0f);
+    float cosY = clamp(dot(-rayDir, lightSample.normal), 0.0f, 1.0f);
     float dist = distance(lightPoint, hit.pos);
-    float probability = lightSample.probability / source->calcArea();
+    float probability = lightSample.probability;
     float G = cosX * cosY / (dist * dist);
-    auto ans = source->mat.emissive * BRDF * G / probability;
+    auto ans = lightSample.material.emissive * BRDF * G / probability;
     return ans;
 }
 
-vec3 PathTracer::calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, LightSampler& lightSampler){
+vec3 PathTracer::calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, SkyLightSampler& lightSampler){
     vec3 hitNormal = hit.triangle->getNormal(hit.baryPos); 
     const Material& hitMat = hit.triangle->mat;
     vec3 newDir = Random::vectorOnHemisphereCos(hitNormal);
