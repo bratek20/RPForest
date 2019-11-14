@@ -8,11 +8,12 @@
 
 class Generator {
     SymbolPtr axiom;
-    int n;
-    
-public:
-    Generator(SymbolPtr axiom, int n);
 
+public:
+    Generator(SymbolPtr axiom);
+
+    virtual int getN() = 0;
+    
     ProcessContext generate();
 };
 

@@ -15,6 +15,10 @@ public:
     static float e;
 
     Ternary();
+    
+    int getN() override {
+        return n;
+    }
 
     static void load1();
     static void load2();

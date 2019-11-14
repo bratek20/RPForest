@@ -17,11 +17,6 @@ public:
         ForwardDraw::process(pc);
         pc.current.bend(Ternary::T, Ternary::e);
     }
-
-    std::string toString() override {
-        return "";
-    }
-
 };
 
 #endif

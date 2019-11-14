@@ -15,6 +15,10 @@ public:
 
     Honda();
 
+    int getN() override {
+        return n;
+    }
+    
     static void load1();
     static void load2();
     static void load3();

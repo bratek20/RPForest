@@ -2,13 +2,13 @@
 
 using namespace std;
 
-Generator::Generator(SymbolPtr axiom, int n) : axiom(axiom), n(n) {}
+Generator::Generator(SymbolPtr axiom) : axiom(axiom) {}
 
 ProcessContext Generator::generate() {
     vector<SymbolPtr> current = {axiom};
     vector<SymbolPtr> next;
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < getN(); i++) {
         for (auto &s : current) {
             auto result = s->produce();
             next.insert(next.end(), result.begin(), result.end());

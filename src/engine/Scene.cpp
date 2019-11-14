@@ -13,12 +13,13 @@
 #include "Ternary.h"
 
 using namespace std;
+using namespace glm;
 
 Scene::Scene(ModelPtr sceneModel) : Actor(sceneModel) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
-    float worldSize = 20;
+    float worldSize = 100;
     DebugActorPtr debugActor = DebugActor::create();
     ScenePtr scene = ScenePtr(new Scene(Model::New(c)));
     scene->addChild(debugActor);
@@ -46,7 +47,7 @@ void Scene::render() {
     Assets::program.setProjectionMat(camera->getProjectionMat());
 
     Light::applyLights(Assets::program);
-    Actor::render(glm::mat4(1.0f));
+    Actor::render(mat4(1.0f));
 }
 
 CameraPtr Scene::getCamera() const { return camera; }
@@ -57,7 +58,7 @@ void Scene::takePhotoPathTracing(const Config &c) {
     cout << "Taking photo..." << endl;
     PhotoSaver photo(c.xRes, c.yRes);
 
-    glm::vec3 origin = camera->getWorldPosition();
+    vec3 origin = camera->getWorldPosition();
     cout << "Camera position: " << origin << endl;
     auto &triangles = getModel()->getTriangles();
     auto &meshes = getModel()->getMeshes();
@@ -70,24 +71,24 @@ void Scene::takePhotoPathTracing(const Config &c) {
     Timer::stop();
 
     Timer::start("Path tracing");
-    glm::vec3 leftTop = camera->getLeftTop();
-    glm::vec3 leftBottom = camera->getLeftBottom();
-    glm::vec3 rightTop = camera->getRightTop();
+    vec3 leftTop = camera->getLeftTop();
+    vec3 leftBottom = camera->getLeftBottom();
+    vec3 rightTop = camera->getRightTop();
     for (int x = 0; x < c.xRes; x++) {
         for (int y = 0; y < c.yRes; y++) {
             float xShift = static_cast<float>(x) / c.xRes;
             float yShift = static_cast<float>(y) / c.yRes;
             
-            glm::vec3 pos = -leftTop + glm::mix(leftTop, rightTop, xShift) +
-                            glm::mix(leftTop, leftBottom, yShift);
-            glm::vec3 direction = glm::normalize(pos - origin);
+            vec3 pos = -leftTop + mix(leftTop, rightTop, xShift) +
+                            mix(leftTop, leftBottom, yShift);
+            vec3 direction = normalize(pos - origin);
             Ray r(origin, direction);
 
-            glm::vec3 color = glm::vec3(0);
-            glm::vec3 emittance = glm::vec3(0);
+            vec3 color = vec3(0);
+            vec3 emittance = vec3(0);
             for(int i=0;i<c.samplesNum;i++){
                 PathTracer::CastData data = PathTracer::cast(r, c.k, accStruct, lightSampler);
-                glm::vec3 sampleC = data.hit ? data.emittance : c.background.asVec3(); 
+                vec3 sampleC = data.hit ? data.emittance : vec3(0); 
                 
                 color += sampleC;
                 emittance += data.emittance;
@@ -118,14 +119,14 @@ void Scene::debugRay(const Config& c) {
     auto &meshes = getModel()->getMeshes();
     EmbreeWrapper accStruct(meshes);
 
-    glm::vec3 origin = camera->getWorldPosition();
-    glm::vec3 leftTop = camera->getLeftTop();
-    glm::vec3 leftBottom = camera->getLeftBottom();
-    glm::vec3 rightTop = camera->getRightTop();
+    vec3 origin = camera->getWorldPosition();
+    vec3 leftTop = camera->getLeftTop();
+    vec3 leftBottom = camera->getLeftBottom();
+    vec3 rightTop = camera->getRightTop();
 
-    glm::vec3 pos = -leftTop + glm::mix(leftTop, rightTop, 0.5f) +
-                    glm::mix(leftTop, leftBottom, 0.5f);
-    glm::vec3 direction = glm::normalize(pos - origin);
+    vec3 pos = -leftTop + mix(leftTop, rightTop, 0.5f) +
+                    mix(leftTop, leftBottom, 0.5f);
+    vec3 direction = normalize(pos - origin);
     Ray r(origin, direction);
 
     for(int i=0;i<c.samplesNum;i++){

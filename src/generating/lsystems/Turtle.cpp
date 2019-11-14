@@ -99,19 +99,5 @@ mat4 Turtle::getPositionMat() const {
 }
 
 mat4 Turtle::getRotationMat() const {
-    glm::vec3 right;
-    glm::vec3 globalNormal = front; // TODO_BR move to utils and use it in random as well
-    if(abs(globalNormal.x) < abs(globalNormal.y)){
-        right = glm::vec3(1, 0, 0);
-    }
-    else{
-        right = glm::vec3(0, 1, 0);
-    }
-
-    glm::vec3 globalZ = glm::normalize(glm::cross(globalNormal, right));
-    glm::vec3 globalX = glm::normalize(glm::cross(globalZ, globalNormal));
-    return mat4(globalX.x, globalX.y, globalX.z, 0, 
-                globalNormal.x, globalNormal.y, globalNormal.z, 0,
-                globalZ.x, globalZ.y, globalZ.z, 0,
-                0, 0, 0, 1);
+    return Utils::getRotateGlobalMat(front);
 }

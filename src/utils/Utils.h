@@ -33,6 +33,9 @@ public:
     static float findBest(const std::vector<glm::vec3>& poses, Axis axis, CmpType cmpType); 
 
     static glm::vec2 toVec2(const glm::vec3& v, Axis toOmit);
+
+    static glm::mat4 getRotateGlobalMat(glm::vec3 globalY);
+    static glm::vec3 rotateGlobal(glm::vec3 vec, glm::vec3 globalY);
 };
 
 #endif
