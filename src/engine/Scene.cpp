@@ -15,16 +15,15 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel) : Actor(sceneModel) {}
+Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize / 2) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
     float worldSize = 100;
     DebugActorPtr debugActor = DebugActor::create();
-    ScenePtr scene = ScenePtr(new Scene(Model::New(c)));
+    ScenePtr scene = ScenePtr(new Scene(Model::New(c), worldSize));
     scene->addChild(debugActor);
 
-    scene->lightSampler = SkyLightSampler(worldSize/2);
     scene->camera = Camera::create(c.camera);
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());

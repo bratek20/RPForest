@@ -40,6 +40,16 @@ void debugRot(){
 }
 
 int main(int argc, char* argv[]){
+	// glm::mat3x2 d = {1,2,3,4,5,6};
+	// glm::mat2x3 b = {2,3,4,5,6,7};
+	// auto a = b*d;
+	// for(int i=0;i<3;i++){
+	// 	for(int j=0;j<3;j++){
+	// 		cout << a[j][i] << " ";
+	// 	}
+	// 	cout << "\n";
+	// }
+	// return 0;
 	if(argc < 2 || !c.load(argv[1])){
 		cerr << "Bad config! Specify it as first argument." << endl;
 		return -1;

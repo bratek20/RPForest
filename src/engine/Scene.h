@@ -22,6 +22,6 @@ public:
     void debugRay(const Config& c);
 
 protected:
-    Scene(ModelPtr sceneModel);
+    Scene(ModelPtr sceneModel, float size);
 };
 #endif

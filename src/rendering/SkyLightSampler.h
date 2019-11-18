@@ -2,12 +2,10 @@
 #define SKY_LIGHT_SAMPLER_H
 
 #include "LightSampler.h"
-#include "Material.h"
-#include "AccStruct.h"
+#include "SkyLightHelper.h"
 
 class SkyLightSampler : public LightSampler {
 public:
-    SkyLightSampler() = default;
     SkyLightSampler(float radius);
 
     LightSampleData sample() override;
@@ -15,6 +13,7 @@ public:
 
 private:
     float radius;
+    SkyLightHelper helper;
 };
 
 #endif
