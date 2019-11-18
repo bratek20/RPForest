@@ -34,6 +34,10 @@ RTCRay Ray::toRTCRay(float maxDistance){
     return ray; 
 }
 
+glm::vec3 Ray::calcPoint(float t) {
+    return origin + direction * t;
+}
+
 TrianglesAccStruct::TrianglesAccStruct(const vector<TrianglePtr>& triangles) : triangles(triangles) {}
 
 HitData TrianglesAccStruct::intersect(Ray r, TrianglePtr tri){

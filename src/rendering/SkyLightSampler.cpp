@@ -21,7 +21,22 @@ LightSampleData SkyLightSampler::sample() {
 }
 
 glm::vec3 SkyLightSampler::cast(Ray r) {
-    return Material::DEFAULT_LIGHT.diffuse;
+    vec3 oc = r.origin;
+    float a = dot(r.direction, r.direction);
+    float b = 2.0 * dot(oc, r.direction);
+    float c = dot(oc,oc) - radius*radius;
+    float discriminant = b*b - 4*a*c;
+    if(discriminant < 0){
+        return vec3(0);
+    }
+    else{
+        float t = (-b - sqrt(discriminant)) / (2.0*a);
+        if(t < 0) {
+            t = (-b + sqrt(discriminant)) / (2.0*a);          
+        }
+        vec3 pos = r.calcPoint(t);
+        return helper.calcColor(pos);
+    }
 }
 
 

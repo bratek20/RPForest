@@ -47,6 +47,7 @@
         "algorithm": "cpp",
         "thread": "cpp",
         "mutex": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "*.gen": "cpp"
     }
 }

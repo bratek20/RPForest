@@ -15,6 +15,7 @@ struct Ray {
     static void setEpsilon(float epsilon);
 
     RTCRay toRTCRay(float maxDistance);
+    glm::vec3 calcPoint(float t);
 };
 
 struct HitData {

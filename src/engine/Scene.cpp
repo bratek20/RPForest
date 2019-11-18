@@ -15,7 +15,7 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize / 2) {}
+Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");

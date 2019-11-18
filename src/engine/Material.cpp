@@ -3,13 +3,13 @@
 using namespace std;
 
 Material Material::DEFAULT = Material(Color(0.8f, 0.8f, 0.8f),
-                                         Color(0.8f, 0.8f, 0.8f),
+                                         Color(0.1f, 0.8f, 0.2f),
                                          Color(0.0f, 0.0f, 0.0f),
                                          glm::vec3(0, 0, 0),
                                          10);
 
-Material Material::DEFAULT_LIGHT = Material(Color(0.8f, 0.8f, 0.8f),
-                                         Color(0.8f, 0.8f, 0.8f),
+Material Material::DEFAULT_LIGHT = Material(Color(0.0f, 0.0f, 0.0f),
+                                         Color(1.0f, 1.0f, 1.0f),
                                          Color(0.0f, 0.0f, 0.0f),
                                          glm::vec3(17, 12, 4),
                                          10);
