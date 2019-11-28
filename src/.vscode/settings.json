@@ -48,6 +48,17 @@
         "thread": "cpp",
         "mutex": "cpp",
         "random": "cpp",
-        "*.gen": "cpp"
+        "*.gen": "cpp",
+        "RiAtmConstants.C": "cpp",
+        "RiSunConstants.C": "cpp",
+        "RiSunSky.C": "cpp",
+        "RiToSpectrum.C": "cpp",
+        "ASunSky.C": "cpp",
+        "srgb.C": "cpp",
+        "AAtmConstants.C": "cpp",
+        "rope": "cpp",
+        "regex": "cpp",
+        "ASunConstants.C": "cpp",
+        "AToSpectrum.C": "cpp"
     }
 }

@@ -3,15 +3,19 @@ set(EXE_FILE "rpforest.exe")
 file(GLOB_RECURSE ALL_SRC
     "*.h"
     "*.cpp"
+    "*.H"
+    "*.C"	
 )
 
 include_directories(utils)
 include_directories(engine)
 include_directories(rendering)
+include_directories(rendering/ASky)
 include_directories(generating)
 include_directories(generating/lsystems)
 include_directories(generating/lsystems/honda)
 include_directories(generating/lsystems/ternary)
+
 
 add_executable(${EXE_FILE} ${ALL_SRC})
 

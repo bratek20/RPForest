@@ -50,8 +50,9 @@ int main(int argc, char* argv[]){
 	// 	cout << "\n";
 	// }
 	// return 0;
-	if(argc < 2 || !c.load(argv[1])){
-		cerr << "Bad config! Specify it as first argument." << endl;
+	string configPath = argc >= 2 ? argv[1] : "config.rtc";
+	if(!c.load(configPath)){
+		cerr << "Loading config failed!" << endl;
 		return -1;
 	}
     if(!Window::open("RPForest", c)){

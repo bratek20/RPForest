@@ -1,6 +1,8 @@
 #include "SkyLightHelper.h"
 #include "Utils.h"
 
+#include <iostream>
+
 using namespace std;
 using namespace glm;
 
@@ -48,7 +50,12 @@ vec3 SkyLightHelper::calcColor(vec3 skyPos) {
     float xChroma = X_CHROMA_ZENITH * calcDistribution(X_CHROMA_PARAMS, theta, gamma) / calcDistribution(X_CHROMA_PARAMS, 0, SUN_THETA);
     float yChroma = Y_CHROMA_ZENITH * calcDistribution(Y_CHROMA_PARAMS, theta, gamma) / calcDistribution(Y_CHROMA_PARAMS, 0, SUN_THETA);
 
-    return toRGB(luminance, xChroma, yChroma);
+    auto ans = toRGB(luminance, xChroma, yChroma);
+    if(isnan(ans.x) || isnan(ans.x) || isnan(ans.x)){
+        cout << "nan ans" << endl;
+        return vec3(0);
+    } 
+    return ans;
 }
 
 vec3 SkyLightHelper::toRGB(float luminance, float xChroma, float yChroma) {

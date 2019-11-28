@@ -1,0 +1,42 @@
+# DO NOT DELETE
+
+AAtmConstants.o: /home/anl/work/ALib/include/ASunSky.H
+AAtmConstants.o: /home/anl/work/ALib/include/ASpectrum.H
+AAtmConstants.o: /home/anl/work/ALib/include/ABase.H
+AAtmConstants.o: /home/anl/work/ALib/include/AVector3.H
+AAtmConstants.o: /home/anl/work/ALib/include/ASpectralCurve.H K.spectrum
+AAtmConstants.o: K25.spectrum Neta.Table
+ASpectralCurve.o: /home/anl/work/ALib/include/ASunSky.H
+ASpectralCurve.o: /home/anl/work/ALib/include/ASpectrum.H
+ASpectralCurve.o: /home/anl/work/ALib/include/ABase.H
+ASpectralCurve.o: /home/anl/work/ALib/include/AVector3.H
+ASpectralCurve.o: /home/anl/work/ALib/include/AColorXYZV.H
+ASpectralCurve.o: /home/anl/work/ALib/include/srgb.H
+ASpectralCurve.o: /home/anl/work/ALib/include/ASpectralCurve.H
+ASunSky.o: /home/anl/work/ALib/include/ASunSky.H
+ASunSky.o: /home/anl/work/ALib/include/ASpectrum.H
+ASunSky.o: /home/anl/work/ALib/include/ABase.H
+ASunSky.o: /home/anl/work/ALib/include/AVector3.H
+ASunSky.o: /home/anl/work/ALib/include/AColorXYZV.H
+ASunSky.o: /home/anl/work/ALib/include/srgb.H
+ASunSky.o: /home/anl/work/ALib/include/ASpectralCurve.H
+AToSpectrum.o: /home/anl/work/ALib/include/ASunSky.H
+AToSpectrum.o: /home/anl/work/ALib/include/ASpectrum.H
+AToSpectrum.o: /home/anl/work/ALib/include/ABase.H
+AToSpectrum.o: /home/anl/work/ALib/include/AVector3.H
+AToSpectrum.o: /home/anl/work/ALib/include/ASpectralCurve.H
+srgb.o: /home/anl/work/ALib/include/srgb.H
+AColorXYZV.o: /home/anl/work/ALib/include/ASunSky.H
+AColorXYZV.o: /home/anl/work/ALib/include/ASpectrum.H
+AColorXYZV.o: /home/anl/work/ALib/include/ABase.H
+AColorXYZV.o: /home/anl/work/ALib/include/AVector3.H
+AColorXYZV.o: /home/anl/work/ALib/include/AColorXYZV.H
+AColorXYZV.o: /home/anl/work/ALib/include/srgb.H
+AColorXYZV.o: /home/anl/work/ALib/include/ASpectralCurve.H ciexyz.h
+ASunConstants.o: /home/anl/work/ALib/include/ASunSky.H
+ASunConstants.o: /home/anl/work/ALib/include/ASpectrum.H
+ASunConstants.o: /home/anl/work/ALib/include/ABase.H
+ASunConstants.o: /home/anl/work/ALib/include/AVector3.H
+ASunConstants.o: /home/anl/work/ALib/include/AColorXYZV.H
+ASunConstants.o: /home/anl/work/ALib/include/srgb.H
+ASunConstants.o: /home/anl/work/ALib/include/ASpectralCurve.H
