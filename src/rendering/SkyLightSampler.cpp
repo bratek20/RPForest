@@ -5,7 +5,7 @@
 using namespace std;
 using namespace glm;
 
-SkyLightSampler::SkyLightSampler(float radius) : radius(radius), helper(1, vec3(0, radius, 0)), sunSky(52, 17, 0, 180, 12, 2) {
+SkyLightSampler::SkyLightSampler(float radius) : radius(radius), helper(1, vec3(0, radius, 0)), sunSky(0, 0, 0, 180, 12, 2) {
 }
 
 LightSampleData SkyLightSampler::sample() {
@@ -30,7 +30,8 @@ glm::vec3 SkyLightSampler::cast(Ray r) {
 vec3 SkyLightSampler::calcColor(vec3 skyPos) {
     swap(skyPos.y, skyPos.z);
     vec3 radiance = sunSky.GetSkyxyYRadiance(skyPos);
-    vec3 ans = toRGB(radiance.z, radiance.x, radiance.y);
+    const static float LUMINANCE_SCALE_FACTOR = 0.0001f;
+    vec3 ans = toRGB(LUMINANCE_SCALE_FACTOR * radiance.z, radiance.x, radiance.y);
 
     if(isnan(ans.x) || isnan(ans.x) || isnan(ans.x)){
         radiance = sunSky.GetSkyxyYRadiance(skyPos);

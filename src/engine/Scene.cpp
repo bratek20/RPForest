@@ -11,6 +11,7 @@
 #include "Shapes.h"
 #include "Honda.h"
 #include "Ternary.h"
+#include "Family.h"
 
 using namespace std;
 using namespace glm;
@@ -29,7 +30,8 @@ ScenePtr Scene::create(const Config &c) {
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
     //auto res = Ternary().generate();
-    auto res = Honda().generate();
+    //auto res = Honda().generate();
+    auto res = Family().generate();
     for(auto mesh : res.meshes){
         scene->getModel()->addMesh(mesh, false);
     }

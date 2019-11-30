@@ -15,7 +15,7 @@ include_directories(generating)
 include_directories(generating/lsystems)
 include_directories(generating/lsystems/honda)
 include_directories(generating/lsystems/ternary)
-
+include_directories(generating/lsystems/family)
 
 add_executable(${EXE_FILE} ${ALL_SRC})
 

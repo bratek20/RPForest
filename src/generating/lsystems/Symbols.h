@@ -11,5 +11,8 @@
 #include "StartBranch.h"
 #include "Turn.h"
 #include "ForwardConeDraw.h"
+#include "StartPolygon.h"
+#include "EndPolygon.h"
+#include "SaveVertex.h"
 
 #endif

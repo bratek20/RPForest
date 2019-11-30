@@ -11,10 +11,11 @@ class Turtle {
     glm::vec3 left = glm::vec3(-1, 0, 0);
     glm::vec3 up = glm::vec3(0, 0, 1);
 
+    glm::vec3 pos = glm::vec3(0, 0, 0);
     float radius = RADIUS_NOT_SET;
 
    public:
-    glm::vec3 pos = glm::vec3(0, 0, 0);
+
 
     void move(float length);
 
@@ -24,6 +25,8 @@ class Turtle {
     void centerLeft();
     void bend(glm::vec3 T, float e);
 
+    glm::vec3 getPos() const;
+    
     void setRadius(float radius);
     float getRadius(float defaultValue = 1) const;
 

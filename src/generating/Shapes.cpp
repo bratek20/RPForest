@@ -1,5 +1,6 @@
 #include "Shapes.h"
 #include "Utils.h"
+#include "Material.h"
 
 using namespace std;
 using namespace glm;
@@ -15,7 +16,9 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     vertices[3] = Vertex(vec3(hw, 0, hd), Utils::VY);
 
     vector<unsigned int> indices = {0,1,2, 3,2,1}; 
-    return Mesh::New(vertices, indices);
+    static Material mat;
+    mat.diffuse = glm::vec3(165, 42, 42);  
+    return Mesh::New(vertices, indices, mat);
 }
 
 MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {

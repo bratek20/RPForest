@@ -14,9 +14,7 @@ public:
     void process(ProcessContext& pc) override {
         auto mesh = Shapes::genCone(pc.current.getRadius(radius), radius, length); 
         mesh->apply(pc.current.getWorldMat());
-        pc.vertices.push_back(pc.current.pos);
         pc.current.move(length);
-        pc.vertices.push_back(pc.current.pos);
         pc.current.setRadius(radius);
         pc.meshes.push_back(mesh);
     }

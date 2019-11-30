@@ -3,12 +3,13 @@
 
 #include "Turtle.h"
 #include "Mesh.h"
+#include "Polygon.h"
 
 struct ProcessContext {
     Turtle current;
     std::vector<Turtle> stack;
     std::vector<MeshPtr> meshes; 
-    std::vector<glm::vec3> vertices;
+    std::vector<Polygon> polygons;    
 };
 
 #endif

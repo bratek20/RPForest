@@ -46,7 +46,7 @@ void Mesh::draw(Shader& shader) {
     } else if (indices.size() < 3) {
         glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
     } else {
-        glDrawElements(drawLines ? GL_LINES : GL_TRIANGLES, indices.size(),
+        glDrawElements(drawLines ? GL_LINE_STRIP : GL_TRIANGLES, indices.size(),
                        GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);

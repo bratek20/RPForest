@@ -72,6 +72,10 @@ void Turtle::apply(const mat3& mat) {
     up = vec3(mat[0][2], mat[1][2], mat[2][2]);
 }
 
+glm::vec3 Turtle::getPos() const {
+    return pos;
+}
+
 void Turtle::setRadius(float radius) {
     this->radius = radius;
 }

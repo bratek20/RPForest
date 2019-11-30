@@ -107,8 +107,7 @@ ASunSky::ASunSky(AReal lat,
 
     AReal chi = (4.0/9.0 - T / 120.0) * (APi - 2 * thetaS);
     zenith_Y = (4.0453 * T - 4.9710) * tan(chi) - .2155 * T + 2.4192;
-    //zenith_Y *= 1000;  // conversion from kcd/m^2 to cd/m^2
-    zenith_Y *= 0.1;
+    zenith_Y *= 1000;  // conversion from kcd/m^2 to cd/m^2
 
     zenith_x =
 	(+0.00165*theta3 - 0.00374*theta2 + 0.00208*thetaS + 0)          * T2 +

@@ -3,15 +3,17 @@
 bool Input::isKeyPressed[Input::KEY_PRESSED_SIZE];
 std::function<void()> Input::pressedCallback[Input::KEY_PRESSED_SIZE];
 glm::vec2 Input::mouseOffset;
-const float Input::MOUSE_SENSIVITY = 20;
+const float Input::MOUSE_SENSIVITY = 200;
 
 void Input::init(){
     // Ensure we can capture the escape key being pressed below
-	//glfwSetInputMode(Window::getPtr(), GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetInputMode(Window::getPtr(), GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetKeyCallback(Window::getPtr(), onKeyClicked);
     glfwSetCursorPosCallback(Window::getPtr(), onMouseMoved);
     glfwSetMouseButtonCallback(Window::getPtr(), onMouseClicked);
-    //glfwSetInputMode(Window::getPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    #ifdef DISABLE_CURSOR
+    glfwSetInputMode(Window::getPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    #endif
     onKeyPressed(GLFW_KEY_ESCAPE, [](){glfwSetWindowShouldClose(Window::getPtr(), GL_TRUE);});
 }
 
