@@ -14,17 +14,13 @@ public:
     static float PD;
 
     Family();
-
-    int getN() override {
-        return n;
-    }
     
-    static void load1();
-    static void load2();
-    static void load3();
-    static void load4();
-    static void load5();
-    static void load6();
+    static int load1();
+    static int load2();
+    static int load3();
+    static int load4();
+    static int load5();
+    static int load6();
 };
 
 #endif

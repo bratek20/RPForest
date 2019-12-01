@@ -17,7 +17,7 @@ MeshPtr Shapes::genPlane(float width, float depth) {
 
     vector<unsigned int> indices = {0,1,2, 3,2,1}; 
     static Material mat;
-    mat.diffuse = glm::vec3(165, 42, 42);  
+    mat.diffuse = mat.ambient = glm::vec3(0.8, 0.2, 0.2);  
     return Mesh::New(vertices, indices, false, mat);
 }
 

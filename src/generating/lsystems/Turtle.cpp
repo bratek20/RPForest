@@ -88,7 +88,7 @@ float Turtle::getRadius(float defaultValue) const {
 }
 
 void Turtle::debug() {
-    DebugActor::get()->getModel()->clearMeshes();
+    DebugActor::get()->getModel()->clear();
     DebugActor::get()->drawLine(pos, pos + front);
     DebugActor::get()->drawLine(pos, pos + left);
     DebugActor::get()->drawLine(pos, pos + up);

@@ -2,13 +2,13 @@
 #define PROCESS_CONTEXT_H
 
 #include "Turtle.h"
-#include "Mesh.h"
+#include "Model.h"
 #include "Polygon.h"
 
 struct ProcessContext {
     Turtle current;
     std::vector<Turtle> stack;
-    std::vector<MeshPtr> meshes; 
+    ModelPtr model = Model::New(); 
     std::vector<Polygon> polygons;    
 };
 

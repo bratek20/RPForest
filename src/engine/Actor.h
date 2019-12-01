@@ -26,6 +26,8 @@ public:
     void render(const glm::mat4& worldMat);
     void setVisibleStatus(bool isVisible);
 
+    ModelPtr genFlatModel(const glm::mat4& worldMat);
+
     void addChild(ActorPtr child);
     void addChilds(std::vector<ActorPtr> childs);
 
@@ -37,6 +39,7 @@ public:
     void setRotation(glm::vec3 rotation);
 
     void move(glm::vec3 dPos);
+    void scaleBy(float s);
     void rotate(glm::vec3 dRot);
 
     glm::vec3 getLocalPosition() const;
@@ -45,7 +48,7 @@ public:
     glm::vec3 getScale() const;
     glm::vec3 getRotation() const;
     bool isDestroyed() const;
-    
+
     ModelPtr getModel() const;
     glm::mat4 getWorldMat() const;
     glm::mat4 getLocalMat() const;

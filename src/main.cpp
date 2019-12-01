@@ -33,23 +33,13 @@ void debugRay() {
 }
 
 void debugRot(){
-	scene->getModel()->clearMeshes();
+	scene->getModel()->clear();
 	auto mesh = Shapes::genCone(0.02, 0.01, 0.5);
 	mesh->apply(t.getWorldMat());
-	scene->getModel()->addMesh(mesh, true);
+	scene->getModel()->add(mesh);
 }
 
 int main(int argc, char* argv[]){
-	// glm::mat3x2 d = {1,2,3,4,5,6};
-	// glm::mat2x3 b = {2,3,4,5,6,7};
-	// auto a = b*d;
-	// for(int i=0;i<3;i++){
-	// 	for(int j=0;j<3;j++){
-	// 		cout << a[j][i] << " ";
-	// 	}
-	// 	cout << "\n";
-	// }
-	// return 0;
 	string configPath = argc >= 2 ? argv[1] : "config.rtc";
 	if(!c.load(configPath)){
 		cerr << "Loading config failed!" << endl;

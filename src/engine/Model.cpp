@@ -4,22 +4,32 @@
 using namespace std;
 using namespace glm;
 
-Model::Model(const Config& c) {
-    for(auto& lc : c.lights) {
-        meshes.push_back(lc.createMesh());
-    }
-    createTriangles();
+Model::Model(MeshPtr mesh) {
+    add(mesh);
 }
 
-void Model::addMesh(MeshPtr mesh, bool rebuild) {
+void Model::add(MeshPtr mesh) {
     meshes.push_back(mesh);
-    if(rebuild) {
-        createTriangles();
+    dirty = true;
+}
+
+void Model::add(ModelPtr model){
+    for(auto& mesh : model->getMeshes()){
+        add(mesh);
     }
 }
 
-void Model::clearMeshes() {
+void Model::clear() {
     meshes.clear();
+    triangles.clear();
+}
+
+ModelPtr Model::copy() {
+    ModelPtr myCopy = Model::New();
+    for(auto& mesh : meshes) {
+        myCopy->add(mesh->copy());
+    }
+    return myCopy;
 }
 
 void Model::apply(const mat4& m) {
@@ -46,7 +56,13 @@ void Model::createTriangles() {
     }
 }
 
-const vector<TrianglePtr> &Model::getTriangles() const { return triangles; }
+const vector<TrianglePtr> &Model::getTriangles() { 
+    if(dirty){
+        createTriangles();
+        dirty = false;
+    }
+    return triangles; 
+}
 const vector<LightConfig> &Model::getLights() const { return lights; }
 const vector<MeshPtr> &Model::getMeshes() const { return meshes; }
 

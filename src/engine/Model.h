@@ -23,18 +23,23 @@ class Model : public Ptr<Model, ModelPtr> {
     std::vector<MeshPtr> meshes;
     std::vector<TrianglePtr> triangles;
     std::vector<LightConfig> lights;
+    bool dirty = false;
 
   public:
     Model() = default;
-    Model(const Config &c);
+    Model(MeshPtr mesh);
 
-    void addMesh(MeshPtr mesh, bool rebuild);
-    void clearMeshes();
+    void add(MeshPtr mesh);
+    void add(ModelPtr model);
+    void clear();
 
+    ModelPtr copy();
+    
     void apply(const glm::mat4& m);
     
     void draw(Shader shader);
-    const std::vector<TrianglePtr> &getTriangles() const;
+    
+    const std::vector<TrianglePtr> &getTriangles();
     const std::vector<LightConfig> &getLights() const;
     const std::vector<MeshPtr> &getMeshes() const;
 

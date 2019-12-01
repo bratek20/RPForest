@@ -14,15 +14,11 @@ public:
     static float wr;
 
     Honda();
-
-    int getN() override {
-        return n;
-    }
     
-    static void load1();
-    static void load2();
-    static void load3();
-    static void load4();
+    static int load1();
+    static int load2();
+    static int load3();
+    static int load4();
 };
 
 #endif

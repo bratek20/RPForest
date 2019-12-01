@@ -22,24 +22,26 @@ ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
     float worldSize = 100;
     DebugActorPtr debugActor = DebugActor::create();
-    ScenePtr scene = ScenePtr(new Scene(Model::New(c), worldSize));
+    ScenePtr scene = ScenePtr(new Scene(Model::New(), worldSize));
     scene->addChild(debugActor);
 
     scene->camera = Camera::create(c.camera);
     scene->addChild(scene->camera);
     //scene->camera->addChild(Light::create());
     Light::loadLights(scene->getModel()->getTriangles());
-    //auto res = Ternary().generate();
-    //auto res = Honda().generate();
-    auto res = Family().generate();
-    for(auto mesh : res.meshes){
-        mesh->apply(Utils::getScaleMat(0.1f));
-        scene->getModel()->addMesh(mesh, false);
-    }
-    //scene->getModel()->addMesh(Shapes::genCone(2, 1, 5), true);
-    scene->getModel()->addMesh(Shapes::genPlane(worldSize, worldSize), true);
-    //scene->getModel()->addMesh(Mesh::New(res.vertices), true);
-    scene->getModel()->debug();
+    
+    auto gen = Honda();
+    //auto res = Family().getRandom();
+    //scene->getModel()->add(res);
+    //scene->getModel()->add(Shapes::genCone(2, 1, 5), true);
+    scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
+    ActorPtr t1 = Actor::create(gen.getRandom());
+    ActorPtr t2 = Actor::create(gen.getRandom());
+    t2->move({5, 0, 0});
+    t2->scaleBy(0.3f);
+    scene->addChilds({t1, t2});
+    //scene->getModel()->add(Mesh::New(res.vertices), true);
+    //scene->getModel()->debug();
     Timer::stop();
     return scene;
 }
@@ -62,8 +64,9 @@ void Scene::takePhotoPathTracing(const Config &c) {
 
     vec3 origin = camera->getWorldPosition();
     cout << "Camera position: " << origin << endl;
-    auto &triangles = getModel()->getTriangles();
-    auto &meshes = getModel()->getMeshes();
+    auto model = genFlatModel(mat4(1.0f));
+    auto &triangles = model->getTriangles();
+    auto &meshes = model->getMeshes();
     cout << "Triangles number: " << triangles.size() << endl;
     cout << "Resolution: " << c.xRes << " x " << c.yRes << endl;
     cout << "Samples per pixel: " << c.samplesNum << endl;
@@ -115,7 +118,7 @@ void Scene::takePhotoPathTracing(const Config &c) {
 
 void Scene::debugRay(const Config& c) {
     PathTracer::drawLines = true;
-    DebugActor::get()->getModel()->clearMeshes();
+    DebugActor::get()->getModel()->clear();
     Ray::setEpsilon(c.rayEpsilon);
 
     auto &meshes = getModel()->getMeshes();

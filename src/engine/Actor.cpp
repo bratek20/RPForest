@@ -47,6 +47,21 @@ void Actor::render(const glm::mat4& worldMat){
     }
 }
 
+ModelPtr Actor::genFlatModel(const glm::mat4& worldMat) {
+    auto myWorldMat = worldMat * getLocalMat();
+    ModelPtr flatModel = Model::New();
+    if(model != nullptr){
+        flatModel->add(model->copy());
+        flatModel->apply(myWorldMat);
+    }
+
+    for(auto& c : childs){
+        flatModel->add(c->genFlatModel(myWorldMat));
+    }
+
+    return flatModel;
+}
+
 void Actor::setVisibleStatus(bool isVisible){
     this->isVisible = isVisible;
 }
@@ -84,6 +99,10 @@ void Actor::setRotation(glm::vec3 rotation){
 
 void Actor::move(glm::vec3 dPos){
     position += dPos;
+}
+
+void Actor::scaleBy(float s) {
+    this->scale *= s;
 }
 
 void Actor::rotate(glm::vec3 dRot){

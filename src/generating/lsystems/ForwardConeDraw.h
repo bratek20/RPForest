@@ -16,7 +16,7 @@ public:
         mesh->apply(pc.current.getWorldMat());
         pc.current.move(length);
         pc.current.setRadius(radius);
-        pc.meshes.push_back(mesh);
+        pc.model->add(mesh);
     }
 
     std::string toString() override {

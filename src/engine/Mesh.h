@@ -28,6 +28,8 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
     void apply(const glm::mat4& posM, const glm::mat3& normM);
     void draw(Shader& shader);
 
+    MeshPtr copy() const;
+
     std::vector<Vertex>& getVertices();
     std::vector<unsigned int>& getIndices();
     const std::vector<Triangle>& getTriangles() const;

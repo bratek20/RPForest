@@ -4,6 +4,10 @@
 
 std::default_random_engine Random::generator;
 
+int Random::range(int b, int e) {
+    return static_cast<int>(floor(uniform(b, e)));
+}
+
 float Random::uniform(float a, float b){
     std::uniform_real_distribution<double> distribution(a, b);
     return distribution(generator);

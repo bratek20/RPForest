@@ -63,6 +63,10 @@ void Mesh::draw(Shader& shader) {
     glActiveTexture(GL_TEXTURE0);
 }
 
+MeshPtr Mesh::copy() const {
+    return Mesh::New(vertices, indices, false, material);
+}
+
 void Mesh::setup(bool genNormals) {
     if (indices.size() % 3 == 0) {
         setupTriangles(genNormals);

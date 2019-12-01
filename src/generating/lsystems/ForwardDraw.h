@@ -14,7 +14,7 @@ public:
         auto mesh = Shapes::genCone(pc.current.getRadius(), pc.current.getRadius(), length); 
         mesh->apply(pc.current.getWorldMat());
         pc.current.move(length);
-        pc.meshes.push_back(mesh);
+        pc.model->add(mesh);
     }
 
     std::string toString() override {

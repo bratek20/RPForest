@@ -2,19 +2,24 @@
 #define GENERATOR_H
 
 #include "Symbol.h"
+#include "Model.h"
 
 #include <memory>
 #include <vector>
 
 class Generator {
-    SymbolPtr axiom;
+    std::vector<ModelPtr> models;
 
 public:
-    Generator(SymbolPtr axiom);
+    using ParamLoader = std::function<int()>;
 
-    virtual int getN() = 0;
-    
-    ProcessContext generate();
+    Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders);
+
+    ModelPtr get(int n) const;
+    ModelPtr getRandom() const;
+
+private:
+    ModelPtr generate(SymbolPtr axiom, ParamLoader loader);
 };
 
 #endif
