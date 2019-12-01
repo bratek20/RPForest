@@ -11,7 +11,6 @@
 #include <functional>
 
 #include "Program3D.h"
-#include "Shape.h"
 
 class Assets {
     static const std::vector<std::string> POSSIBLE_PATH_PREFIXES;

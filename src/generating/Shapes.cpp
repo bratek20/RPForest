@@ -18,19 +18,19 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     vector<unsigned int> indices = {0,1,2, 3,2,1}; 
     static Material mat;
     mat.diffuse = glm::vec3(165, 42, 42);  
-    return Mesh::New(vertices, indices, mat);
+    return Mesh::New(vertices, indices, false, mat);
 }
 
 MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
-    static const int POINTS_NUM = 8;
+    static const int POINTS_NUM = 4;
     auto down = genCirclePoints(POINTS_NUM, downRadius, 0);
     auto up = genCirclePoints(POINTS_NUM, upRadius, height);
 
     vec3 center = vec3(0, height/2, 0);
     vector<Vertex> vertices(POINTS_NUM * 2);
     for (int i = 0; i < POINTS_NUM; i++) {
-        vertices[i] = Vertex(down[i], normalize(down[i] - center));
-        vertices[i + POINTS_NUM] = Vertex(up[i], normalize(up[i] - center));
+        vertices[i] = Vertex(down[i], normalize(vec3(down[i].x, 0, down[i].z)));
+        vertices[i + POINTS_NUM] = Vertex(up[i], normalize(vec3(up[i].x, 0, up[i].z)));
     }
 
     vector<unsigned int> indices;
@@ -59,7 +59,7 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
                                          Color(0.0f, 0.0f, 0.0f),
                                          glm::vec3(0, 0, 0),
                                          10);
-    return Mesh::New(vertices, indices, mat);
+    return Mesh::New(vertices, indices, false, mat);
 }
 
 vector<vec3> Shapes::genCirclePoints(int pointsNum, float radius, float y) {

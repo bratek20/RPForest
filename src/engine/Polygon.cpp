@@ -21,11 +21,6 @@ MeshPtr Polygon::genMesh() {
             indices.push_back(i-1);
             indices.push_back(i);
         }
-        else{
-            cout << "skipping" << endl;
-        }
-
     }
-    cout << "Poses size: " << poses.size() << endl;
-    return Mesh::New(vertices, indices);
+    return Mesh::New(vertices, indices, true);
 }

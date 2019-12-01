@@ -31,6 +31,8 @@ class Model : public Ptr<Model, ModelPtr> {
     void addMesh(MeshPtr mesh, bool rebuild);
     void clearMeshes();
 
+    void apply(const glm::mat4& m);
+    
     void draw(Shader shader);
     const std::vector<TrianglePtr> &getTriangles() const;
     const std::vector<LightConfig> &getLights() const;

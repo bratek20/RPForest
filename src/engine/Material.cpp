@@ -14,6 +14,11 @@ Material Material::DEFAULT_LIGHT = Material(Color(0.0f, 0.0f, 0.0f),
                                          glm::vec3(17, 12, 4),
                                          10);
 
+Material Material::NORMAL = Material(Color(1.0f, 0.0f, 0.0f),
+                                         Color(1.0f, 0.0f, 0.0f),
+                                         Color(0.0f, 0.0f, 0.0f),
+                                         glm::vec3(17, 12, 4),
+                                         10);
 Material::Material(Color ambient,
                    Color diffuse,
                    Color specular,

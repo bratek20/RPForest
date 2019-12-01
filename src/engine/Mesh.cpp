@@ -5,10 +5,14 @@
 #include "Utils.h"
 
 #include <iostream>
+#include <limits>
 
 using namespace std;
+using namespace glm;
 
-Mesh::Mesh(std::vector<glm::vec3> vertices) {
+const unsigned int Mesh::VAO_NOT_SET = numeric_limits<unsigned int>::max();
+
+Mesh::Mesh(vector<vec3> vertices) {
     drawLines = true;
     for (auto& v : vertices) {
         this->vertices.push_back(Vertex(v));
@@ -17,23 +21,27 @@ Mesh::Mesh(std::vector<glm::vec3> vertices) {
         indices.push_back(i);
     }
     material = Material::DEFAULT;
-    setupMesh();
+    setup(false);
 }
 
 Mesh::Mesh(vector<Vertex> vertices,
            vector<unsigned int> indices,
+           bool genNormals,
            Material material)
     : vertices(move(vertices)), indices(move(indices)), material(material) {
-
-    setupMesh();
+    setup(genNormals);
 }
 
-void Mesh::apply(const glm::mat4& m) {
-    for(auto& v : vertices) {
-        v.apply(m);
+void Mesh::apply(const mat4& m) {
+    apply(m, Utils::calcNormM(m));
+}
+
+void Mesh::apply(const glm::mat4& posM, const glm::mat3& normM) {
+    for (auto& v : vertices) {
+        v.apply(posM, normM);
     }
 
-    setupMesh();
+    setupDraw();
 }
 
 void Mesh::draw(Shader& shader) {
@@ -54,31 +62,56 @@ void Mesh::draw(Shader& shader) {
     // always good practice to set everything back to defaults once configured.
     glActiveTexture(GL_TEXTURE0);
 }
-void Mesh::setupMesh() {
-    triangles.clear();
+
+void Mesh::setup(bool genNormals) {
     if (indices.size() % 3 == 0) {
-        for (unsigned i = 0; i < indices.size(); i += 3) {
-            triangles.emplace_back(vertices[indices[i]],
-                                   vertices[indices[i + 1]],
-                                   vertices[indices[i + 2]], material);
+        setupTriangles(genNormals);
+    }
+    setupDraw();
+}
+
+void Mesh::setupTriangles(bool genNormals) {
+    triangles.clear();
+    vector<vec3> normals;
+    vector<int> count;
+    if (genNormals) {
+        normals.resize(vertices.size());
+        count.resize(vertices.size());
+    }
+
+    for (unsigned i = 0; i < indices.size(); i += 3) {
+        triangles.emplace_back(vertices[indices[i]], vertices[indices[i + 1]],
+                               vertices[indices[i + 2]], material);
+        if (genNormals) {
+            vec3 normal = triangles.back().calcBaseNormal();
+            for (int k = 0; k <= 2; k++) {
+                normals[indices[i + k]] += normal;
+                count[indices[i + k]]++;
+            }
         }
     }
 
+    if(genNormals){
+        for(int i=0;i<vertices.size();i++){
+            vertices[i].normal = normalize(normals[i] * (1.0f / count[i]));
+        }
+    }
+}
+
+void Mesh::setupDraw() {
     if (!Globals::debug) {
         return;
     }
     // create buffers/arrays
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    if(VAO == VAO_NOT_SET) {
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+    }
 
     glBindVertexArray(VAO);
     // load data into vertex buffers
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // A great thing about structs is that their memory layout is sequential for
-    // all its items. The effect is that we can simply pass a pointer to the
-    // struct and it translates perfectly to a glm::vec3/2 array which again
-    // translates to 3/2 floats which translates to a byte array.
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex),
                  &vertices[0], GL_STATIC_DRAW);
 
@@ -95,27 +128,14 @@ void Mesh::setupMesh() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
                           (void*)offsetof(Vertex, normal));
 
-    // vertex texture coords
-    // glEnableVertexAttribArray(2);
-    // glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-    //                       (void *)offsetof(Vertex, uv));
-    // // vertex tangent
-    // glEnableVertexAttribArray(3);
-    // glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-    // (void*)offsetof(Vertex, tangent));
-    // // vertex bitangent
-    // glEnableVertexAttribArray(4);
-    // glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-    // (void*)offsetof(Vertex, bitangent));
-
     glBindVertexArray(0);
 }
 
-std::vector<Vertex>& Mesh::getVertices() {
+vector<Vertex>& Mesh::getVertices() {
     return vertices;
 }
 
-std::vector<unsigned int>& Mesh::getIndices() {
+vector<unsigned int>& Mesh::getIndices() {
     return indices;
 }
 
@@ -128,7 +148,7 @@ TrianglePtr Mesh::getTriangle(int idx) const {
 }
 
 void Mesh::debug() {
-    for(auto& v: vertices) {
+    for (auto& v : vertices) {
         v.debug();
     }
 }

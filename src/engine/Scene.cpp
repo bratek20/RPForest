@@ -33,12 +33,13 @@ ScenePtr Scene::create(const Config &c) {
     //auto res = Honda().generate();
     auto res = Family().generate();
     for(auto mesh : res.meshes){
+        mesh->apply(Utils::getScaleMat(0.1f));
         scene->getModel()->addMesh(mesh, false);
     }
     //scene->getModel()->addMesh(Shapes::genCone(2, 1, 5), true);
     scene->getModel()->addMesh(Shapes::genPlane(worldSize, worldSize), true);
     //scene->getModel()->addMesh(Mesh::New(res.vertices), true);
-    //scene->getModel()->debug();
+    scene->getModel()->debug();
     Timer::stop();
     return scene;
 }

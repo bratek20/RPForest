@@ -1,6 +1,8 @@
 #include "Utils.h"
 
 #include <limits>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace std;
 using namespace glm;
@@ -41,6 +43,10 @@ vec2 Utils::toVec2(const vec3& v, Axis toOmit){
     return ans;
 }
 
+mat4 Utils::getScaleMat(float scale) {
+    return glm::scale(glm::mat4(1.0f), vec3(scale, scale, scale));
+}
+
 mat4 Utils::getRotateGlobalMat(vec3 globalY) {
     vec3 right;
     if(abs(globalY.x) < abs(globalY.y)){
@@ -60,6 +66,10 @@ mat4 Utils::getRotateGlobalMat(vec3 globalY) {
 
 vec3 Utils::rotateGlobal(vec3 vec, vec3 globalY){
     return static_cast<vec3>(vec4(vec.x, vec.y, vec.z, 0) * getRotateGlobalMat(globalY));
+}
+
+glm::mat3 Utils::calcNormM(glm::mat4 posM) {
+    return transpose(inverse(posM));
 }
 
 ostream& operator<<(ostream& out, const vec3& v){

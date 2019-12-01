@@ -12,7 +12,8 @@
 struct Material {
     static Material DEFAULT;
     static Material DEFAULT_LIGHT;
-    
+    static Material NORMAL;
+
     unsigned int id;
     Color ambient;
     Color diffuse;

@@ -16,9 +16,9 @@ Vertex::Vertex(glm::vec3 position) : Vertex(position, NORMAL_NOT_SET){}
 Vertex::Vertex(glm::vec3 position, glm::vec3 normal)
     : position(position), normal(normal) {}
 
-void Vertex::apply(const glm::mat4& m) {
-    position = static_cast<glm::vec3>(m * glm::vec4(position, 1));
-    normal = static_cast<glm::vec3>(m * glm::vec4(normal, 0));
+void Vertex::apply(const glm::mat4& posM, const glm::mat3& normM) {
+    position = static_cast<glm::vec3>(posM * glm::vec4(position, 1));
+    normal = normalize(normM * normal);
 }
 
 bool Vertex::hasNormal() const {

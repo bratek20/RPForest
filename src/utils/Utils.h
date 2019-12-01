@@ -34,8 +34,12 @@ public:
 
     static glm::vec2 toVec2(const glm::vec3& v, Axis toOmit);
 
+    static glm::mat4 getScaleMat(float scale);
+
     static glm::mat4 getRotateGlobalMat(glm::vec3 globalY);
     static glm::vec3 rotateGlobal(glm::vec3 vec, glm::vec3 globalY);
+
+    static glm::mat3 calcNormM(glm::mat4 posM);
 };
 
 #endif

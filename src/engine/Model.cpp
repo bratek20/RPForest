@@ -2,6 +2,7 @@
 #include "Assets.h"
 
 using namespace std;
+using namespace glm;
 
 Model::Model(const Config& c) {
     for(auto& lc : c.lights) {
@@ -21,6 +22,12 @@ void Model::clearMeshes() {
     meshes.clear();
 }
 
+void Model::apply(const mat4& m) {
+    mat3 normM = Utils::calcNormM(m);
+    for(auto& mesh : meshes) {
+        mesh->apply(m, normM);
+    }
+}
 
 // draws the model, and thus all its meshes
 void Model::draw(Shader shader) {

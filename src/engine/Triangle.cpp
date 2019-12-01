@@ -42,19 +42,15 @@ glm::vec3 Triangle::getEdge13() const{
 }
 
 glm::vec3 Triangle::getNormal(glm::vec2 baryPos) const {
-    if (v1.hasNormal() && v2.hasNormal() && v3.hasNormal()) {
-        return (1 - baryPos.x - baryPos.y) * v1.normal + baryPos.x * v2.normal +
-               baryPos.y * v3.normal;
-    } else {
-        return getNormal();
-    }
+    return (1 - baryPos.x - baryPos.y) * v1.normal + baryPos.x * v2.normal +
+            baryPos.y * v3.normal;
 }
 
 glm::vec3 Triangle::getNormal(glm::vec3 pos) const {
-    return getNormal(); // TODO_BR implement it properly
+    return calcBaseNormal(); // TODO_BR implement it properly
 }
 
-glm::vec3 Triangle::getNormal() const {
+glm::vec3 Triangle::calcBaseNormal() const {
     return glm::normalize(
         glm::cross(v2.position - v1.position, v3.position - v1.position));
 }

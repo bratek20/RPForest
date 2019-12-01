@@ -9,13 +9,12 @@
 
 struct Triangle {
     int id;
-    Vertex v1;
-    Vertex v2;
-    Vertex v3;
+    const Vertex& v1;
+    const Vertex& v2;
+    const Vertex& v3;
     Material mat;
     Bounds bounds;
 
-    Triangle() = default;
     Triangle(Vertex& v1, Vertex& v2, Vertex& v3);
     Triangle(Vertex& v1, Vertex& v2, Vertex& v3, const Material& mat);
 
@@ -26,7 +25,7 @@ struct Triangle {
     glm::vec3 getEdge13() const;
     glm::vec3 getNormal(glm::vec2 baryPos) const;
     glm::vec3 getNormal(glm::vec3 pos) const;
-    glm::vec3 getNormal() const;
+    glm::vec3 calcBaseNormal() const;
     std::vector<glm::vec3> getPositions() const;
     Bounds getBounds() const;
     glm::vec3 getCenter() const;
