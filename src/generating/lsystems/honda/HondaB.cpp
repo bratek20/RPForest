@@ -11,6 +11,7 @@ std::vector<SymbolPtr> HondaB::produce() {
         S<CenterLeft>(),
         S<HondaC>(l * Honda::r2, w * Honda::wr),
         S<EndBranch>(),
-        S<HondaC>(l*Honda::r1, w*Honda::wr)
+        S<HondaC>(l*Honda::r1, w*Honda::wr),
+        S<Leaf>()
     };
 }

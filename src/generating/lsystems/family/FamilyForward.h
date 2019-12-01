@@ -3,11 +3,11 @@
 
 #include "Symbols.h"
 
-class FamilyForward : public ForwardDraw {
+class FamilyForward : public ForwardMove {
     float s;
     float r;
 public:
-    FamilyForward(float s, float r) : ForwardDraw(s), s(s), r(r) {}
+    FamilyForward(float s, float r) : ForwardMove(s), s(s), r(r) {}
 
     std::vector<SymbolPtr> produce() override;
 

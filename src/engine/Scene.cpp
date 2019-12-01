@@ -35,11 +35,12 @@ ScenePtr Scene::create(const Config &c) {
     //scene->getModel()->add(res);
     //scene->getModel()->add(Shapes::genCone(2, 1, 5), true);
     scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
-    ActorPtr t1 = Actor::create(gen.getRandom());
-    ActorPtr t2 = Actor::create(gen.getRandom());
-    t2->move({5, 0, 0});
-    t2->scaleBy(0.3f);
-    scene->addChilds({t1, t2});
+    for(int i=0;i<4;i++){
+        ActorPtr t = Actor::create(gen.get(i));
+        t->move({5*i, 0, 0});
+        scene->addChild(t);
+    }
+
     //scene->getModel()->add(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();
