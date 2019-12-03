@@ -5,7 +5,7 @@
 using namespace std;
 
 MeshPtr LightConfig::createMesh() const {
-    return Mesh::New(vector<Vertex>{v1, v2, v3}, vector<unsigned int>{0, 1, 2}, true, Material::DEFAULT_LIGHT);
+    return Mesh::New(vector<Vertex>{v1, v2, v3}, vector<unsigned int>{0, 1, 2}, true, Materials::DEFAULT_LIGHT);
 }
 
 bool Config::load(const string &path) {

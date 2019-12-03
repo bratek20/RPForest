@@ -3,10 +3,10 @@
 
 #include "Triangle.h"
 
-struct LightSampleData{
+struct LightSampleData {
     glm::vec3 point;
     glm::vec3 normal;
-    Material material;
+    glm::vec3 color;
     float probability;
 
     TrianglePtr triangle = nullptr;

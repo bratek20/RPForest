@@ -2,6 +2,7 @@
 #define SHADER_H
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 #include <string>
 
 #include "Color.h"
@@ -18,8 +19,9 @@ public:
     void use();    
     GLuint getId() const;
     
-    void applyFloat(const char* name, float value);
-    void applyColor(const char* name, const Color& c);
+    void applyFloat(const char* name, float value) const;
+    void applyColor(const char* name, const Color& c) const;
+    void applyColor(const char* name, const glm::vec3& c) const;
 };
 
 #endif

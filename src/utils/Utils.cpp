@@ -72,6 +72,10 @@ glm::mat3 Utils::calcNormM(glm::mat4 posM) {
     return transpose(inverse(posM));
 }
 
+float Utils::average(glm::vec3 v) {
+    return (v.x + v.y + v.z) / 3;
+}
+
 ostream& operator<<(ostream& out, const vec3& v){
     out << "{" <<v.x << "," << v.y << "," << v.z << "}";
     return out;

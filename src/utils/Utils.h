@@ -40,6 +40,8 @@ public:
     static glm::vec3 rotateGlobal(glm::vec3 vec, glm::vec3 globalY);
 
     static glm::mat3 calcNormM(glm::mat4 posM);
+
+    static float average(glm::vec3 v);
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include "Ptr.h"
 #include "Shader.h"
 #include "Triangle.h"
+#include "Materials.h"
 
 class Mesh;
 using MeshPtr = std::shared_ptr<Mesh>;
@@ -14,7 +15,7 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Triangle> triangles;
-    Material material;
+    const Material& material;
     bool drawLines = false;
 
    public:
@@ -22,7 +23,7 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
     Mesh(std::vector<Vertex> vertices,
          std::vector<unsigned int> indices,
          bool genNormals,
-         Material material = Material::DEFAULT);
+         const Material& material = Materials::DEFAULT);
 
     void apply(const glm::mat4& m);
     void apply(const glm::mat4& posM, const glm::mat3& normM);

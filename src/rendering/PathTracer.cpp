@@ -22,14 +22,14 @@ PathTracer::CastData PathTracer::cast(Ray r, int k, AccStruct &accStruct, SkyLig
         return skyCast;
     }
     
-    bool isBounced = Random::tossCoin(hit.triangle->mat.diffuse.getAverage());
+    bool isBounced = Random::tossCoin(Utils::average(hit.triangle->mat.calcDiffuse()));
     if(!isBounced){
         return CastData();
     }
     
     CastData ans;
     ans.hit = true;
-    ans.emittance = hit.triangle->mat.emissive 
+    ans.emittance = hit.triangle->mat.calcEmissive() 
     + calcDirectLight(hit, accStruct, lightSampler) 
     + calcIndirectLight(hit, k, accStruct, lightSampler);
     return ans;
@@ -45,14 +45,14 @@ vec3 PathTracer::calcDirectLight(HitData& hit, AccStruct &accStruct, SkyLightSam
         return vec3(0);
     }
 
-    vec3 BRDF = hit.triangle->mat.diffuse / M_PI;
+    vec3 BRDF = hit.triangle->mat.calcDiffuse() / Utils::PI;
 
     float cosX = clamp(dot(rayDir, hit.triangle->getNormal(hit.baryPos)), 0.0f, 1.0f);
     float cosY = clamp(dot(-rayDir, lightSample.normal), 0.0f, 1.0f);
     float dist = distance(lightPoint, hit.pos);
     float probability = lightSample.probability;
     float G = cosX * cosY / (dist * dist);
-    auto ans = lightSample.material.emissive * BRDF * G / probability;
+    auto ans = lightSample.color * BRDF * G / probability;
     return ans;
 }
 
@@ -65,7 +65,7 @@ vec3 PathTracer::calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, Sk
     CastData incoming = cast(newR, k-1, accStruct, lightSampler);
     HitData incomingHit = accStruct.cast(newR);
     bool hitLight = incomingHit.intersects() && incomingHit.triangle->mat.isLightSource(); 
-    auto ans = hitLight ? vec3(0) : hitMat.diffuse.asVec3() * incoming.emittance;
+    auto ans = hitLight ? vec3(0) : hitMat.calcDiffuse() * incoming.emittance;
     
     if(drawLines) {
         DebugActor::get()->drawLine(hit.pos, incomingHit.pos);

@@ -12,7 +12,7 @@ using namespace glm;
 
 const unsigned int Mesh::VAO_NOT_SET = numeric_limits<unsigned int>::max();
 
-Mesh::Mesh(vector<vec3> vertices) {
+Mesh::Mesh(vector<vec3> vertices) : material(Materials::DEFAULT) {
     drawLines = true;
     for (auto& v : vertices) {
         this->vertices.push_back(Vertex(v));
@@ -20,14 +20,13 @@ Mesh::Mesh(vector<vec3> vertices) {
     for (int i = 0; i < vertices.size(); i++) {
         indices.push_back(i);
     }
-    material = Material::DEFAULT;
     setup(false);
 }
 
 Mesh::Mesh(vector<Vertex> vertices,
            vector<unsigned int> indices,
            bool genNormals,
-           Material material)
+           const Material& material)
     : vertices(move(vertices)), indices(move(indices)), material(material) {
     setup(genNormals);
 }

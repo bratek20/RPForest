@@ -1,20 +1,12 @@
 
 
 #include "Triangle.h"
+#include "Materials.h"
 
 using namespace std;
 
-Triangle::Triangle(Vertex& v1, Vertex& v2, Vertex& v3)    
-    : v1(v1), v2(v2), v3(v3) {
-    static int nextId = 1;
-    id = nextId++;
-    auto poses = getPositions();
-    bounds = Bounds(poses);
-}
-
 Triangle::Triangle(Vertex &v1, Vertex &v2, Vertex &v3, const Material &mat)
-    : Triangle(v1, v2, v3) {
-    this->mat = mat;
+    : v1(v1), v2(v2), v3(v3), mat(mat) {
 }
 
 float Triangle::calcArea() const {
@@ -57,10 +49,6 @@ glm::vec3 Triangle::calcBaseNormal() const {
 
 vector<glm::vec3> Triangle::getPositions() const {
     return {v1.position, v2.position, v3.position};
-}
-
-Bounds Triangle::getBounds() const {
-    return bounds;
 }
 
 glm::vec3 Triangle::getCenter() const {

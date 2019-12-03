@@ -1,7 +1,7 @@
 # Comment
 NAME test.exr
 K 5
-RES 1920 1080
+RES 800 600
 POS 0 6 12
 LOOK_AT 0 3 0
 UP 0 1 0
@@ -11,4 +11,4 @@ BG 0 0 216
 CV 10
 DM 1
 RE 0.001
-SN 256
+SN 16

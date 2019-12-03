@@ -15,8 +15,7 @@ LightSampleData SkyLightSampler::sample() {
     ans.point = Random::vectorOnHemisphereCos() * radius;
     ans.normal = glm::normalize(-ans.point);
     ans.probability = 1 /  area;
-    ans.material = Material::DEFAULT_LIGHT;
-    ans.material.emissive = ans.material.diffuse = calcColor(ans.point);
+    ans.color = calcColor(ans.point);
     return ans;
 }
 

@@ -8,14 +8,11 @@
 #include "Bounds.h"
 
 struct Triangle {
-    int id;
     const Vertex& v1;
     const Vertex& v2;
     const Vertex& v3;
-    Material mat;
-    Bounds bounds;
+    const Material& mat;
 
-    Triangle(Vertex& v1, Vertex& v2, Vertex& v3);
     Triangle(Vertex& v1, Vertex& v2, Vertex& v3, const Material& mat);
 
     float calcArea() const;
@@ -27,7 +24,6 @@ struct Triangle {
     glm::vec3 getNormal(glm::vec3 pos) const;
     glm::vec3 calcBaseNormal() const;
     std::vector<glm::vec3> getPositions() const;
-    Bounds getBounds() const;
     glm::vec3 getCenter() const;
 };
 using TrianglePtr = const Triangle*;

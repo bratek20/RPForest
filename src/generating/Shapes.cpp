@@ -16,9 +16,7 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     vertices[3] = Vertex(vec3(hw, 0, hd), Utils::VY);
 
     vector<unsigned int> indices = {0,1,2, 3,2,1}; 
-    static Material mat;
-    mat.diffuse = mat.ambient = glm::vec3(0.8, 0.2, 0.2);  
-    return Mesh::New(vertices, indices, false, mat);
+    return Mesh::New(vertices, indices, false, Materials::GROUND);
 }
 
 MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
@@ -54,12 +52,7 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
         indices.push_back(POINTS_NUM + next(i));
         indices.push_back(POINTS_NUM + i);
     }
-    Material mat = Material(Color(0.5f, 0.25f, 0.0f),
-                                         Color(0.5f, 0.25f, 0.0f),
-                                         Color(0.0f, 0.0f, 0.0f),
-                                         glm::vec3(0, 0, 0),
-                                         10);
-    return Mesh::New(vertices, indices, false, mat);
+    return Mesh::New(vertices, indices, false, Materials::BARK);
 }
 
 vector<vec3> Shapes::genCirclePoints(int pointsNum, float radius, float y) {

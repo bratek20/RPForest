@@ -3,7 +3,7 @@
 bool Input::isKeyPressed[Input::KEY_PRESSED_SIZE];
 std::function<void()> Input::pressedCallback[Input::KEY_PRESSED_SIZE];
 glm::vec2 Input::mouseOffset;
-const float Input::MOUSE_SENSIVITY = 200;
+const float Input::MOUSE_SENSIVITY = 20;
 
 void Input::init(){
     // Ensure we can capture the escape key being pressed below

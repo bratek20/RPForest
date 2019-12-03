@@ -9,6 +9,7 @@ file(GLOB_RECURSE ALL_SRC
 
 include_directories(utils)
 include_directories(engine)
+include_directories(engine/materials)
 include_directories(rendering)
 include_directories(rendering/ASky)
 include_directories(generating)

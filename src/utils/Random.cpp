@@ -2,6 +2,8 @@
 #include "Mesh.h"
 #include "Utils.h"
 
+#include <glm/gtc/noise.hpp>
+
 std::default_random_engine Random::generator;
 
 int Random::range(int b, int e) {
@@ -45,4 +47,8 @@ glm::vec3 Random::pointInTriangle(TrianglePtr triangle){
     } while(a + b > 1);
 
     return triangle->v1.position * a + triangle->v2.position * b  + triangle->v3.position * (1-a-b); 
+}
+
+float Random::noise(glm::vec3 v) {
+    return glm::perlin(v);
 }

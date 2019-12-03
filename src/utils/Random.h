@@ -17,5 +17,6 @@ public:
     static glm::vec3 vectorOnHemisphereUniform(glm::vec3 normal = glm::vec3(0, 1, 0));
     static glm::vec3 vectorOnHemisphereCos(glm::vec3 normal = glm::vec3(0, 1, 0));
     static glm::vec3 pointInTriangle(TrianglePtr triangle);
+    static float noise(glm::vec3 v);
 };
 #endif

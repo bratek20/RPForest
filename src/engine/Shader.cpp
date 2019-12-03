@@ -16,12 +16,17 @@ void Shader::use() { glUseProgram(id); }
 
 GLuint Shader::getId() const { return id; }
 
-void Shader::applyFloat(const char *name, float value) {
+void Shader::applyFloat(const char *name, float value) const {
     GLuint valueId = glGetUniformLocation(id, name);
     glUniform1f(valueId, value);
 }
 
-void Shader::applyColor(const char *name, const Color &c) {
+void Shader::applyColor(const char *name, const Color &c)  const {
+    GLuint colorId = glGetUniformLocation(id, name);
+    glUniform3f(colorId, c.r, c.g, c.b);
+}
+
+void Shader::applyColor(const char* name, const glm::vec3& c) const {
     GLuint colorId = glGetUniformLocation(id, name);
     glUniform3f(colorId, c.r, c.g, c.b);
 }
