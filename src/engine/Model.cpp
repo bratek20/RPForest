@@ -46,6 +46,21 @@ void Model::draw(Shader shader) {
     }
 }
 
+void Model::matchHeight(float height) {
+    auto& tris = getTriangles();
+    vector<vec3> poses(tris.size() * 3);
+    for(int i=0; i < tris.size(); i++) {
+        auto triPoses = tris[i]->getPositions();
+        for(int k=0;k<3;k++){
+            poses[3*i+k]=triPoses[k];
+        }
+    }
+    float minY = Utils::findBest(poses, Utils::Axis::Y, Utils::CmpType::MIN);
+    float maxY = Utils::findBest(poses, Utils::Axis::Y, Utils::CmpType::MAX);
+    float scale = height / (maxY - minY);
+    apply(Utils::getScaleMat(scale)); 
+}
+
 void Model::createTriangles() {
     triangles.clear();
     for (auto &mesh : meshes) {

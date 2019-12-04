@@ -22,14 +22,14 @@ PathTracer::CastData PathTracer::cast(Ray r, int k, AccStruct &accStruct, SkyLig
         return skyCast;
     }
     
-    bool isBounced = Random::tossCoin(Utils::average(hit.triangle->mat.calcDiffuse()));
+    bool isBounced = Random::tossCoin(Utils::average(hit.triangle->mat.calcDiffuse(hit.pos)));
     if(!isBounced){
         return CastData();
     }
     
     CastData ans;
     ans.hit = true;
-    ans.emittance = hit.triangle->mat.calcEmissive() 
+    ans.emittance = hit.triangle->mat.calcEmissive(hit.pos) 
     + calcDirectLight(hit, accStruct, lightSampler) 
     + calcIndirectLight(hit, k, accStruct, lightSampler);
     return ans;
@@ -45,10 +45,10 @@ vec3 PathTracer::calcDirectLight(HitData& hit, AccStruct &accStruct, SkyLightSam
         return vec3(0);
     }
 
-    vec3 BRDF = hit.triangle->mat.calcDiffuse() / Utils::PI;
+    vec3 BRDF = hit.triangle->mat.calcDiffuse(hit.pos) / Utils::PI;
 
-    float cosX = clamp(dot(rayDir, hit.triangle->getNormal(hit.baryPos)), 0.0f, 1.0f);
-    float cosY = clamp(dot(-rayDir, lightSample.normal), 0.0f, 1.0f);
+    float cosX = calcCos(rayDir, hit.triangle->getNormal(hit.baryPos), true);
+    float cosY = calcCos(-rayDir, lightSample.normal, true);
     float dist = distance(lightPoint, hit.pos);
     float probability = lightSample.probability;
     float G = cosX * cosY / (dist * dist);
@@ -65,11 +65,19 @@ vec3 PathTracer::calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, Sk
     CastData incoming = cast(newR, k-1, accStruct, lightSampler);
     HitData incomingHit = accStruct.cast(newR);
     bool hitLight = incomingHit.intersects() && incomingHit.triangle->mat.isLightSource(); 
-    auto ans = hitLight ? vec3(0) : hitMat.calcDiffuse() * incoming.emittance;
+    auto ans = hitLight ? vec3(0) : hitMat.calcDiffuse(hit.pos) * incoming.emittance;
     
     if(drawLines) {
         DebugActor::get()->drawLine(hit.pos, incomingHit.pos);
     }
     return ans;
+}
+
+float PathTracer::calcCos(glm::vec3 dir, glm::vec3 normal, bool doubleSided) {
+    float ans = dot(dir, normal);
+    if ((ans < 0 || ans > 1) && doubleSided){
+        return dot(dir, -normal);
+    }
+    return clamp(ans, 0.0f, 1.0f);
 }
 

@@ -18,6 +18,7 @@ public:
 private:
     static glm::vec3 calcDirectLight(HitData& hit, AccStruct &accStruct, SkyLightSampler& lightSampler);
     static glm::vec3 calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, SkyLightSampler& lightSampler);
+    static float calcCos(glm::vec3 dir, glm::vec3 normal, bool doubleSided);
 };
 
 #endif

@@ -16,10 +16,16 @@ public:
 
     Ternary();
 
-    static int load1();
-    static int load2();
-    static int load3();
-    static int load4();
+    int getN() override {
+        return n;
+    }
+
+    void onModelGenerated(ModelPtr model) override;
+
+    static void load1();
+    static void load2();
+    static void load3();
+    static void load4();
 };
 
 #endif

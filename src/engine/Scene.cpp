@@ -37,7 +37,7 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
     for(int i=0;i<4;i++){
         ActorPtr t = Actor::create(gen.get(i));
-        t->move({5*i, 0, 0});
+        t->move({3*i, 0, 0});
         scene->addChild(t);
     }
 

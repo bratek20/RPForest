@@ -8,17 +8,23 @@
 #include <vector>
 
 class Generator {
-    std::vector<ModelPtr> models;
-
 public:
-    using ParamLoader = std::function<int()>;
+    using ParamLoader = std::function<void()>;
 
     Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders);
 
-    ModelPtr get(int n) const;
-    ModelPtr getRandom() const;
+    virtual int getN() = 0;
+    virtual void onModelGenerated(ModelPtr model) { }
+
+    ModelPtr get(int n);
+    ModelPtr getRandom();
 
 private:
+    SymbolPtr axiom;
+    std::vector<ParamLoader> paramLoaders;
+    std::vector<ModelPtr> models;
+
+    void generateAll();
     ModelPtr generate(SymbolPtr axiom, ParamLoader loader);
 };
 

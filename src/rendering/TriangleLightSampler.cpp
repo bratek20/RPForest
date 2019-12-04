@@ -8,7 +8,7 @@ TriangleLightSampler::TriangleLightSampler(const vector<TrianglePtr>& triangles)
     for(auto& tri : triangles){
         if(tri->mat.isLightSource()){
             lightSources.push_back(tri);
-            thresholds.push_back(tri->calcArea() * tri->mat.calcEmissive().length());
+            thresholds.push_back(tri->calcArea() * tri->mat.calcEmissive(tri->getCenter()).length());
         }
     }
     for(unsigned i = 1; i < thresholds.size(); i++){
@@ -25,7 +25,7 @@ LightSampleData TriangleLightSampler::sample(){
     LightSampleData ans;
     ans.point = Random::pointInTriangle(source);
     ans.normal = source->getNormal(ans.point);
-    ans.color = source->mat.calcEmissive();
+    ans.color = source->mat.calcEmissive(ans.point);
     ans.probability = idx == 0 ? thresholds[0] : thresholds[idx] - thresholds[idx-1];
     ans.probability /= thresholds.back();
     ans.triangle = source;

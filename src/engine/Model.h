@@ -38,6 +38,8 @@ class Model : public Ptr<Model, ModelPtr> {
     void apply(const glm::mat4& m);
     
     void draw(Shader shader);
+
+    void matchHeight(float height);
     
     const std::vector<TrianglePtr> &getTriangles();
     const std::vector<LightConfig> &getLights() const;

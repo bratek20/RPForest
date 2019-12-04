@@ -13,10 +13,10 @@ public:
 
     bool isLightSource() const;
 
-    virtual glm::vec3 calcDiffuse(glm::vec3 pos = glm::vec3()) const { return pos; };
-    virtual glm::vec3 calcAmbient(glm::vec3 pos = glm::vec3()) const { return calcDiffuse(); };
-    virtual glm::vec3 calcSpecular(glm::vec3 pos = glm::vec3()) const { return pos; };
-    virtual glm::vec3 calcEmissive(glm::vec3 pos = glm::vec3()) const { return pos; };
+    virtual glm::vec3 calcDiffuse(glm::vec3 pos) const { return pos; };
+    virtual glm::vec3 calcAmbient(glm::vec3 pos) const { return calcDiffuse(pos); };
+    virtual glm::vec3 calcSpecular(glm::vec3 pos) const { return pos; };
+    virtual glm::vec3 calcEmissive(glm::vec3 pos) const { return glm::vec3(); };
 };
 
 #endif
