@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const Generator::ParamLoader Generator::EMPTY = [](){};
+
 Generator::Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders) :
     axiom(axiom), paramLoaders(paramLoaders) {}
 

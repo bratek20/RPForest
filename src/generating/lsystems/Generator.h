@@ -3,6 +3,7 @@
 
 #include "Symbol.h"
 #include "Model.h"
+#include "LSysConfig.h"
 
 #include <memory>
 #include <vector>
@@ -10,7 +11,8 @@
 class Generator {
 public:
     using ParamLoader = std::function<void()>;
-
+    static const ParamLoader EMPTY;
+     
     Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders);
 
     virtual int getN() = 0;

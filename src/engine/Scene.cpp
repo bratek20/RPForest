@@ -12,6 +12,7 @@
 #include "Honda.h"
 #include "Ternary.h"
 #include "Family.h"
+#include "LSysGenerator.h"
 
 using namespace std;
 using namespace glm;
@@ -36,11 +37,16 @@ ScenePtr Scene::create(const Config &c) {
     //scene->getModel()->add(Shapes::genCone(2, 1, 5), true);
     scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
     for(int i=0;i<4;i++){
-        ActorPtr t = Actor::create(gen.get(i));
-        t->move({3*i, 0, 0});
-        scene->addChild(t);
+        //ActorPtr t = Actor::create(gen.get(i));
+        //t->move({3*i, 0, 0});
+        //scene->addChild(t);
     }
 
+    LSysConfig conf;
+    conf.load("../assets/plants/plantA.lsys");
+    auto gen2 = LSysGenerator(conf);
+    ActorPtr t = Actor::create(gen2.getRandom());
+    scene->addChild(t);
     //scene->getModel()->add(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();
