@@ -266,7 +266,7 @@ AVector3 ASunSky::GetSkyxyYRadiance(AReal theta, AReal phi) const  // ANL!!! add
 AVector3 ASunSky::GetSkyxyYRadiance(const AVector3 &varg) const
 {
     AReal theta, phi;
-    AUnitVector3 v = varg;
+    AUnitVector3 v = AUnitVector3(varg);
     if (v.Z() < 0) return AVector3(0, 0, 0);
     if (v.Z() < 0.001) 
       v = AUnitVector3(v.X(),v.Y(), 0.001f );

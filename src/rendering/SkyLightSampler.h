@@ -2,9 +2,8 @@
 #define SKY_LIGHT_SAMPLER_H
 
 #include "LightSampler.h"
-#include "SkyLightHelper.h"
-
 #include "ASunSky.H"
+#include "AccStruct.h"
 
 class SkyLightSampler : public LightSampler {
 public:
@@ -21,7 +20,6 @@ private:
     glm::vec3 toRGB(float luminance, float xChroma, float yChroma);
 
     float radius;
-    SkyLightHelper helper;
     ASunSky sunSky;
 };
 
