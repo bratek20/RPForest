@@ -5,8 +5,9 @@
 #include "LSysConfig.h"
 
 class LSysGenerator : public Generator {
+    float height;
 public:
-    LSysGenerator(const LSysConfig& config);
+    LSysGenerator(const LSysConfig& config, Generator::LOD lod, const Material& mat);
     
     int getN() override { return 1; };
 

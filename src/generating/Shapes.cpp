@@ -5,6 +5,16 @@
 using namespace std;
 using namespace glm;
 
+int Shapes::CONE_BASE_POINTS_NUM = 3;
+const Material* Shapes::CONE_MATERIAL = nullptr;
+
+void Shapes::setConeBasePointsNum(int num) {
+    CONE_BASE_POINTS_NUM = num;
+}
+void Shapes::setConeMaterial(const Material& mat) {
+    CONE_MATERIAL = &mat;
+}
+
 MeshPtr Shapes::genPlane(float width, float depth) {
     float hw = width /2;
     float hd = depth /2;
@@ -20,39 +30,38 @@ MeshPtr Shapes::genPlane(float width, float depth) {
 }
 
 MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
-    static const int POINTS_NUM = 4;
-    auto down = genCirclePoints(POINTS_NUM, downRadius, 0);
-    auto up = genCirclePoints(POINTS_NUM, upRadius, height);
+    auto down = genCirclePoints(CONE_BASE_POINTS_NUM, downRadius, 0);
+    auto up = genCirclePoints(CONE_BASE_POINTS_NUM, upRadius, height);
 
     vec3 center = vec3(0, height/2, 0);
-    vector<Vertex> vertices(POINTS_NUM * 2);
-    for (int i = 0; i < POINTS_NUM; i++) {
+    vector<Vertex> vertices(CONE_BASE_POINTS_NUM * 2);
+    for (int i = 0; i < CONE_BASE_POINTS_NUM; i++) {
         vertices[i] = Vertex(down[i], normalize(vec3(down[i].x, 0, down[i].z)));
-        vertices[i + POINTS_NUM] = Vertex(up[i], normalize(vec3(up[i].x, 0, up[i].z)));
+        vertices[i + CONE_BASE_POINTS_NUM] = Vertex(up[i], normalize(vec3(up[i].x, 0, up[i].z)));
     }
 
     vector<unsigned int> indices;
-    for(int i=1;i<POINTS_NUM-1;i++){
+    for(int i=1;i<CONE_BASE_POINTS_NUM-1;i++){
         indices.push_back(0);
         indices.push_back(i);
         indices.push_back(i + 1);
 
-        indices.push_back(POINTS_NUM);
-        indices.push_back(POINTS_NUM + i);
-        indices.push_back(POINTS_NUM + i + 1);
+        indices.push_back(CONE_BASE_POINTS_NUM);
+        indices.push_back(CONE_BASE_POINTS_NUM + i);
+        indices.push_back(CONE_BASE_POINTS_NUM + i + 1);
     }
 
-    static auto next = [](int i){return (i + 1)%POINTS_NUM;};
-    for(int i=0;i<POINTS_NUM;i++){
+    static auto next = [](int i){return (i + 1)%CONE_BASE_POINTS_NUM;};
+    for(int i=0;i<CONE_BASE_POINTS_NUM;i++){
         indices.push_back(i);
         indices.push_back(next(i));
-        indices.push_back(POINTS_NUM + next(i));
+        indices.push_back(CONE_BASE_POINTS_NUM + next(i));
 
         indices.push_back(i);
-        indices.push_back(POINTS_NUM + next(i));
-        indices.push_back(POINTS_NUM + i);
+        indices.push_back(CONE_BASE_POINTS_NUM + next(i));
+        indices.push_back(CONE_BASE_POINTS_NUM + i);
     }
-    return Mesh::New(vertices, indices, false, Materials::BARK);
+    return Mesh::New(vertices, indices, false, *CONE_MATERIAL);
 }
 
 vector<vec3> Shapes::genCirclePoints(int pointsNum, float radius, float y) {

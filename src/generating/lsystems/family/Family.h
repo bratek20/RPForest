@@ -19,8 +19,6 @@ public:
         return n;
     }
 
-    void onModelGenerated(ModelPtr model) override;
-
     static void load1();
     static void load2();
     static void load3();

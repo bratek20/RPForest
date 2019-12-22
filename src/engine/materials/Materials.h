@@ -5,6 +5,7 @@
 #include "LeafMaterial.h"
 #include "BarkMaterial.h"
 #include "GroundMaterial.h"
+#include "PlantMaterial.h"
 
 class Materials {
 public:
@@ -14,6 +15,7 @@ public:
     static const LeafMaterial LEAF;
     static const BarkMaterial BARK;
     static const GroundMaterial GROUND;
+    static const PlantMaterial PLANT;
 };
 
 #endif

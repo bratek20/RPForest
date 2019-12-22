@@ -13,6 +13,8 @@ bool LSysConfig::load(const string &path) {
     }
     file >> n;
     file >> angle;
+    file >> height;
+
     file >> axiom;
     
     string symbol;

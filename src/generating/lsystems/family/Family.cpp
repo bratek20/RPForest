@@ -11,11 +11,8 @@ float Family::PD;
 
 Family::Family()
     : Generator(Symbol::S<FamilyAxiom>(),
-                {load1, load2, load3, load4, load5, load6}) {}
-
-void Family::onModelGenerated(ModelPtr model) {
-    model->matchHeight(0.2f);
-}
+                {load1, load2, load3, load4, load5, load6},
+                0.2f, Generator::LOW, Materials::LEAF) {}
 
 void Family::load1() {
     LA = 5;

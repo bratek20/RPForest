@@ -7,6 +7,7 @@
 struct LSysConfig {
     int n;
     float angle;
+    float height;
     char axiom;
     std::unordered_map<char, std::string> productions;
 

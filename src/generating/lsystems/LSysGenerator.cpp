@@ -3,8 +3,8 @@
 
 using namespace std;
 
-LSysGenerator::LSysGenerator(const LSysConfig& config) 
-: Generator(generateAxiom(config), {Generator::EMPTY}) {}
+LSysGenerator::LSysGenerator(const LSysConfig& config, Generator::LOD lod, const Material& mat) 
+: Generator(generateAxiom(config), {Generator::EMPTY}, config.height, lod, mat) {}
 
 SymbolPtr LSysGenerator::generateAxiom(const LSysConfig& config) {
     auto& prods = config.productions;

@@ -1,18 +1,21 @@
 #include "Generator.h"
 
 #include "Random.h"
+#include "Shapes.h"
 
 using namespace std;
 
 const Generator::ParamLoader Generator::EMPTY = [](){};
 
-Generator::Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders) :
-    axiom(axiom), paramLoaders(paramLoaders) {}
+Generator::Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders, float height, LOD lod, const Material& mat) :
+    axiom(axiom), paramLoaders(paramLoaders), height(height), lod(lod), mat(mat) {}
 
 void Generator::generateAll() {
+    Shapes::setConeBasePointsNum(lod);
+    Shapes::setConeMaterial(mat);
+    
     for(auto& loader: paramLoaders){
         models.push_back(generate(axiom, loader));
-        onModelGenerated(models.back());
     }
 }
 
@@ -35,6 +38,7 @@ ModelPtr Generator::generate(SymbolPtr axiom, ParamLoader paramLoader) {
         s->process(pc);
     }
 
+    pc.model->matchHeight(height);
     return pc.model;
 }
 

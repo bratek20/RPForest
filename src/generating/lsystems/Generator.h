@@ -10,13 +10,18 @@
 
 class Generator {
 public:
+    enum LOD {
+        LOW = 3,
+        MEDIUM = 4,
+        HIGH = 5
+    };
+
     using ParamLoader = std::function<void()>;
     static const ParamLoader EMPTY;
      
-    Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders);
+    Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders, float height, LOD lod, const Material& mat);
 
     virtual int getN() = 0;
-    virtual void onModelGenerated(ModelPtr model) { }
 
     ModelPtr get(int n);
     ModelPtr getRandom();
@@ -24,6 +29,10 @@ public:
 private:
     SymbolPtr axiom;
     std::vector<ParamLoader> paramLoaders;
+    float height;
+    LOD lod;
+    const Material& mat;
+
     std::vector<ModelPtr> models;
 
     void generateAll();
