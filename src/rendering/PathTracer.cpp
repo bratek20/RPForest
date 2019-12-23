@@ -78,6 +78,6 @@ float PathTracer::calcCos(glm::vec3 dir, glm::vec3 normal, bool doubleSided) {
     if ((ans < 0 || ans > 1) && doubleSided){
         return dot(dir, -normal);
     }
-    return clamp(ans, 0.0f, 1.0f);
+    return glm::clamp(ans, 0.0f, 1.0f);
 }
 

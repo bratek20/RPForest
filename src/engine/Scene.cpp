@@ -13,6 +13,7 @@
 #include "Ternary.h"
 #include "Family.h"
 #include "LSysGenerator.h"
+#include "Spawner.h"
 
 using namespace std;
 using namespace glm;
@@ -39,14 +40,16 @@ ScenePtr Scene::create(const Config &c) {
     for(int i=0;i<4;i++){
         ActorPtr t = Actor::create(gen.get(i));
         t->move({3*i, 0, 0});
-        scene->addChild(t);
+        //scene->addChild(t);
     }
 
-    LSysConfig conf;
-    conf.load("../assets/plants/plantA.lsys");
-    auto gen2 = LSysGenerator(conf, Generator::LOW, Materials::PLANT);
-    ActorPtr t = Actor::create(gen2.getRandom());
-    scene->addChild(t);
+
+    auto spawner = Spawner({}, "plants", Generator::LOW, Materials::PLANT);
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
     //scene->getModel()->add(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();

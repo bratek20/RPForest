@@ -4,13 +4,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <fstream>
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 
 using namespace std;
 
+const string Assets::ASSETS_PREFIX_PATH = "../assets/";
 const vector<string> Assets::POSSIBLE_PATH_PREFIXES = 
 {
     "",
-    "../assets/"
+    ASSETS_PREFIX_PATH
 };
 
 Program3D Assets::program;
@@ -41,5 +44,31 @@ string Assets::photoSavePath(const string& name){
 bool Assets::isValidPath(const string& path){
     ifstream f(path.c_str());
     return f.good();
+}
+
+vector<LSysConfig> Assets::loadLSysConfigs(const string& folderName) {
+    vector<LSysConfig> configs;
+    for(auto path : getAllPaths(folderName, ".lsys")){
+        LSysConfig config;
+        if(!config.load(path)){
+            cerr << "Config at path " << path << " failed to load" << endl;
+        }
+        else{
+            configs.push_back(config);
+        }
+    }
+    return configs;
+}
+
+vector<string> Assets::getAllPaths(const string& folderName, const string& extension) {
+    string fullFolderPath = ASSETS_PREFIX_PATH + folderName;
+
+    vector<string> paths;
+    for (const auto & entry : fs::directory_iterator(fullFolderPath)) {
+        if(entry.path().extension() == extension) {
+            paths.push_back(entry.path());
+        }
+    }
+    return paths;
 }
 

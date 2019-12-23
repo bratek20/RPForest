@@ -30,5 +30,5 @@ include_directories(${EMBREE_INCLUDE_DIRS})
 include_directories(/usr/local/include/OpenEXR)
 
 
-target_link_libraries(${EXE_FILE} GLEW ${OPENGL_gl_LIBRARY} glfw ${EMBREE_LIBRARY} IlmImf Imath Half Iex IexMath IlmThread /home/bartosz/UWR/RPForest/lib/libcommon.a)
+target_link_libraries(${EXE_FILE} GLEW ${OPENGL_gl_LIBRARY} glfw ${EMBREE_LIBRARY} IlmImf Imath Half Iex IexMath IlmThread /home/bartosz/UWR/RPForest/lib/libcommon.a stdc++fs)
 

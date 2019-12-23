@@ -8,6 +8,9 @@
 #include <memory>
 #include <vector>
 
+class Generator;
+using GeneratorPtr = std::shared_ptr<Generator>;
+
 class Generator {
 public:
     enum LOD {

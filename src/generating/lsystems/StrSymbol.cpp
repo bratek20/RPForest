@@ -10,8 +10,12 @@ StrSymbol::StrSymbol(std::string&& str, const LSysConfig& config) : str(str), co
 
 vector<SymbolPtr> StrSymbol::produce() {
     vector<SymbolPtr> symbols;
+    symbols.push_back(S<SetRadius>(0.3));
     for(char c : str){
-        symbols.push_back(createSymbol(c));
+        auto symbol = createSymbol(c);
+        if(symbol != nullptr){
+            symbols.push_back(symbol);
+        }
     }
     return symbols;
 }
@@ -30,8 +34,6 @@ SymbolPtr StrSymbol::createSymbol(char c) {
     case '-':
         return S<Turn>(-config.angle); 
     default:
-        cerr << "Symbol " << c << " not supported!" << endl;
-        throw runtime_error("Symbol nout found");
-        break;
+        return nullptr;
     }
 }
