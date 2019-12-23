@@ -18,7 +18,7 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2) {}
+Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2), terrain(8, worldSize, 20, 0.5) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
@@ -29,14 +29,15 @@ ScenePtr Scene::create(const Config &c) {
 
     scene->camera = Camera::create(c.camera);
     scene->addChild(scene->camera);
+
+    scene->addChild(Actor::create(Model::New(scene->terrain.getMesh())));
     //scene->camera->addChild(Light::create());
-    Light::loadLights(scene->getModel()->getTriangles());
+    //Light::loadLights(scene->getModel()->getTriangles());
     
     auto gen = Honda();
     //auto res = Family().getRandom();
     //scene->getModel()->add(res);
     //scene->getModel()->add(Shapes::genCone(2, 1, 5), true);
-    scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
     for(int i=0;i<4;i++){
         ActorPtr t = Actor::create(gen.get(i));
         t->move({3*i, 0, 0});
@@ -45,11 +46,6 @@ ScenePtr Scene::create(const Config &c) {
 
 
     auto spawner = Spawner({}, "plants", Generator::LOW, Materials::PLANT);
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
     //scene->getModel()->add(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();

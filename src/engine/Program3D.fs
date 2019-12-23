@@ -25,15 +25,15 @@ void main(){
 	vec3 MaterialAmbientColor = AmbientColor * MaterialDiffuseColor;
 	vec3 MaterialSpecularColor = SpecularColor;
 
-	color = MaterialAmbientColor;
-	for(int i = 0; i < LightsNum; i++){
+	color = MaterialAmbientColor / 10;
+	vec3 lightPosition = vec3(0, 100, 0);
 		// Distance to the light
-		float distance = length( LightPosition_worldspace[i] - Position_worldspace );
+		float distance = length( lightPosition - Position_worldspace );
 
 		// Normal of the computed fragment, in camera space
 		vec3 n = normalize( Normal_cameraspace );
 		// Direction of the light (from the fragment to the light)
-		vec3 l = normalize( LightDirection_cameraspace[i] );
+		vec3 l = normalize( LightDirection_cameraspace[0] );
 		// Cosine of the angle between the normal and the light direction, 
 		// clamped above 0
 		//  - light is at the vertical of the triangle -> 1
@@ -52,17 +52,18 @@ void main(){
 		float cosAlpha = clamp( dot( E,R ), 0,1 ); 
 
 		float distanceLoss = 
-			distance * distance * LightDistanceCoefficients[i].x +
-			distance * LightDistanceCoefficients[i].y +
-			LightDistanceCoefficients[i].z;  
+			//distance * distance * LightDistanceCoefficients[i].x +
+			//distance * LightDistanceCoefficients[i].y +
+			//LightDistanceCoefficients[i].z;  
+			distance;
 		float invDistLoss = 1 / distanceLoss;
 
+		float lightPower = 100;
 		color += 
 			// Diffuse : "color" of the object  
-			+ MaterialDiffuseColor * invDistLoss * LightColor[i] * LightPower[i] * cosTheta
+			+ MaterialDiffuseColor * invDistLoss * lightPower * cosTheta
 			// Specular : reflective highlight, like a mirror
-			+ MaterialSpecularColor * invDistLoss * LightColor[i] * LightPower[i] * pow(cosAlpha, NS);
-	}
+			+ MaterialSpecularColor * invDistLoss * lightPower * pow(cosAlpha, NS);
 
 	if (length(Normal_cameraspace) < 0.1)
 	{

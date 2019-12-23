@@ -32,10 +32,10 @@ void main(){
 	EyeDirection_cameraspace = vec3(0,0,0) - vertexPosition_cameraspace;
 
 	// Vector that goes from the vertex to the light, in camera space. M is ommited because it's identity.
-	for(int i=0;i<LightsNum;i++){
-		vec3 LightPosition_cameraspace = ( V * vec4(LightPosition_worldspace[i],1)).xyz;
-		LightDirection_cameraspace[i] = LightPosition_cameraspace + EyeDirection_cameraspace;
-	}
+	//for(int i=0;i<LightsNum;i++){
+		vec3 LightPosition_cameraspace = ( V * vec4(0,100,0,1)).xyz;
+		LightDirection_cameraspace[0] = LightPosition_cameraspace + EyeDirection_cameraspace;
+	//}
 
 	// Normal of the the vertex, in camera space  
 	Normal_cameraspace = mat3(V) * mat3(transpose(inverse(M))) * normal_modelspace;
