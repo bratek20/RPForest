@@ -6,9 +6,11 @@
 using namespace std;
 using namespace glm;
 
+float zg = 0;
 Spawner::Spawner(const vector<GeneratorPtr>& generators, const string& lSysFolder, Generator::LOD lod, const Material& mat, DiamondSquareTerrain& terrain) :
-    terrain(terrain) {
-    this->generators.insert(this->generators.end(), generators.begin(), generators.end());
+    terrain(terrain), generators(generators) {
+    z=zg;
+    zg+=0.5;
     auto lSysConfigs = Assets::loadLSysConfigs(lSysFolder);
     for(auto& config : lSysConfigs) {
         this->generators.push_back(GeneratorPtr(new LSysGenerator(config, lod, mat)));
@@ -16,14 +18,14 @@ Spawner::Spawner(const vector<GeneratorPtr>& generators, const string& lSysFolde
 }
 
 ActorPtr Spawner::spawn() {
-    int idx = Random::range(1, generators.size());
+    int idx = Random::range(0, generators.size());
     ModelPtr model = generators[idx]->getRandom();
     ActorPtr actor = Actor::create(model);
-    static float i = 0;
-    vec3 pos = vec3(1,0,0) * i;
+    
+    vec3 pos = vec3(x,0,z);
     pos.y = terrain.calcHeight(pos.x, pos.z);
     cout << pos << endl;
     actor->move(pos);
-    i+=1;
+    x+=0.5;
     return actor;
 }

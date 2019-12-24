@@ -6,6 +6,7 @@
 #include "Config.h"
 #include "SkyLightSampler.h"
 #include "DiamondSquareTerrain.h"
+#include "Spawner.h"
 
 class Scene;
 using ScenePtr = std::shared_ptr<Scene>;
@@ -14,6 +15,8 @@ class Scene : public Actor {
     CameraPtr camera;
     SkyLightSampler lightSampler;
     DiamondSquareTerrain terrain;
+    Spawner treesSpawner;
+    Spawner plantsSpawner;
 
 public:
     static ScenePtr create(const Config& c);
@@ -25,5 +28,8 @@ public:
 
 protected:
     Scene(ModelPtr sceneModel, float size);
+
+private:
+    void spawn(Spawner& spawner, int elems);
 };
 #endif

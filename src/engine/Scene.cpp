@@ -18,11 +18,17 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2), terrain(2, worldSize, 10, 5, 0.5) {}
+Scene::Scene(ModelPtr sceneModel, float worldSize) : 
+    Actor(sceneModel), 
+    lightSampler(worldSize/2), 
+    terrain(2, worldSize, 10, 5, 0.5),
+    treesSpawner({GeneratorPtr(new Honda())}, "trees", Generator::HIGH, Materials::BARK, terrain),
+    plantsSpawner({}, "plants", Generator::LOW, Materials::PLANT, terrain)
+    {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
-    float worldSize = 10;
+    float worldSize = 100;
     DebugActorPtr debugActor = DebugActor::create();
     ScenePtr scene = ScenePtr(new Scene(Model::New(), worldSize));
     scene->addChild(debugActor);
@@ -31,25 +37,18 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(scene->camera);
 
     scene->addChild(Actor::create(Model::New(scene->terrain.getMesh())));
-    //scene->camera->addChild(Light::create());
-    //Light::loadLights(scene->getModel()->getTriangles());
-    
-    auto gen = Honda();
-    //auto res = Family().getRandom();
-    //scene->getModel()->add(res);
-    //scene->getModel()->add(Shapes::genCone(2, 1, 5), true);
-    for(int i=0;i<4;i++){
-        ActorPtr t = Actor::create(gen.get(i));
-        t->move({3*i, 0, 0});
-        //scene->addChild(t);
-    }
+    scene->spawn(scene->plantsSpawner, 3);
+    scene->spawn(scene->treesSpawner, 3);
 
-
-    auto spawner = Spawner({}, "plants", Generator::LOW, Materials::PLANT, scene->terrain);
-    //scene->getModel()->add(Mesh::New(res.vertices), true);
-    scene->debug();
+    //scene->debug();
     Timer::stop();
     return scene;
+}
+
+void Scene::spawn(Spawner& spawner, int elems) {
+    for(int i=0;i<elems;i++){
+        addChild(spawner.spawn());
+    }
 }
 
 void Scene::render() {

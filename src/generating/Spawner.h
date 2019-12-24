@@ -8,7 +8,8 @@
 class Spawner {
     std::vector<GeneratorPtr> generators;
     DiamondSquareTerrain& terrain;
-
+    float x = 0;
+    float z = 0;
 public:
     Spawner(const std::vector<GeneratorPtr>& generators, const std::string& lSysFolder, Generator::LOD lod, const Material& mat, DiamondSquareTerrain& terrain);
 
