@@ -8,12 +8,12 @@ class DiamondSquareTerrain {
     MeshPtr mesh;
 
 public:
-    DiamondSquareTerrain(int n, float meshSize, float spread, float spreadReduction);
+    DiamondSquareTerrain(int n, float meshSize, float initHeight, float spread, float spreadReduction);
 
     MeshPtr getMesh() const;
     
 private:
-    void generateHeights(int n, float spread, float spreadReduction);
+    void generateHeights(int n, float initHeight, float spread, float spreadReduction);
     void diamondStepFor(int i, int j, int step, float spread);
     void squareStepFor(int i, int j, int halfStep, int size, float spread);
 

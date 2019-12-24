@@ -50,7 +50,8 @@ int main(int argc, char* argv[]){
     }
 
 	Globals::init(c);
-
+	Random::init();
+	
 	scene = Scene::create(c);
 
 	if(c.debugMode){	

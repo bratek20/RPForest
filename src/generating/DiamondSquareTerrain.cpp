@@ -5,9 +5,10 @@ using namespace std;
 
 DiamondSquareTerrain::DiamondSquareTerrain(int n,
                                            float meshSize,
+                                           float initHeight,
                                            float spread,
                                            float spreadReduction) {
-    generateHeights(n, spread, spreadReduction);
+    generateHeights(n, initHeight, spread, spreadReduction);
     generateMesh(meshSize);
 }
 
@@ -16,18 +17,17 @@ MeshPtr DiamondSquareTerrain::getMesh() const {
 }
 
 void DiamondSquareTerrain::generateHeights(int n,
+                                           float initHeight,
                                            float spread,
                                            float spreadReduction) {
     int size = (1 << n) + 1;
     heights.resize(size, vector<float>(size));
-    heights[0][0] = calcRandomHeight(spread);
-    heights[size - 1][0] = calcRandomHeight(spread);
-    heights[0][size - 1] = calcRandomHeight(spread);
-    heights[size - 1][size - 1] = calcRandomHeight(spread);
+    heights[0][0] = Random::uniform(0, initHeight);
+    heights[size - 1][0] = Random::uniform(0, initHeight);
+    heights[0][size - 1] = Random::uniform(0, initHeight);
+    heights[size - 1][size - 1] = Random::uniform(0, initHeight);
 
     for (int step = 1 << n; step > 1; step /= 2) {
-        spread *= spreadReduction;
-
         for (int i = 0; i + step < size; i += step) {
             for (int j = 0; j + step < size; j += step) {
                 diamondStepFor(i, j, step, spread);
@@ -40,6 +40,7 @@ void DiamondSquareTerrain::generateHeights(int n,
                 squareStepFor(i, j, step / 2, size, spread);
             }
         }
+        spread *= spreadReduction;
     }
 }
 
@@ -97,16 +98,16 @@ void DiamondSquareTerrain::generateMesh(float meshSize) {
     }
 
     vector<unsigned int> indices;
-    auto calcIdx = [size](int i, int j) {return i*size + j; };
+    auto calcIdx = [size](int i, int j) { return i * size + j; };
     for (int i = 1; i < size; i++) {
         for (int j = 0; j + 1 < size; j++) {
             indices.push_back(calcIdx(i, j));
-            indices.push_back(calcIdx(i-1, j));
-            indices.push_back(calcIdx(i-1, j+1));
+            indices.push_back(calcIdx(i - 1, j));
+            indices.push_back(calcIdx(i - 1, j + 1));
 
             indices.push_back(calcIdx(i, j));
-            indices.push_back(calcIdx(i-1, j+1));
-            indices.push_back(calcIdx(i, j+1));
+            indices.push_back(calcIdx(i - 1, j + 1));
+            indices.push_back(calcIdx(i, j + 1));
         }
     }
 

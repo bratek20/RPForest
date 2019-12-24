@@ -17,7 +17,7 @@ class Camera : public Actor {
     float velocity;
 
 public:
-    static CameraPtr create(const CameraConfig& c);
+    static CameraPtr create();
     
     glm::mat4 getViewMat();
     glm::mat4 getProjectionMat();

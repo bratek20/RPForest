@@ -5,7 +5,7 @@ GLFWwindow *Window::window;
 float Window::ratio;
 
 bool Window::open(const std::string &name, const Config &c) {
-    setRatio(c.xRes, c.yRes);
+    setRatio(c.resolution.x, c.resolution.y);
     if (!c.debugMode) {
         return true;
     }
@@ -25,7 +25,7 @@ bool Window::open(const std::string &name, const Config &c) {
                    GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
 
     // Open a window and create its OpenGL context
-    window = glfwCreateWindow(c.xRes, c.yRes, name.c_str(), NULL, NULL);
+    window = glfwCreateWindow(c.resolution.x, c.resolution.y, name.c_str(), NULL, NULL);
     if (window == NULL) {
         fprintf(
             stderr,
@@ -48,7 +48,7 @@ bool Window::open(const std::string &name, const Config &c) {
     }
 
     glEnable(GL_DEPTH_TEST);
-    glClearColor(c.background.r, c.background.g, c.background.b, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.8f, 0.0f);
     return true;
 }
 

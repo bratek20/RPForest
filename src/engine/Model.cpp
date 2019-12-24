@@ -1,6 +1,8 @@
 #include "Model.h"
 #include "Assets.h"
 
+#include <algorithm>
+
 using namespace std;
 using namespace glm;
 
@@ -9,7 +11,13 @@ Model::Model(MeshPtr mesh) {
 }
 
 void Model::add(MeshPtr mesh) {
-    meshes.push_back(mesh);
+    auto it = find_if(meshes.begin(), meshes.end(), [&](MeshPtr m){ return &m->getMaterial() == &mesh->getMaterial();});
+    if(it != meshes.end()){
+        (*it)->merge(mesh);
+    }
+    else {
+        meshes.push_back(mesh);
+    }
     dirty = true;
 }
 
@@ -78,7 +86,6 @@ const vector<TrianglePtr> &Model::getTriangles() {
     }
     return triangles; 
 }
-const vector<LightConfig> &Model::getLights() const { return lights; }
 const vector<MeshPtr> &Model::getMeshes() const { return meshes; }
 
 void Model::debug() {

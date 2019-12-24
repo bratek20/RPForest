@@ -22,7 +22,6 @@ class Model : public Ptr<Model, ModelPtr> {
     std::vector<Material> materials;
     std::vector<MeshPtr> meshes;
     std::vector<TrianglePtr> triangles;
-    std::vector<LightConfig> lights;
     bool dirty = false;
 
   public:
@@ -42,7 +41,6 @@ class Model : public Ptr<Model, ModelPtr> {
     void matchHeight(float height);
     
     const std::vector<TrianglePtr> &getTriangles();
-    const std::vector<LightConfig> &getLights() const;
     const std::vector<MeshPtr> &getMeshes() const;
 
     void debug();

@@ -18,7 +18,7 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2), terrain(8, worldSize, 20, 0.5) {}
+Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2), terrain(8, worldSize, 5, 1, 0.8) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
@@ -27,7 +27,7 @@ ScenePtr Scene::create(const Config &c) {
     ScenePtr scene = ScenePtr(new Scene(Model::New(), worldSize));
     scene->addChild(debugActor);
 
-    scene->camera = Camera::create(c.camera);
+    scene->camera = Camera::create();
     scene->addChild(scene->camera);
 
     scene->addChild(Actor::create(Model::New(scene->terrain.getMesh())));
@@ -41,11 +41,16 @@ ScenePtr Scene::create(const Config &c) {
     for(int i=0;i<4;i++){
         ActorPtr t = Actor::create(gen.get(i));
         t->move({3*i, 0, 0});
-        //scene->addChild(t);
+        scene->addChild(t);
     }
 
 
     auto spawner = Spawner({}, "plants", Generator::LOW, Materials::PLANT);
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
+    scene->addChild(spawner.spawn());
     //scene->getModel()->add(Mesh::New(res.vertices), true);
     //scene->getModel()->debug();
     Timer::stop();
@@ -63,10 +68,11 @@ void Scene::render() {
 CameraPtr Scene::getCamera() const { return camera; }
 
 void Scene::takePhotoPathTracing(const Config &c) {
-    Ray::setEpsilon(c.rayEpsilon);
-
     cout << "Taking photo..." << endl;
-    PhotoSaver photo(c.xRes, c.yRes);
+    
+    float xRes = c.resolution.x;
+    float yRes = c.resolution.y;
+    PhotoSaver photo(xRes, yRes);
 
     vec3 origin = camera->getWorldPosition();
     cout << "Camera position: " << origin << endl;
@@ -74,8 +80,8 @@ void Scene::takePhotoPathTracing(const Config &c) {
     auto &triangles = model->getTriangles();
     auto &meshes = model->getMeshes();
     cout << "Triangles number: " << triangles.size() << endl;
-    cout << "Resolution: " << c.xRes << " x " << c.yRes << endl;
-    cout << "Samples per pixel: " << c.samplesNum << endl;
+    cout << "Resolution: " << xRes << " x " << yRes << endl;
+    cout << "Samples per pixel: " << c.samples << endl;
     
     Timer::start("Building accStruct");
     EmbreeWrapper accStruct(meshes);
@@ -85,10 +91,10 @@ void Scene::takePhotoPathTracing(const Config &c) {
     vec3 leftTop = camera->getLeftTop();
     vec3 leftBottom = camera->getLeftBottom();
     vec3 rightTop = camera->getRightTop();
-    for (int x = 0; x < c.xRes; x++) {
-        for (int y = 0; y < c.yRes; y++) {
-            float xShift = static_cast<float>(x) / c.xRes;
-            float yShift = static_cast<float>(y) / c.yRes;
+    for (int x = 0; x < xRes; x++) {
+        for (int y = 0; y < yRes; y++) {
+            float xShift = x / xRes;
+            float yShift = y / yRes;
             
             vec3 pos = -leftTop + mix(leftTop, rightTop, xShift) +
                             mix(leftTop, leftBottom, yShift);
@@ -97,20 +103,20 @@ void Scene::takePhotoPathTracing(const Config &c) {
 
             vec3 color = vec3(0);
             vec3 emittance = vec3(0);
-            for(int i=0;i<c.samplesNum;i++){
-                PathTracer::CastData data = PathTracer::cast(r, c.k, accStruct, lightSampler);
+            for(int i=0;i<c.samples;i++){
+                PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, lightSampler);
                 vec3 sampleC = data.hit ? data.emittance : vec3(0); 
                 
                 color += sampleC;
                 emittance += data.emittance;
             }
             
-            color /= c.samplesNum;
-            emittance /= c.samplesNum;
+            color /= c.samples;
+            emittance /= c.samples;
              
             photo.setPixel(x, y, color);
             
-            int progress = 100 * (x*c.yRes + y) / (c.xRes * c.yRes);
+            int progress = 100 * (x*yRes + y) / (xRes * yRes);
             cout << "\rProgress: " << progress << "%";
         }
     }
@@ -125,7 +131,6 @@ void Scene::takePhotoPathTracing(const Config &c) {
 void Scene::debugRay(const Config& c) {
     PathTracer::drawLines = true;
     DebugActor::get()->getModel()->clear();
-    Ray::setEpsilon(c.rayEpsilon);
 
     auto &meshes = getModel()->getMeshes();
     EmbreeWrapper accStruct(meshes);
@@ -140,8 +145,8 @@ void Scene::debugRay(const Config& c) {
     vec3 direction = normalize(pos - origin);
     Ray r(origin, direction);
 
-    for(int i=0;i<c.samplesNum;i++){
-        PathTracer::CastData data = PathTracer::cast(r, c.k, accStruct, lightSampler);
+    for(int i=0;i<c.samples;i++){
+        PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, lightSampler);
     }           
 
     PathTracer::drawLines = false;

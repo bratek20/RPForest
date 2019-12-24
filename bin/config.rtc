@@ -1,14 +1,6 @@
 # Comment
-NAME test.exr
-K 5
-RES 800 600
-POS 0 6 12
-LOOK_AT 0 3 0
-UP 0 1 0
-YVIEW 1 
-LC 1 0 0
-BG 0 0 216
-CV 10
-DM 1
-RE 0.001
-SN 16
+PhotoName test.exr
+MaxRayBounces 5
+Resolution 800 600
+DebugMode 1
+Samples 16

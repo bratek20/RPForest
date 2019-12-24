@@ -3,15 +3,25 @@
 #include "Utils.h"
 
 #include <glm/gtc/noise.hpp>
+#include <iostream>
+#include <time.h>
 
-std::default_random_engine Random::generator;
+using namespace std;
+
+default_random_engine Random::generator;
+
+void Random::init() {
+    unsigned seed = time(NULL) % 999979;
+    generator.seed(seed);
+    cout << "Seed: " << seed << endl;
+}
 
 int Random::range(int b, int e) {
     return static_cast<int>(floor(uniform(b, e)));
 }
 
 float Random::uniform(float a, float b){
-    std::uniform_real_distribution<double> distribution(a, b);
+    uniform_real_distribution<double> distribution(a, b);
     return distribution(generator);
 }
 

@@ -25,6 +25,11 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
          bool genNormals,
          const Material& material = Materials::DEFAULT);
 
+    ~Mesh();
+    void clear();
+
+    void merge(MeshPtr mesh);
+
     void apply(const glm::mat4& m);
     void apply(const glm::mat4& posM, const glm::mat3& normM);
     void draw(Shader& shader);
@@ -35,6 +40,7 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
     std::vector<unsigned int>& getIndices();
     const std::vector<Triangle>& getTriangles() const;
     TrianglePtr getTriangle(int idx) const;
+    const Material& getMaterial() const;
 
     void debug();
     
@@ -42,6 +48,7 @@ class Mesh : public Ptr<Mesh, MeshPtr> {
     static const unsigned int VAO_NOT_SET;
     unsigned int VAO = VAO_NOT_SET;
     unsigned int VBO, EBO;
+    bool drawDirty = true;
 
     void setup(bool genNormals);
     void setupTriangles(bool genNormals);

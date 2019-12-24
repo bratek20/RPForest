@@ -16,22 +16,23 @@ Camera::Camera() : Actor(nullptr) {
     rightBottom = Actor::create(nullptr);
 }
 
-CameraPtr Camera::create(const CameraConfig &c) {
+CameraPtr Camera::create() {
     static const glm::vec3 INIT_DIR = glm::vec3(0, 0, 1);
 
     CameraPtr camera = CameraPtr(new Camera());
     camera->addChilds({camera->lookPoint, camera->leftTop, camera->leftBottom,
                        camera->rightTop, camera->rightBottom});
-    camera->setPosition(c.pos);
+    camera->setPosition({0, 10, 0});
 
-    float xView = Window::getRatio() * c.yView;
+    float yView = 1;
+    float xView = Window::getRatio() * yView;
     camera->lookPoint->setPosition(INIT_DIR);
-    glm::vec3 lookDir = c.lookAt - c.pos;
+    glm::vec3 lookDir = INIT_DIR;
     camera->allignToVector(INIT_DIR, lookDir);
-    camera->up = c.up;
-    camera->setCornerPoints(xView, c.yView,
+    camera->up = Utils::VY;
+    camera->setCornerPoints(xView, yView,
                             camera->lookPoint->getLocalPosition(), camera->up);
-    camera->velocity = c.velocity;
+    camera->velocity = 10;
     return camera;
 }
 

@@ -31,6 +31,36 @@ Mesh::Mesh(vector<Vertex> vertices,
     setup(genNormals);
 }
 
+Mesh::~Mesh() {
+    clear();
+}
+
+void Mesh::clear() {
+    vertices.clear();
+    indices.clear();
+    triangles.clear();
+
+    if(VAO != VAO_NOT_SET) {
+        glDeleteBuffers(1, &EBO);
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);
+    }
+    VAO = VAO_NOT_SET;
+}
+
+void Mesh::merge(MeshPtr mesh) {
+    for(unsigned int& idx : mesh->indices) {
+        idx += vertices.size();
+    }
+    vertices.insert(vertices.end(), mesh->vertices.begin(), mesh->vertices.end());
+    indices.insert(indices.end(), mesh->indices.begin(), mesh->indices.end());
+    setupTriangles(false);
+    
+    // mesh->clear();
+
+    drawDirty = true;
+}
+
 void Mesh::apply(const mat4& m) {
     apply(m, Utils::calcNormM(m));
 }
@@ -40,10 +70,14 @@ void Mesh::apply(const glm::mat4& posM, const glm::mat3& normM) {
         v.apply(posM, normM);
     }
 
-    setupDraw();
+    drawDirty = true;
 }
 
 void Mesh::draw(Shader& shader) {
+    if(drawDirty){
+        setupDraw();
+    }
+
     material.apply(shader);
 
     // draw mesh
@@ -70,7 +104,7 @@ void Mesh::setup(bool genNormals) {
     if (indices.size() % 3 == 0) {
         setupTriangles(genNormals);
     }
-    setupDraw();
+    drawDirty = true;
 }
 
 void Mesh::setupTriangles(bool genNormals) {
@@ -102,6 +136,8 @@ void Mesh::setupTriangles(bool genNormals) {
 }
 
 void Mesh::setupDraw() {
+    drawDirty = false;
+
     if (!Globals::debug) {
         return;
     }
@@ -109,8 +145,9 @@ void Mesh::setupDraw() {
     if(VAO == VAO_NOT_SET) {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+        glGenBuffers(1, &EBO);        
     }
+
 
     glBindVertexArray(VAO);
     // load data into vertex buffers
@@ -148,6 +185,10 @@ const vector<Triangle>& Mesh::getTriangles() const {
 
 TrianglePtr Mesh::getTriangle(int idx) const {
     return &triangles[idx];
+}
+
+const Material& Mesh::getMaterial() const {
+    return material;
 }
 
 void Mesh::debug() {
