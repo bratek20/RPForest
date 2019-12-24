@@ -25,7 +25,8 @@ public:
     void update();
     void render(const glm::mat4& worldMat);
     void setVisibleStatus(bool isVisible);
-
+    void debug();
+    
     ModelPtr genFlatModel(const glm::mat4& worldMat);
 
     void addChild(ActorPtr child);

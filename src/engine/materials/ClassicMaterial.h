@@ -9,7 +9,6 @@ class ClassicMaterial : public Material {
     Color diffuse;
     Color specular;
     glm::vec3 emissive;
-    float ns;
 
 public:
     ClassicMaterial(Color ambient, Color diffuse, Color specular, glm::vec3 emissive);

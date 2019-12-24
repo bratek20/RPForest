@@ -12,7 +12,7 @@ using namespace glm;
 
 const unsigned int Mesh::VAO_NOT_SET = numeric_limits<unsigned int>::max();
 
-Mesh::Mesh(vector<vec3> vertices) : material(Materials::DEFAULT) {
+Mesh::Mesh(vector<vec3> vertices) : material(Materials::DEBUG) {
     drawLines = true;
     for (auto& v : vertices) {
         this->vertices.push_back(Vertex(v));
@@ -54,7 +54,9 @@ void Mesh::merge(MeshPtr mesh) {
     }
     vertices.insert(vertices.end(), mesh->vertices.begin(), mesh->vertices.end());
     indices.insert(indices.end(), mesh->indices.begin(), mesh->indices.end());
-    setupTriangles(false);
+    if(!drawLines){
+        setupTriangles(false);
+    }
     
     // mesh->clear();
 

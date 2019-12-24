@@ -18,6 +18,11 @@ const ClassicMaterial Materials::NORMAL = ClassicMaterial(vec3(1.0f, 0.0f, 0.0f)
                                          vec3(0.0f, 0.0f, 0.0f),
                                          vec3(17, 12, 4));
 
+const ClassicMaterial Materials::DEBUG = ClassicMaterial(vec3(1.0f, 0.0f, 0.0f),
+                                         vec3(1.0f, 0.0f, 0.0f),
+                                         vec3(0.0f, 0.0f, 0.0f),
+                                         vec3(17, 12, 4));
+
 const LeafMaterial Materials::LEAF;
 const BarkMaterial Materials::BARK;
 const GroundMaterial Materials::GROUND;

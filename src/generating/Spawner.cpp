@@ -4,8 +4,10 @@
 #include "Random.h"
 
 using namespace std;
+using namespace glm;
 
-Spawner::Spawner(const std::vector<GeneratorPtr>& generators, const std::string& lSysFolder, Generator::LOD lod, const Material& mat) {
+Spawner::Spawner(const vector<GeneratorPtr>& generators, const string& lSysFolder, Generator::LOD lod, const Material& mat, DiamondSquareTerrain& terrain) :
+    terrain(terrain) {
     this->generators.insert(this->generators.end(), generators.begin(), generators.end());
     auto lSysConfigs = Assets::loadLSysConfigs(lSysFolder);
     for(auto& config : lSysConfigs) {
@@ -18,7 +20,10 @@ ActorPtr Spawner::spawn() {
     ModelPtr model = generators[idx]->getRandom();
     ActorPtr actor = Actor::create(model);
     static float i = 0;
-    actor->move(glm::vec3(1,0,0) * i);
+    vec3 pos = vec3(1,0,0) * i;
+    pos.y = terrain.calcHeight(pos.x, pos.z);
+    cout << pos << endl;
+    actor->move(pos);
     i+=1;
     return actor;
 }

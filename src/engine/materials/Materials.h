@@ -12,6 +12,8 @@ public:
     static const ClassicMaterial DEFAULT;
     static const ClassicMaterial DEFAULT_LIGHT;
     static const ClassicMaterial NORMAL;
+    static const ClassicMaterial DEBUG;
+    
     static const LeafMaterial LEAF;
     static const BarkMaterial BARK;
     static const GroundMaterial GROUND;

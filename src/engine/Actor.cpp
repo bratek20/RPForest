@@ -66,6 +66,15 @@ void Actor::setVisibleStatus(bool isVisible){
     this->isVisible = isVisible;
 }
 
+void Actor::debug() {
+    if(model != nullptr) {
+        model->debug();
+    }
+    for(auto& c : childs) {
+        c->debug();
+    }
+}
+
 void Actor::addChild(ActorPtr child){
     child->parent = shared_from_this();
     childs.push_back(child);

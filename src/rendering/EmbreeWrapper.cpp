@@ -2,7 +2,18 @@
 
 using namespace std;
 
-EmbreeWrapper::EmbreeWrapper(const vector<MeshPtr>& meshes) : meshes(meshes) {
+EmbreeWrapper::EmbreeWrapper(const vector<MeshPtr>& meshes) {
+    init(meshes);
+}
+
+EmbreeWrapper::~EmbreeWrapper() {
+    rtcReleaseScene(scene);
+    rtcReleaseDevice(device);
+}
+
+void EmbreeWrapper::init(const vector<MeshPtr>& meshes) {
+    this->meshes = meshes;
+
     device = rtcNewDevice(NULL);
     scene = rtcNewScene(device);
     for(auto& mesh : meshes){
@@ -10,11 +21,6 @@ EmbreeWrapper::EmbreeWrapper(const vector<MeshPtr>& meshes) : meshes(meshes) {
     }
 
     rtcCommitScene(scene);
-}
-
-EmbreeWrapper::~EmbreeWrapper() {
-    rtcReleaseScene(scene);
-    rtcReleaseDevice(device);
 }
 
 struct TriangleWrapper{

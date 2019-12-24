@@ -12,7 +12,7 @@ Model::Model(MeshPtr mesh) {
 
 void Model::add(MeshPtr mesh) {
     auto it = find_if(meshes.begin(), meshes.end(), [&](MeshPtr m){ return &m->getMaterial() == &mesh->getMaterial();});
-    if(it != meshes.end()){
+    if(false && it != meshes.end()){
         (*it)->merge(mesh);
     }
     else {

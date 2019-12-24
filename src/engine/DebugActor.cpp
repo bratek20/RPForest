@@ -17,6 +17,6 @@ DebugActorPtr DebugActor::get() {
 }
 
 void DebugActor::drawLine(vec3 v1, vec3 v2) {
-    MeshPtr mesh = Mesh::New(vector<Vertex>{v1, v2}, vector<unsigned int>{0, 1}, false, Materials::NORMAL);
+    MeshPtr mesh = Mesh::New(vector<vec3>{v1, v2});
     getModel()->add(mesh);
 }

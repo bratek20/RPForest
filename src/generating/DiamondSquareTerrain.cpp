@@ -10,10 +10,18 @@ DiamondSquareTerrain::DiamondSquareTerrain(int n,
                                            float spreadReduction) {
     generateHeights(n, initHeight, spread, spreadReduction);
     generateMesh(meshSize);
+    heightSampler.init({mesh});
 }
 
 MeshPtr DiamondSquareTerrain::getMesh() const {
     return mesh;
+}
+
+float DiamondSquareTerrain::calcHeight(float x, float z) {
+    static const float MAX_HEIGHT = 1e4;
+    Ray r({x, MAX_HEIGHT, z}, {0, -1, 0});
+    HitData hit = heightSampler.cast(r);
+    return hit.pos.y;
 }
 
 void DiamondSquareTerrain::generateHeights(int n,
@@ -42,6 +50,11 @@ void DiamondSquareTerrain::generateHeights(int n,
         }
         spread *= spreadReduction;
     }
+
+    heights[0][0] = 0;
+    heights[size - 1][0] = 0;
+    heights[0][size - 1] = 0;
+    heights[size - 1][size - 1] = 0;
 }
 
 float DiamondSquareTerrain::calcRandomHeight(float spread) {
@@ -52,13 +65,13 @@ void DiamondSquareTerrain::diamondStepFor(int i,
                                           int j,
                                           int step,
                                           float spread) {
-    float height = 0;
+    float height = calcRandomHeight(spread);
     for (int ki = 0; ki <= 1; ki++) {
         for (int kj = 0; kj <= 1; kj++) {
             height += heights[i + ki * step][j + kj * step];
         }
     }
-    heights[i + step / 2][j + step / 2] = height / 4 + calcRandomHeight(spread);
+    heights[i + step / 2][j + step / 2] = height / 4;
 }
 
 void DiamondSquareTerrain::squareStepFor(int i,
@@ -70,7 +83,7 @@ void DiamondSquareTerrain::squareStepFor(int i,
     static int dj[] = {0, 0, 1, -1};
     auto checkRange = [size](int x) { return x >= 0 && x < size; };
 
-    float height = 0;
+    float height = calcRandomHeight(spread);
     int num = 0;
     for (int k = 0; k < 4; k++) {
         int ni = i + di[k] * halfStep;
@@ -80,7 +93,7 @@ void DiamondSquareTerrain::squareStepFor(int i,
             num++;
         }
     }
-    heights[i][j] = height / num + calcRandomHeight(spread);
+    heights[i][j] = height / num;
 }
 
 void DiamondSquareTerrain::generateMesh(float meshSize) {

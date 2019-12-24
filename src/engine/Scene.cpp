@@ -18,11 +18,11 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2), terrain(8, worldSize, 5, 1, 0.8) {}
+Scene::Scene(ModelPtr sceneModel, float worldSize) : Actor(sceneModel), lightSampler(worldSize/2), terrain(2, worldSize, 10, 5, 0.5) {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
-    float worldSize = 100;
+    float worldSize = 10;
     DebugActorPtr debugActor = DebugActor::create();
     ScenePtr scene = ScenePtr(new Scene(Model::New(), worldSize));
     scene->addChild(debugActor);
@@ -41,18 +41,13 @@ ScenePtr Scene::create(const Config &c) {
     for(int i=0;i<4;i++){
         ActorPtr t = Actor::create(gen.get(i));
         t->move({3*i, 0, 0});
-        scene->addChild(t);
+        //scene->addChild(t);
     }
 
 
-    auto spawner = Spawner({}, "plants", Generator::LOW, Materials::PLANT);
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
-    scene->addChild(spawner.spawn());
+    auto spawner = Spawner({}, "plants", Generator::LOW, Materials::PLANT, scene->terrain);
     //scene->getModel()->add(Mesh::New(res.vertices), true);
-    //scene->getModel()->debug();
+    scene->debug();
     Timer::stop();
     return scene;
 }
