@@ -11,12 +11,18 @@ Generator::Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders, flo
     axiom(axiom), paramLoaders(paramLoaders), height(height), lod(lod), mat(mat) {}
 
 void Generator::generateAll() {
+    int prevLod = Shapes::getConeBasePointsNum();
+    const Material* prevMat = Shapes::getConeMaterial();
+
     Shapes::setConeBasePointsNum(lod);
-    Shapes::setConeMaterial(mat);
+    Shapes::setConeMaterial(&mat);
     
     for(auto& loader: paramLoaders){
         models.push_back(generate(axiom, loader));
     }
+
+    Shapes::setConeBasePointsNum(prevLod);
+    Shapes::setConeMaterial(prevMat);
 }
 
 ModelPtr Generator::generate(SymbolPtr axiom, ParamLoader paramLoader) {

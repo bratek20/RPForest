@@ -78,20 +78,15 @@ void Mesh::apply(const glm::mat4& posM, const glm::mat3& normM) {
 void Mesh::draw(Shader& shader) {
     if(drawDirty){
         setupDraw();
+        drawDirty = false;
     }
 
     material.apply(shader);
 
     // draw mesh
     glBindVertexArray(VAO);
-    if (indices.empty()) {
-        glDrawArrays(GL_LINES, 0, VAO);
-    } else if (indices.size() < 3) {
-        glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
-    } else {
-        glDrawElements(drawLines ? GL_LINE_STRIP : GL_TRIANGLES, indices.size(),
-                       GL_UNSIGNED_INT, 0);
-    }
+    glDrawElements(drawLines ? GL_LINES : GL_TRIANGLES, indices.size(),
+                    GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     // always good practice to set everything back to defaults once configured.
@@ -103,7 +98,7 @@ MeshPtr Mesh::copy() const {
 }
 
 void Mesh::setup(bool genNormals) {
-    if (indices.size() % 3 == 0) {
+    if (!drawLines) {
         setupTriangles(genNormals);
     }
     drawDirty = true;
@@ -138,8 +133,6 @@ void Mesh::setupTriangles(bool genNormals) {
 }
 
 void Mesh::setupDraw() {
-    drawDirty = false;
-
     if (!Globals::debug) {
         return;
     }

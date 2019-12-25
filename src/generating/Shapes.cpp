@@ -11,8 +11,17 @@ const Material* Shapes::CONE_MATERIAL = nullptr;
 void Shapes::setConeBasePointsNum(int num) {
     CONE_BASE_POINTS_NUM = num;
 }
-void Shapes::setConeMaterial(const Material& mat) {
-    CONE_MATERIAL = &mat;
+
+int Shapes::getConeBasePointsNum() {
+    return CONE_BASE_POINTS_NUM;
+}
+
+void Shapes::setConeMaterial(const Material* mat) {
+    CONE_MATERIAL = mat;
+}
+
+const Material* Shapes::getConeMaterial() {
+    return CONE_MATERIAL;
 }
 
 MeshPtr Shapes::genPlane(float width, float depth) {

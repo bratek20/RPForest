@@ -1,6 +1,6 @@
 #include "Material.h"
 
-void Material::apply(const Shader& shader) const {
+void Material::apply(const Shader& shader) const {    
     shader.applyColor("AmbientColor", calcAmbient(glm::vec3()));
     shader.applyColor("DiffuseColor", calcDiffuse(glm::vec3()));
     shader.applyColor("SpecularColor", calcSpecular(glm::vec3()));

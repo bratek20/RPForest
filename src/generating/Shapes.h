@@ -10,7 +10,10 @@ class Shapes {
     
 public:
     static void setConeBasePointsNum(int num);
-    static void setConeMaterial(const Material& mat);
+    static int getConeBasePointsNum();
+    static void setConeMaterial(const Material* mat);
+    static const Material* getConeMaterial();
+
     static MeshPtr genCone(float downRadius, float upRadius, float height);
     static MeshPtr genPlane(float width, float depth);
 
