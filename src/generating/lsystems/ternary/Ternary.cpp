@@ -11,7 +11,7 @@ glm::vec3 Ternary::T;
 float Ternary::e;
 
 Ternary::Ternary() : Generator(Symbol::S<TernaryAxiom>(), {load1, load2, load3, load4},
-    2, Generator::MEDIUM, Materials::BARK) {
+    2, Generator::HIGH, Materials::BARK) {
 }
 
 void Ternary::load1() {

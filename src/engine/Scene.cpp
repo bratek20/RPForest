@@ -37,8 +37,9 @@ ScenePtr Scene::create(const Config &c) {
     scene->addChild(scene->camera);
 
     scene->addChild(Actor::create(Model::New(scene->terrain.getMesh())));
-    scene->spawn(scene->plantsSpawner, 3);
-    scene->spawn(scene->treesSpawner, 3);
+    //scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
+    //scene->spawn(scene->plantsSpawner, 3);
+    scene->spawn(scene->treesSpawner, 1);
 
     //scene->debug();
     Timer::stop();

@@ -11,7 +11,7 @@ float Honda::wr = 0.707;
 
 Honda::Honda()
     : Generator(Symbol::S<HondaA>(1, 0.1), {load1, load2, load3, load4},
-     2, Generator::MEDIUM, Materials::BARK) {}
+     2, Generator::HIGH, Materials::BARK) {}
 
 void Honda::load1() {
     r1 = 0.9;
