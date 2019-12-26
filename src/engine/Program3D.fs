@@ -54,7 +54,7 @@ void main(){
 	float lightPower = 100;
 	color += 
 		// Diffuse : "color" of the object  
-		+ MaterialDiffuseColor * invDistLoss * lightPower * cosTheta;
+		+ MaterialDiffuseColor * invDistLoss * lightPower * cosTheta
 		// Specular : reflective highlight, like a mirror
 		+ MaterialSpecularColor * invDistLoss * lightPower * pow(cosAlpha, 10);
 

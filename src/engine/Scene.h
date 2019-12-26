@@ -7,13 +7,14 @@
 #include "SkyLightSampler.h"
 #include "DiamondSquareTerrain.h"
 #include "Spawner.h"
+#include "SkyActor.h"
 
 class Scene;
 using ScenePtr = std::shared_ptr<Scene>;
 
 class Scene : public Actor {
     CameraPtr camera;
-    SkyLightSampler lightSampler;
+    SkyActorPtr sky;
     DiamondSquareTerrain terrain;
     Spawner treesSpawner;
     Spawner plantsSpawner;

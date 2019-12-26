@@ -16,9 +16,11 @@ public:
 
     static MeshPtr genCone(float downRadius, float upRadius, float height);
     static MeshPtr genPlane(float width, float depth);
+    static MeshPtr genCircle(int pointsNum, float radius);
 
 private:
     static std::vector<glm::vec3> genCirclePoints(int pointsNum, float radius, float y);
+    static std::vector<unsigned int> genCircleIndices(int pointsNum);
 };
 
 #endif

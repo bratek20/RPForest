@@ -10,7 +10,7 @@
 class Materials {
 public:
     static const ClassicMaterial DEFAULT;
-    static const ClassicMaterial DEFAULT_LIGHT;
+    static const ClassicMaterial SUN;
     static const ClassicMaterial NORMAL;
     static const ClassicMaterial DEBUG;
     

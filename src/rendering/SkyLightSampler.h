@@ -6,11 +6,20 @@
 #include "AccStruct.h"
 
 class SkyLightSampler : public LightSampler {
+    float radius;
+    ASunSky sunSky;
+    std::vector<TrianglePtr> lightSources;
+    std::vector<float> thresholds;
+
 public:
     SkyLightSampler(float radius);
-
+    
+    void initLightSources(const std::vector<TrianglePtr>& lightSources);
+    
     LightSampleData sample() override;
     glm::vec3 cast(Ray r);
+    
+    glm::vec3 getSunPos() const;
 
 private:
     glm::vec3 calcColor(glm::vec3 skyPos);
@@ -18,9 +27,6 @@ private:
     float calcPhi(glm::vec3 v);
 
     glm::vec3 toRGB(float luminance, float xChroma, float yChroma);
-
-    float radius;
-    ASunSky sunSky;
 };
 
 #endif

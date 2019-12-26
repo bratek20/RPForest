@@ -28,7 +28,7 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     float hw = width /2;
     float hd = depth /2;
 
-    vector<Vertex> vertices(4);
+    vector<Vertex> vertices(3);
     vertices[0] = Vertex(vec3(-hw, 0, -hd), Utils::VY);
     vertices[1] = Vertex(vec3(hw, 0, -hd), Utils::VY);
     vertices[2] = Vertex(vec3(-hw, 0, hd), Utils::VY);
@@ -73,6 +73,16 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
     return Mesh::New(vertices, indices, false, *CONE_MATERIAL);
 }
 
+MeshPtr Shapes::genCircle(int pointsNum, float radius) {
+    auto points = genCirclePoints(pointsNum, radius, 20);
+    auto indices = genCircleIndices(pointsNum);
+    vector<Vertex> vertices;
+    for(vec3 point : points) {
+        vertices.emplace_back(point, -Utils::VY);
+    }
+    return Mesh::New(vertices, indices, false, Materials::SUN);
+}
+
 vector<vec3> Shapes::genCirclePoints(int pointsNum, float radius, float y) {
     vector<vec3> points;
     for (int i = 0; i < pointsNum; i++) {
@@ -82,4 +92,14 @@ vector<vec3> Shapes::genCirclePoints(int pointsNum, float radius, float y) {
         points.push_back(vec3(x, y, z));
     }
     return points;
+}
+
+vector<unsigned int> Shapes::genCircleIndices(int pointsNum) {
+    vector<unsigned int> indices;
+    for(int i=1;i<pointsNum-1;i++){
+        indices.push_back(0);
+        indices.push_back(i);
+        indices.push_back(i + 1);
+    }
+    return indices;
 }

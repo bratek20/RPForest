@@ -21,8 +21,9 @@ int Random::range(int b, int e) {
 }
 
 float Random::uniform(float a, float b){
-    uniform_real_distribution<double> distribution(a, b);
-    return distribution(generator);
+    uniform_real_distribution<float> distribution(a, b);
+    float ans = distribution(generator);
+    return ans;
 }
 
 bool Random::tossCoin(float winProbability){

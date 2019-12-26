@@ -41,7 +41,7 @@ vec3 PathTracer::calcDirectLight(HitData& hit, AccStruct &accStruct, SkyLightSam
     vec3 rayDir = normalize(lightPoint - hit.pos);
 
     HitData visibleHit = accStruct.cast(Ray(hit.pos, rayDir, true));
-    if(visibleHit.intersects()) {
+    if(visibleHit.intersects() && lightSample.triangle != nullptr && *visibleHit.triangle != *lightSample.triangle) {
         return vec3(0);
     }
 
@@ -69,13 +69,15 @@ vec3 PathTracer::calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, Sk
     
     if(drawLines) {
         DebugActor::get()->drawLine(hit.pos, incomingHit.pos);
+        drawLines = false;
     }
+    
     return ans;
 }
 
 float PathTracer::calcCos(glm::vec3 dir, glm::vec3 normal, bool doubleSided) {
     float ans = dot(dir, normal);
-    if ((ans < 0 || ans > 1) && doubleSided){
+     if ((ans < 0 || ans > 1) && doubleSided){
         return dot(dir, -normal);
     }
     return glm::clamp(ans, 0.0f, 1.0f);

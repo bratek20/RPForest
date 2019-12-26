@@ -20,8 +20,7 @@ using namespace glm;
 
 Scene::Scene(ModelPtr sceneModel, float worldSize) : 
     Actor(sceneModel), 
-    lightSampler(worldSize/2), 
-    terrain(2, worldSize, 10, 5, 0.5),
+    terrain(8, worldSize, 10, 10, 0.5),
     treesSpawner({GeneratorPtr(new Honda())}, "trees", Generator::HIGH, Materials::BARK, terrain),
     plantsSpawner({}, "plants", Generator::LOW, Materials::PLANT, terrain)
     {}
@@ -29,17 +28,23 @@ Scene::Scene(ModelPtr sceneModel, float worldSize) :
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
     float worldSize = 100;
-    DebugActorPtr debugActor = DebugActor::create();
+    
     ScenePtr scene = ScenePtr(new Scene(Model::New(), worldSize));
+    
+    DebugActorPtr debugActor = DebugActor::create();
     scene->addChild(debugActor);
 
     scene->camera = Camera::create();
     scene->addChild(scene->camera);
 
+    scene->sky = SkyActor::create();
+    scene->addChild(scene->sky);
+    
+
     scene->addChild(Actor::create(Model::New(scene->terrain.getMesh())));
     //scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
-    //scene->spawn(scene->plantsSpawner, 3);
-    scene->spawn(scene->treesSpawner, 1);
+    //scene->spawn(scene->plantsSpawner, 25);
+    scene->spawn(scene->treesSpawner, 2);
 
     //scene->debug();
     Timer::stop();
@@ -71,7 +76,7 @@ void Scene::takePhotoPathTracing(const Config &c) {
 
     vec3 origin = camera->getWorldPosition();
     cout << "Camera position: " << origin << endl;
-    auto model = genFlatModel(mat4(1.0f));
+    auto model = genFlatModel();
     auto &triangles = model->getTriangles();
     auto &meshes = model->getMeshes();
     cout << "Triangles number: " << triangles.size() << endl;
@@ -99,7 +104,7 @@ void Scene::takePhotoPathTracing(const Config &c) {
             vec3 color = vec3(0);
             vec3 emittance = vec3(0);
             for(int i=0;i<c.samples;i++){
-                PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, lightSampler);
+                PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, sky->getLightSampler());
                 vec3 sampleC = data.hit ? data.emittance : vec3(0); 
                 
                 color += sampleC;
@@ -127,7 +132,8 @@ void Scene::debugRay(const Config& c) {
     PathTracer::drawLines = true;
     DebugActor::get()->getModel()->clear();
 
-    auto &meshes = getModel()->getMeshes();
+    auto model = genFlatModel(mat4(1.0f));
+    auto &meshes = model->getMeshes();
     EmbreeWrapper accStruct(meshes);
 
     vec3 origin = camera->getWorldPosition();
@@ -141,7 +147,7 @@ void Scene::debugRay(const Config& c) {
     Ray r(origin, direction);
 
     for(int i=0;i<c.samples;i++){
-        PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, lightSampler);
+        PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, sky->getLightSampler());
     }           
 
     PathTracer::drawLines = false;

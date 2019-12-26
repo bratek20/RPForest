@@ -5,17 +5,47 @@
 using namespace std;
 using namespace glm;
 
-SkyLightSampler::SkyLightSampler(float radius) : radius(radius), sunSky(51, 19, 1, 180, 6, 2) {
+SkyLightSampler::SkyLightSampler(float radius) 
+: radius(radius), sunSky(51, 19, 1, 180, 6, 2) {
+
+}
+
+void SkyLightSampler::initLightSources(const std::vector<TrianglePtr>& lightSources) {
+    this->lightSources = lightSources;
+    
+    thresholds.clear();
+    for(auto& tri : lightSources){
+        thresholds.push_back(tri->calcArea() * tri->mat.calcEmissive(tri->getCenter()).length());
+    }
+    for(unsigned i = 1; i < thresholds.size(); i++){
+        thresholds[i] += thresholds[i-1];
+    }
 }
 
 LightSampleData SkyLightSampler::sample() {
-    float area = 2 * Utils::PI * radius * radius;
+    float skyArea = 2 * Utils::PI * radius * radius;
+    float randVal = Random::uniform(0, thresholds.back());
+    float area = skyArea - thresholds.back();
     
     LightSampleData ans;
-    ans.point = Random::vectorOnHemisphereCos() * radius;
-    ans.normal = glm::normalize(-ans.point);
-    ans.probability = 1 /  area;
-    ans.color = calcColor(ans.point);
+    if(randVal < thresholds.back()) {
+        int idx = lower_bound(thresholds.begin(), thresholds.end(), randVal) - thresholds.begin();
+        auto source = lightSources[idx]; 
+    
+        ans.point = Random::pointInTriangle(source);
+        ans.normal = source->getNormal(ans.point);
+        ans.color = source->mat.calcEmissive(ans.point);
+        ans.probability = idx == 0 ? thresholds[0] : thresholds[idx] - thresholds[idx-1];
+        ans.probability /= thresholds.back();
+        ans.triangle = source;
+    }
+    else {
+        ans.point = Random::vectorOnHemisphereCos() * radius;
+        ans.normal = glm::normalize(-ans.point);    
+        ans.color = calcColor(ans.point);
+        ans.probability = 1 /  area;
+    }
+    
     return ans;
 }
 
@@ -24,6 +54,10 @@ glm::vec3 SkyLightSampler::cast(Ray r) {
         r.direction.y = 0;
     }
     return calcColor(r.direction);
+}
+
+vec3 SkyLightSampler::getSunPos() const {
+    return sunSky.GetSunPosition() * radius;
 }
 
 vec3 SkyLightSampler::calcColor(vec3 skyPos) {

@@ -1,6 +1,6 @@
 # Comment
 PhotoName test.exr
-MaxRayBounces 5
+MaxRayBounces 2
 Resolution 800 600
 DebugMode 1
-Samples 16
+Samples 64

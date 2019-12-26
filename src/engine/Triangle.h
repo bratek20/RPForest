@@ -14,6 +14,8 @@ struct Triangle {
     const Material& mat;
 
     Triangle(Vertex& v1, Vertex& v2, Vertex& v3, const Material& mat);
+    friend bool operator==(const Triangle& t1, const Triangle& t2);
+    friend bool operator!=(const Triangle& t1, const Triangle& t2);
 
     float calcArea() const;
     bool isInside(glm::vec3 point) const;

@@ -9,6 +9,14 @@ Triangle::Triangle(Vertex &v1, Vertex &v2, Vertex &v3, const Material &mat)
     : v1(v1), v2(v2), v3(v3), mat(mat) {
 }
 
+bool operator==(const Triangle& t1, const Triangle& t2) {
+    return t1.v1.position == t2.v1.position && t1.v2.position == t2.v2.position && t1.v3.position == t2.v3.position && &t1.mat == &t2.mat;   
+}
+
+bool operator!=(const Triangle& t1, const Triangle& t2) {
+    return !(t1==t2); 
+}
+
 float Triangle::calcArea() const {
     return cross(getEdge12(), getEdge13()).length() / 2;
 }
