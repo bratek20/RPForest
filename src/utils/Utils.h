@@ -42,6 +42,13 @@ public:
     static glm::mat3 calcNormM(glm::mat4 posM);
 
     static float average(glm::vec3 v);
+
+    template<typename T>
+    static std::vector<T> merge(const std::vector<T>& v1, const std::vector<T>& v2) {
+        std::vector<T> ans = v1;
+        ans.insert(ans.end(), v2.begin(), v2.end());
+        return ans;
+    }
 };
 
 #endif

@@ -6,7 +6,6 @@
 #include "Config.h"
 #include "SkyLightSampler.h"
 #include "DiamondSquareTerrain.h"
-#include "Spawner.h"
 #include "SkyActor.h"
 
 class Scene;
@@ -16,8 +15,6 @@ class Scene : public Actor {
     CameraPtr camera;
     SkyActorPtr sky;
     DiamondSquareTerrain terrain;
-    Spawner treesSpawner;
-    Spawner plantsSpawner;
 
 public:
     static ScenePtr create(const Config& c);
@@ -31,6 +28,6 @@ protected:
     Scene();
 
 private:
-    void spawn(Spawner& spawner, int elems);
+    void createWorld();
 };
 #endif

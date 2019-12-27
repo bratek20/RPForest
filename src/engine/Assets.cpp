@@ -1,6 +1,8 @@
 #include "Assets.h"
 #include "Light.h"
 #include "Globals.h"
+#include "LSysGenerator.h"
+#include "Honda.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
@@ -21,6 +23,9 @@ Program3D Assets::PROGRAM_3D;
 SkyConfig Assets::SKY_CONFIG;
 TerrainConfig Assets::TERRAIN_CONFIG;
 
+vector<GeneratorPtr> Assets::PLANT_GENERATORS;
+vector<GeneratorPtr> Assets::TREE_GENERATORS;
+
 void Assets::init(){
     if(Globals::debug) {
         PROGRAM_3D = Program3D("../src/engine/Program3D.vs", "../src/engine/Program3D.fs");
@@ -29,6 +34,11 @@ void Assets::init(){
     string configsPath = ASSETS_PREFIX_PATH + "configs/";
     loadConfig(configsPath + "sky.conf", SKY_CONFIG);
     loadConfig(configsPath + "terrain.conf", TERRAIN_CONFIG);
+
+    PLANT_GENERATORS = loadLSysGenerators("plants", Generator::LOW, Materials::PLANT);
+    
+    TREE_GENERATORS = loadLSysGenerators("trees", Generator::HIGH, Materials::BARK);
+    TREE_GENERATORS.push_back(GeneratorPtr(new Honda()));
 }
 
 void Assets::loadConfig(const std::string& path, ConfigParser& config) {
@@ -62,9 +72,18 @@ bool Assets::isValidPath(const string& path){
     return f.good();
 }
 
-vector<LSysConfig> Assets::loadLSysConfigs(const string& folderName) {
+vector<GeneratorPtr> Assets::loadLSysGenerators(const string& folder, Generator::LOD lod, const Material& mat) {
+    auto lSysConfigs = Assets::loadLSysConfigs(folder);
+    vector<GeneratorPtr> generators;
+    for(auto& config : lSysConfigs) {
+        generators.push_back(GeneratorPtr(new LSysGenerator(config, lod, mat)));
+    }
+    return generators;
+}
+
+vector<LSysConfig> Assets::loadLSysConfigs(const string& folder) {
     vector<LSysConfig> configs;
-    for(auto path : getAllPaths(folderName, ".lsys")){
+    for(auto path : getAllPaths(folder, ".lsys")){
         LSysConfig config;
         if(!config.load(path)){
             cerr << "Config at path " << path << " failed to load" << endl;
@@ -76,8 +95,8 @@ vector<LSysConfig> Assets::loadLSysConfigs(const string& folderName) {
     return configs;
 }
 
-vector<string> Assets::getAllPaths(const string& folderName, const string& extension) {
-    string fullFolderPath = ASSETS_PREFIX_PATH + folderName;
+vector<string> Assets::getAllPaths(const string& folder, const string& extension) {
+    string fullFolderPath = ASSETS_PREFIX_PATH + folder;
 
     vector<string> paths;
     for (const auto & entry : fs::directory_iterator(fullFolderPath)) {

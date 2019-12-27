@@ -34,8 +34,8 @@ CameraPtr Camera::create(DiamondSquareTerrain& terrain) {
                             camera->lookPoint->getLocalPosition(), camera->up);
     
     float height = 1.5f;
-    vec3 pos = vec3(0,0,0);
-    pos.y = terrain.calcHeight(pos.x, pos.z) + height;
+    vec3 pos = terrain.calcLowestPoint();
+    pos.y += height;
     camera->setPosition(pos);
     camera->velocity = 10;
     return camera;

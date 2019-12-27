@@ -13,7 +13,9 @@ public:
     DiamondSquareTerrain();
 
     MeshPtr getMesh() const;
+    
     float calcHeight(float x, float z);
+    glm::vec3 calcLowestPoint();
 
 private:
     void generateHeights(int n, float initHeight, float spread, float spreadReductionRate);

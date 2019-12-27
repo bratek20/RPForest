@@ -13,15 +13,13 @@
 #include "Ternary.h"
 #include "Family.h"
 #include "LSysGenerator.h"
-#include "Spawner.h"
+#include "SpawnerActor.h"
 
 using namespace std;
 using namespace glm;
 
 Scene::Scene() : 
-    Actor(nullptr),
-    treesSpawner({GeneratorPtr(new Honda())}, "trees", Generator::HIGH, Materials::BARK, terrain),
-    plantsSpawner({}, "plants", Generator::LOW, Materials::PLANT, terrain)
+    Actor(nullptr)
     {}
 
 ScenePtr Scene::create(const Config &c) {
@@ -32,27 +30,24 @@ ScenePtr Scene::create(const Config &c) {
     DebugActorPtr debugActor = DebugActor::create();
     scene->addChild(debugActor);
 
-    scene->camera = Camera::create(scene->terrain);
-    scene->addChild(scene->camera);
-
-    scene->sky = SkyActor::create();
-    scene->addChild(scene->sky);
-    
-
-    scene->addChild(Actor::create(Model::New(scene->terrain.getMesh())));
-    //scene->addChild(Actor::create(Model::New(Shapes::genPlane(worldSize, worldSize))));
-    //scene->spawn(scene->plantsSpawner, 25);
-    scene->spawn(scene->treesSpawner, 2);
-
+    scene->createWorld();
     //scene->debug();
     Timer::stop();
     return scene;
 }
 
-void Scene::spawn(Spawner& spawner, int elems) {
-    for(int i=0;i<elems;i++){
-        addChild(spawner.spawn());
-    }
+void Scene::createWorld() {
+    camera = Camera::create(terrain);
+    addChild(camera);
+
+    sky = SkyActor::create();
+    addChild(sky);
+    
+    addChild(Actor::create(Model::New(terrain.getMesh())));
+
+    vec3 pos = terrain.calcLowestPoint();
+    addChild(SpawnerActor::create(Assets::PLANT_GENERATORS, terrain, pos + vec3(1,0,0), 4, 3, 3));
+    addChild(SpawnerActor::create(Assets::TREE_GENERATORS, terrain, pos, 5, 2, 4));
 }
 
 void Scene::render() {

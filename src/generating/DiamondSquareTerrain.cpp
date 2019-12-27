@@ -3,10 +3,10 @@
 #include "Random.h"
 
 using namespace std;
+using namespace glm;
 
 DiamondSquareTerrain::DiamondSquareTerrain() {
-    generateHeights(Assets::TERRAIN_CONFIG.n, 
-                    Assets::TERRAIN_CONFIG.initHeight,
+    generateHeights(Assets::TERRAIN_CONFIG.n, Assets::TERRAIN_CONFIG.initHeight,
                     Assets::TERRAIN_CONFIG.spread,
                     Assets::TERRAIN_CONFIG.spreadReductionRate);
     generateMesh(Assets::TERRAIN_CONFIG.size);
@@ -22,6 +22,16 @@ float DiamondSquareTerrain::calcHeight(float x, float z) {
     Ray r({x, MAX_HEIGHT, z}, {0, -1, 0});
     HitData hit = heightSampler.cast(r);
     return hit.pos.y;
+}
+
+vec3 DiamondSquareTerrain::calcLowestPoint() {
+    vec3 ans = vec3(0, Utils::INF, 0);
+    for (auto& v : mesh->getVertices()){
+        if(v.position.y < ans.y){
+            ans = v.position;
+        }
+    } 
+    return ans;
 }
 
 void DiamondSquareTerrain::generateHeights(int n,
