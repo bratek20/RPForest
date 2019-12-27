@@ -18,23 +18,21 @@
 using namespace std;
 using namespace glm;
 
-Scene::Scene(ModelPtr sceneModel, float worldSize) : 
-    Actor(sceneModel), 
-    terrain(8, worldSize, 10, 10, 0.5),
+Scene::Scene() : 
+    Actor(nullptr),
     treesSpawner({GeneratorPtr(new Honda())}, "trees", Generator::HIGH, Materials::BARK, terrain),
     plantsSpawner({}, "plants", Generator::LOW, Materials::PLANT, terrain)
     {}
 
 ScenePtr Scene::create(const Config &c) {
     Timer::start("Creating scene");
-    float worldSize = 100;
     
-    ScenePtr scene = ScenePtr(new Scene(Model::New(), worldSize));
+    ScenePtr scene = ScenePtr(new Scene());
     
     DebugActorPtr debugActor = DebugActor::create();
     scene->addChild(debugActor);
 
-    scene->camera = Camera::create();
+    scene->camera = Camera::create(scene->terrain);
     scene->addChild(scene->camera);
 
     scene->sky = SkyActor::create();
@@ -58,10 +56,10 @@ void Scene::spawn(Spawner& spawner, int elems) {
 }
 
 void Scene::render() {
-    Assets::program.setViewMat(camera->getViewMat());
-    Assets::program.setProjectionMat(camera->getProjectionMat());
+    Assets::PROGRAM_3D.setViewMat(camera->getViewMat());
+    Assets::PROGRAM_3D.setProjectionMat(camera->getProjectionMat());
 
-    Light::applyLights(Assets::program);
+    Light::applyLights(Assets::PROGRAM_3D);
     Actor::render(mat4(1.0f));
 }
 

@@ -1,15 +1,15 @@
 #include "DiamondSquareTerrain.h"
+#include "Assets.h"
 #include "Random.h"
 
 using namespace std;
 
-DiamondSquareTerrain::DiamondSquareTerrain(int n,
-                                           float meshSize,
-                                           float initHeight,
-                                           float spread,
-                                           float spreadReduction) {
-    generateHeights(n, initHeight, spread, spreadReduction);
-    generateMesh(meshSize);
+DiamondSquareTerrain::DiamondSquareTerrain() {
+    generateHeights(Assets::TERRAIN_CONFIG.n, 
+                    Assets::TERRAIN_CONFIG.initHeight,
+                    Assets::TERRAIN_CONFIG.spread,
+                    Assets::TERRAIN_CONFIG.spreadReductionRate);
+    generateMesh(Assets::TERRAIN_CONFIG.size);
     heightSampler.init({mesh});
 }
 
@@ -27,13 +27,13 @@ float DiamondSquareTerrain::calcHeight(float x, float z) {
 void DiamondSquareTerrain::generateHeights(int n,
                                            float initHeight,
                                            float spread,
-                                           float spreadReduction) {
+                                           float spreadReductionRate) {
     int size = (1 << n) + 1;
     heights.resize(size, vector<float>(size));
-    heights[0][0] = Random::uniform(0, initHeight);
-    heights[size - 1][0] = Random::uniform(0, initHeight);
-    heights[0][size - 1] = Random::uniform(0, initHeight);
-    heights[size - 1][size - 1] = Random::uniform(0, initHeight);
+    heights[0][0] = calcRandomHeight(initHeight);
+    heights[size - 1][0] = calcRandomHeight(initHeight);
+    heights[0][size - 1] = calcRandomHeight(initHeight);
+    heights[size - 1][size - 1] = calcRandomHeight(initHeight);
 
     for (int step = 1 << n; step > 1; step /= 2) {
         for (int i = 0; i + step < size; i += step) {
@@ -48,13 +48,8 @@ void DiamondSquareTerrain::generateHeights(int n,
                 squareStepFor(i, j, step / 2, size, spread);
             }
         }
-        spread *= spreadReduction;
+        spread *= spreadReductionRate;
     }
-
-    heights[0][0] = 0;
-    heights[size - 1][0] = 0;
-    heights[0][size - 1] = 0;
-    heights[size - 1][size - 1] = 0;
 }
 
 float DiamondSquareTerrain::calcRandomHeight(float spread) {

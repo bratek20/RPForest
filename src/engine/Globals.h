@@ -7,8 +7,6 @@
 
 class Globals{
 public:
-    static float INF;
-     
     static float previousFrameTime;
     static float currentFrameTime;
     static float deltaTime;

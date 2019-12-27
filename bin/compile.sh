@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -f rpforest.exe
 BUILD_FOLDER=build
 CMAKE_FLAGS=""
 if [ "$1" = "--debug" ] || [ "$1" = "-d" ] || [ "$2" = "--debug" ] || [ "$2" = "-d" ]; then

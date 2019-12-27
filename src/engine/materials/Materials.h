@@ -10,7 +10,6 @@
 class Materials {
 public:
     static const ClassicMaterial DEFAULT;
-    static const ClassicMaterial SUN;
     static const ClassicMaterial NORMAL;
     static const ClassicMaterial DEBUG;
     
@@ -18,6 +17,10 @@ public:
     static const BarkMaterial BARK;
     static const GroundMaterial GROUND;
     static const PlantMaterial PLANT;
+
+    static ClassicMaterial SUN;
+    
+    static void init();
 };
 
 #endif

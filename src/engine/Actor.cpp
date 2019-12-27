@@ -38,8 +38,8 @@ void Actor::update(){
 void Actor::render(const glm::mat4& worldMat){
     auto myWorldMat = worldMat * getLocalMat();
     if(model != nullptr && isVisible){
-        Assets::program.applyWorldMat(myWorldMat);
-        model->draw(Assets::program);
+        Assets::PROGRAM_3D.applyWorldMat(myWorldMat);
+        model->draw(Assets::PROGRAM_3D);
     }
 
     for(auto& c : childs){

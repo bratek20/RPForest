@@ -2,16 +2,16 @@
 #define CLASSIC_MATERIAL_H
 
 #include "Material.h"
-#include "Color.h"
 
 class ClassicMaterial : public Material {
-    Color ambient;
-    Color diffuse;
-    Color specular;
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
     glm::vec3 emissive;
 
 public:
-    ClassicMaterial(Color ambient, Color diffuse, Color specular, glm::vec3 emissive);
+    ClassicMaterial() {}
+    ClassicMaterial(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 emissive);
 
     glm::vec3 calcDiffuse(glm::vec3 pos) const override;
     glm::vec3 calcAmbient(glm::vec3 pos) const override;

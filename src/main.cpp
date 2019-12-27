@@ -51,11 +51,12 @@ int main(int argc, char* argv[]){
 
 	Globals::init(c);
 	Random::init();
+	Assets::init();
+	Materials::init();
 	
 	scene = Scene::create(c);
 
-	if(c.debugMode){	
-		Assets::init();
+	if(c.debugMode){		
 		Input::init();
 		Input::onKeyPressed(GLFW_KEY_P, takePhoto);
 		Input::onKeyPressed(GLFW_KEY_M, printCameraPosition);

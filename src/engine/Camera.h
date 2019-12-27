@@ -3,6 +3,7 @@
 
 #include "Actor.h"
 #include "Config.h"
+#include "DiamondSquareTerrain.h"
 
 class Camera;
 using CameraPtr = std::shared_ptr<Camera>;
@@ -17,7 +18,7 @@ class Camera : public Actor {
     float velocity;
 
 public:
-    static CameraPtr create();
+    static CameraPtr create(DiamondSquareTerrain& terrain);
     
     glm::mat4 getViewMat();
     glm::mat4 getProjectionMat();

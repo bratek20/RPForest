@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <limits>
 
-float Globals::INF = std::numeric_limits<float>::max();
 float Globals::previousFrameTime;
 float Globals::currentFrameTime;
 float Globals::deltaTime;

@@ -28,7 +28,7 @@ public:
     void debugRay(const Config& c);
 
 protected:
-    Scene(ModelPtr sceneModel, float size);
+    Scene();
 
 private:
     void spawn(Spawner& spawner, int elems);

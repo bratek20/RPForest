@@ -10,13 +10,13 @@ class DiamondSquareTerrain {
     EmbreeWrapper heightSampler;
 
 public:
-    DiamondSquareTerrain(int n, float meshSize, float initHeight, float spread, float spreadReduction);
+    DiamondSquareTerrain();
 
     MeshPtr getMesh() const;
     float calcHeight(float x, float z);
 
 private:
-    void generateHeights(int n, float initHeight, float spread, float spreadReduction);
+    void generateHeights(int n, float initHeight, float spread, float spreadReductionRate);
     void diamondStepFor(int i, int j, int step, float spread);
     void squareStepFor(int i, int j, int halfStep, int size, float spread);
 

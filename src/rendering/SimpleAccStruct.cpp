@@ -1,5 +1,5 @@
 #include "SimpleAccStruct.h"
-#include "Globals.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -7,7 +7,7 @@ SimpleAccStruct::SimpleAccStruct(const vector<TrianglePtr>& triangles) : Triangl
 
 HitData SimpleAccStruct::cast(Ray r, float maxDistance){
     HitData ans;
-    ans.distance = Globals::INF;
+    ans.distance = Utils::INF;
     
     for (auto tri : triangles) {
         HitData data = intersect(r, tri);
