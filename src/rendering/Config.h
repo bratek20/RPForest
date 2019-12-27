@@ -10,7 +10,18 @@ struct Config : public ConfigParser {
     int maxRayBounces = 5;
     bool debugMode = false;
     
-    Config();
+    Config() {
+        customParse("#", [](std::ifstream& file){
+            std::string comment;
+            getline(file, comment);
+            (void)comment;
+        });
+        parse("PhotoName", &photoName);
+        parse("Resolution", &resolution);
+        parse("Samples", &samples);
+        parse("MaxRayBounces", &maxRayBounces);
+        parse("DebugMode", &debugMode);
+    }
 };
 
 #endif

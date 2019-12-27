@@ -2,15 +2,13 @@
 #define L_SYS_GENERATOR_H
 
 #include "Generator.h"
+#include "GeneratorConfigCaster.h"
 #include "LSysConfig.h"
 
 class LSysGenerator : public Generator {
-    float height;
 public:
-    LSysGenerator(const LSysConfig& config, Generator::LOD lod, const Material& mat);
+    LSysGenerator(GeneratorConfigPtr config);
     
-    int getN() override { return 1; };
-
 private:
     SymbolPtr generateAxiom(const LSysConfig& config);
 };

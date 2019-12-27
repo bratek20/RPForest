@@ -23,9 +23,15 @@ class ConfigParser {
     std::unordered_map<std::string, ParserTypeInfo> infos;
     std::unordered_map<std::string, std::function<void(std::ifstream&)>> customParsers;
 
+    std::string path;
+
 public:
     bool load(const std::string& path);
 
+    const std::string getPath() const {
+        return path;
+    }
+    
 protected:
     template<typename T>
     void parse(const std::string& name, T* field) {

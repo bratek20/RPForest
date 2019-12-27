@@ -36,7 +36,7 @@ void SpawnerActor::spawnAll(vec3 center, int xGridN, int zGridN, float cellSize)
 
 ActorPtr SpawnerActor::spawn(float x, float z) {
     int idx = Random::range(0, generators.size());
-    ModelPtr model = generators[idx]->getRandom();
+    ModelPtr model = generators[idx]->get();
     ActorPtr actor = Actor::create(model);
     addChild(actor);
     

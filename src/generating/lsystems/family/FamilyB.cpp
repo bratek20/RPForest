@@ -7,7 +7,7 @@ std::vector<SymbolPtr> FamilyB::produce() {
         return {};
     }
     return {
-        S<FamilyForward>(Family::LB, Family::RB),
-        S<FamilyB>(t-Family::PD)
+        S<FamilyForward>(Family::C().LB, Family::C().RB),
+        S<FamilyB>(t-Family::C().PD)
     };
 }

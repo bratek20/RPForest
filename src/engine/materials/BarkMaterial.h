@@ -4,6 +4,9 @@
 #include "Material.h"
 
 class BarkMaterial : public Material {
+public:
+    BarkMaterial() : Material("Bark") {}
+
     glm::vec3 calcDiffuse(glm::vec3 pos) const override;
 };
 

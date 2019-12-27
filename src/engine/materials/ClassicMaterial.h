@@ -10,8 +10,8 @@ class ClassicMaterial : public Material {
     glm::vec3 emissive;
 
 public:
-    ClassicMaterial() {}
-    ClassicMaterial(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 emissive);
+    ClassicMaterial() : Material("NOT SET") {}
+    ClassicMaterial(const std::string& name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 emissive);
 
     glm::vec3 calcDiffuse(glm::vec3 pos) const override;
     glm::vec3 calcAmbient(glm::vec3 pos) const override;

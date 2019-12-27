@@ -1,5 +1,5 @@
-5
-20
-1
-F
-F > F[+F]F[-F][F] 
+N 5
+Height 1
+Angle 20
+Axiom F
+Prod F > F[+F]F[-F][F] 

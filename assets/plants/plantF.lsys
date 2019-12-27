@@ -1,6 +1,6 @@
-5
-22.5
-1
-X
-X > F-[[X]+X]+F[+FX]-X
-F > FF 
+N 5
+Angle 22.5
+Height 1
+Axiom X
+Prod X > F-[[X]+X]+F[+FX]-X
+Prod F > FF 

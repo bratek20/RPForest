@@ -1,17 +1,31 @@
 #ifndef L_SYS_CONFIG_H
 #define L_SYS_CONFIG_H
 
-#include <unordered_map>
-#include <string>
+#include "GeneratorConfig.h"
 
-struct LSysConfig {
-    int n;
+#include <unordered_map>
+
+struct LSysConfig : GeneratorConfig {
+    int lSysN;
     float angle;
-    float height;
-    char axiom;
+    std::string axiom;
     std::unordered_map<char, std::string> productions;
 
-    bool load(const std::string &path);
+    LSysConfig() {
+        parse("Angle", &angle);
+        parse("Axiom", &axiom);
+        customParse("Prod", [&](std::ifstream& file){
+            std::string symbol, arrow, production;
+            file >> symbol >> arrow >> production;
+            productions[symbol[0]] = production;
+        });
+        customParse("N", [&](std::ifstream& file){
+            file >> lSysN;
+            n = 1;
+        });
+
+        material = "Plant";
+    }
 };
 
 #endif

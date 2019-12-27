@@ -4,19 +4,17 @@
 using namespace std;
 using namespace glm;
 
+unordered_map<std::string, const Material*> Materials::materials;
+
 const ClassicMaterial Materials::DEFAULT =
-    ClassicMaterial(vec3(0.8f, 0.8f, 0.8f),
+    ClassicMaterial("Default",
+                    vec3(0.8f, 0.8f, 0.8f),
                     vec3(0.1f, 0.8f, 0.2f),
                     vec3(0.0f, 0.0f, 0.0f),
                     vec3(0, 0, 0));
 
-const ClassicMaterial Materials::NORMAL =
-    ClassicMaterial(vec3(1.0f, 0.0f, 0.0f),
-                    vec3(1.0f, 0.0f, 0.0f),
-                    vec3(0.0f, 0.0f, 0.0f),
-                    vec3(0, 0, 0));
-
-const ClassicMaterial Materials::DEBUG = ClassicMaterial(vec3(1.0f, 0.0f, 0.0f),
+const ClassicMaterial Materials::DEBUG = ClassicMaterial("Debug",
+                                                         vec3(1.0f, 0.0f, 0.0f),
                                                          vec3(1.0f, 0.0f, 0.0f),
                                                          vec3(0.0f, 0.0f, 0.0f),
                                                          vec3(0, 0, 0));
@@ -29,6 +27,25 @@ const PlantMaterial Materials::PLANT;
 ClassicMaterial Materials::SUN;
 
 void Materials::init() {
-    SUN = ClassicMaterial(Assets::SKY_CONFIG.sunColor, Assets::SKY_CONFIG.sunColor,
-                          vec3(0.0f, 0.0f, 0.0f), Assets::SKY_CONFIG.sunColor * Assets::SKY_CONFIG.sunPower);
+    SUN = ClassicMaterial(
+        "Sun", Assets::SKY_CONFIG.sunColor, Assets::SKY_CONFIG.sunColor,
+        vec3(0.0f, 0.0f, 0.0f),
+        Assets::SKY_CONFIG.sunColor * Assets::SKY_CONFIG.sunPower);
+
+    add(DEFAULT);
+    add(DEBUG);
+    add(LEAF);
+    add(BARK);
+    add(GROUND);
+    add(PLANT);
+    add(SUN);
+}
+
+const Material& Materials::get(const std::string& name) {
+    auto it = materials.find(name);
+    return it != materials.end() ? *it->second : DEFAULT;
+}
+
+void Materials::add(const Material& mat) {
+    materials[mat.getName()] = &mat;
 }

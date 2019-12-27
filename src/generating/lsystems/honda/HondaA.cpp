@@ -7,10 +7,10 @@ std::vector<SymbolPtr> HondaA::produce() {
     return {
         S<ForwardConeDraw>(l, w),
         S<StartBranch>(),
-        S<Pitch>(Honda::a0),
-        S<HondaB>(l * Honda::r2, w * Honda::wr),
+        S<Pitch>(Honda::C().a0),
+        S<HondaB>(l * Honda::C().r2, w * Honda::C().wr),
         S<EndBranch>(),
-        S<Roll>(-Honda::d),
-        S<HondaA>(l*Honda::r1, w*Honda::wr)
+        S<Roll>(-Honda::C().d),
+        S<HondaA>(l*Honda::C().r1, w*Honda::C().wr)
     };
 }

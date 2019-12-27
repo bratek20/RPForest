@@ -7,7 +7,7 @@
 
 class StrSymbol : public Symbol {
     std::string str;
-    LSysConfig config;
+    const LSysConfig& config;
 
 public:
     StrSymbol(std::string&& str, const LSysConfig& config);

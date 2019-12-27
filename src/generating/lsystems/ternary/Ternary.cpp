@@ -10,8 +10,8 @@ float Ternary::vr = 1.732;
 glm::vec3 Ternary::T;
 float Ternary::e;
 
-Ternary::Ternary() : Generator(Symbol::S<TernaryAxiom>(), {load1, load2, load3, load4},
-    2, Generator::HIGH, Materials::BARK) {
+Ternary::Ternary() //: Generator(Symbol::S<TernaryAxiom>(), {load1, load2, load3, load4},
+{
 }
 
 void Ternary::load1() {

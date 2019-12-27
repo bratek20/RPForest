@@ -4,58 +4,54 @@
 #include "Shapes.h"
 
 using namespace std;
+GeneratorConfigPtr Generator::CONF;
 
-const Generator::ParamLoader Generator::EMPTY = [](){};
+Generator::Generator(SymbolPtr axiom, GeneratorConfigPtr config) :
+    axiom(axiom), config(config) {}
 
-Generator::Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders, float height, LOD lod, const Material& mat) :
-    axiom(axiom), paramLoaders(paramLoaders), height(height), lod(lod), mat(mat) {}
-
-void Generator::generateAll() {
-    int prevLod = Shapes::getConeBasePointsNum();
-    const Material* prevMat = Shapes::getConeMaterial();
-
-    Shapes::setConeBasePointsNum(lod);
-    Shapes::setConeMaterial(&mat);
-    
-    for(auto& loader: paramLoaders){
-        models.push_back(generate(axiom, loader));
+ModelPtr Generator::generate() {
+    if(!config->check()){
+        cerr << "Config check failed for: " << config->getPath() << endl;
+        return Model::New();
     }
 
-    Shapes::setConeBasePointsNum(prevLod);
-    Shapes::setConeMaterial(prevMat);
-}
+    int prevPoints = Shapes::getConeBasePointsNum();
+    const Material* prevMat = Shapes::getConeMaterial();
+    GeneratorConfigPtr prevConf = CONF;
 
-ModelPtr Generator::generate(SymbolPtr axiom, ParamLoader paramLoader) {
-    paramLoader();
+    Shapes::setConeBasePointsNum(config->coneBasePoints);
+    Shapes::setConeMaterial(&Materials::get(config->material));
+    CONF = config;
+
     vector<SymbolPtr> current = {axiom};
     vector<SymbolPtr> next;
-
-    for (int i = 0; i < getN(); i++) {
+    for (int i = 0; i < config->n; i++) {
         for (auto &s : current) {
             auto result = s->produce();
             next.insert(next.end(), result.begin(), result.end());
         }
         current = std::move(next);
         next.clear();
+        //cout << current.size() << endl;
     }
 
     ProcessContext pc;
     for (auto &s : current) {
         s->process(pc);
     }
+    pc.model->matchHeight(config->height);
 
-    pc.model->matchHeight(height);
+    Shapes::setConeBasePointsNum(prevPoints);
+    Shapes::setConeMaterial(prevMat);
+    CONF = prevConf;
+
     return pc.model;
 }
 
 
-ModelPtr Generator::get(int n) {
-    if(models.empty()) {
-        generateAll();
+ModelPtr Generator::get() {
+    if(model == nullptr) {
+        model = generate();
     }
-    return models[n];
-}
-
-ModelPtr Generator::getRandom() {
-    return get(Random::range(0, models.size()));
+    return model;
 }

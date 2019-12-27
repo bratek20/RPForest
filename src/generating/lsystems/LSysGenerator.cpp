@@ -3,13 +3,13 @@
 
 using namespace std;
 
-LSysGenerator::LSysGenerator(const LSysConfig& config, Generator::LOD lod, const Material& mat) 
-: Generator(generateAxiom(config), {Generator::EMPTY}, config.height, lod, mat) {}
+LSysGenerator::LSysGenerator(GeneratorConfigPtr config) 
+: Generator(generateAxiom(static_cast<const LSysConfig&>(*config)), config) {}
 
 SymbolPtr LSysGenerator::generateAxiom(const LSysConfig& config) {
     auto& prods = config.productions;
-    string symbols(1, config.axiom);
-    for(int i=0;i<config.n;i++){
+    string symbols = config.axiom;
+    for(int i=0;i<config.lSysN;i++){
         string newSymbols = "";
         for(char s : symbols) {
             auto it = prods.find(s); 

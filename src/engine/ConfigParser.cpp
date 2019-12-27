@@ -15,6 +15,8 @@ unordered_map<int, function<void(ifstream&, void*)>> ConfigParser::typeParsers =
 };
 
 bool ConfigParser::load(const string &path) {
+    this->path = path;
+    
     ifstream file(path);
     if (!file.is_open()) {
         cerr << "File: " << path << " not opened!";

@@ -3,7 +3,7 @@
 
 #include "Symbol.h"
 #include "Model.h"
-#include "LSysConfig.h"
+#include "GeneratorConfig.h"
 
 #include <memory>
 #include <vector>
@@ -12,34 +12,20 @@ class Generator;
 using GeneratorPtr = std::shared_ptr<Generator>;
 
 class Generator {
+    SymbolPtr axiom;
+    GeneratorConfigPtr config;
+
+    ModelPtr model;
+
 public:
-    enum LOD {
-        LOW = 3,
-        MEDIUM = 4,
-        HIGH = 5
-    };
+    static GeneratorConfigPtr CONF;
 
-    using ParamLoader = std::function<void()>;
-    static const ParamLoader EMPTY;
-     
-    Generator(SymbolPtr axiom, std::vector<ParamLoader> paramLoaders, float height, LOD lod, const Material& mat);
+    Generator(SymbolPtr axiom, GeneratorConfigPtr config);
 
-    virtual int getN() = 0;
-
-    ModelPtr get(int n);
-    ModelPtr getRandom();
+    ModelPtr get();
 
 private:
-    SymbolPtr axiom;
-    std::vector<ParamLoader> paramLoaders;
-    float height;
-    LOD lod;
-    const Material& mat;
-
-    std::vector<ModelPtr> models;
-
-    void generateAll();
-    ModelPtr generate(SymbolPtr axiom, ParamLoader loader);
+    ModelPtr generate();
 };
 
 #endif

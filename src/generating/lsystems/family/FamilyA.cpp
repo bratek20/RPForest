@@ -5,10 +5,10 @@
 
 std::vector<SymbolPtr> FamilyA::produce() {
     return {
-        S<FamilyForward>(Family::LA, Family::RA),
+        S<FamilyForward>(Family::C().LA, Family::C().RA),
         
         S<StartBranch>(),
-        S<Turn>(-Family::delta),
+        S<Turn>(-Family::C().delta),
         S<FamilyB>(t),
         S<SaveVertex>(),
         S<EndBranch>(),
@@ -18,7 +18,7 @@ std::vector<SymbolPtr> FamilyA::produce() {
         S<EndBranch>(),
 
         S<StartBranch>(),
-        S<Turn>(+Family::delta),
+        S<Turn>(+Family::C().delta),
         S<FamilyB>(t),
         S<SaveVertex>(),
         S<EndBranch>(),

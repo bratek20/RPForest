@@ -3,7 +3,7 @@
 
 #include "Generator.h"
 
-class Ternary : public Generator {
+class Ternary {
 public:
     static int n;
     static float d1;
@@ -15,10 +15,6 @@ public:
     static float e;
 
     Ternary();
-
-    int getN() override {
-        return n;
-    }
     
     static void load1();
     static void load2();

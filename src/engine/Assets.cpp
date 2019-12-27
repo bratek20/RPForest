@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "LSysGenerator.h"
 #include "Honda.h"
+#include "Family.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
@@ -25,6 +26,7 @@ TerrainConfig Assets::TERRAIN_CONFIG;
 
 vector<GeneratorPtr> Assets::PLANT_GENERATORS;
 vector<GeneratorPtr> Assets::TREE_GENERATORS;
+vector<GeneratorPtr> Assets::LEAF_GENERATORS;
 
 void Assets::init(){
     if(Globals::debug) {
@@ -35,10 +37,13 @@ void Assets::init(){
     loadConfig(configsPath + "sky.conf", SKY_CONFIG);
     loadConfig(configsPath + "terrain.conf", TERRAIN_CONFIG);
 
-    PLANT_GENERATORS = loadLSysGenerators("plants", Generator::LOW, Materials::PLANT);
+    PLANT_GENERATORS = loadGenerators<LSysGenerator, LSysConfig>("plants", ".lsys");
     
-    TREE_GENERATORS = loadLSysGenerators("trees", Generator::HIGH, Materials::BARK);
-    TREE_GENERATORS.push_back(GeneratorPtr(new Honda()));
+    TREE_GENERATORS = Utils::merge<GeneratorPtr>(
+        loadGenerators<LSysGenerator, LSysConfig>("trees", ".lsys"),
+        loadGenerators<Honda, HondaConfig>("trees", ".honda"));
+
+    LEAF_GENERATORS = loadGenerators<Family, FamilyConfig>("leafs", ".family");
 }
 
 void Assets::loadConfig(const std::string& path, ConfigParser& config) {
@@ -70,29 +75,6 @@ string Assets::photoSavePath(const string& name){
 bool Assets::isValidPath(const string& path){
     ifstream f(path.c_str());
     return f.good();
-}
-
-vector<GeneratorPtr> Assets::loadLSysGenerators(const string& folder, Generator::LOD lod, const Material& mat) {
-    auto lSysConfigs = Assets::loadLSysConfigs(folder);
-    vector<GeneratorPtr> generators;
-    for(auto& config : lSysConfigs) {
-        generators.push_back(GeneratorPtr(new LSysGenerator(config, lod, mat)));
-    }
-    return generators;
-}
-
-vector<LSysConfig> Assets::loadLSysConfigs(const string& folder) {
-    vector<LSysConfig> configs;
-    for(auto path : getAllPaths(folder, ".lsys")){
-        LSysConfig config;
-        if(!config.load(path)){
-            cerr << "Config at path " << path << " failed to load" << endl;
-        }
-        else{
-            configs.push_back(config);
-        }
-    }
-    return configs;
 }
 
 vector<string> Assets::getAllPaths(const string& folder, const string& extension) {

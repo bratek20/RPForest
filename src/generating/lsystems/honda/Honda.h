@@ -2,27 +2,12 @@
 #define HONDA_H
 
 #include "Generator.h"
+#include "GeneratorConfigCaster.h"
+#include "HondaConfig.h"
 
-class Honda : public Generator {
+class Honda : public Generator, public GeneratorConfigCaster<HondaConfig> {
 public:
-    static int n;
-    static float r1;
-    static float r2;
-    static float a0;
-    static float a2;
-    static float d;
-    static float wr;
-
-    Honda();
-    
-    int getN() override {
-        return n;
-    }
-
-    static void load1();
-    static void load2();
-    static void load3();
-    static void load4();
+    Honda(GeneratorConfigPtr config);
 };
 
 #endif

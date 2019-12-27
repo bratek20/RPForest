@@ -27,6 +27,7 @@ public:
 
     static std::vector<GeneratorPtr> PLANT_GENERATORS;
     static std::vector<GeneratorPtr> TREE_GENERATORS;
+    static std::vector<GeneratorPtr> LEAF_GENERATORS;
 
     static void init(); 
     static void clear();
@@ -37,9 +38,32 @@ public:
 private:
     static void loadConfig(const std::string& path, ConfigParser& config);
     
-    static std::vector<GeneratorPtr> loadLSysGenerators(const std::string& folder, Generator::LOD lod, const Material& mat);
-    static std::vector<LSysConfig> loadLSysConfigs(const std::string& folder);
-    
+    template<typename GeneratorType, typename ConfigType>
+    static std::vector<GeneratorPtr> loadGenerators(const std::string& folder, const std::string& extension) {
+        auto configs = loadGeneratorConfigs<ConfigType>(folder, extension);
+        std::vector<GeneratorPtr> generators;
+        for(auto& config : configs) {
+            generators.push_back(GeneratorPtr(new GeneratorType(config)));
+        }
+        return generators;
+    }
+
+    template<typename T>
+    static std::vector<GeneratorConfigPtr> loadGeneratorConfigs(const std::string& folder, const std::string& extension) {
+        using namespace std;
+        vector<GeneratorConfigPtr> configs;
+        for(auto path : getAllPaths(folder, extension)){
+            GeneratorConfigPtr config = GeneratorConfigPtr(new T());
+            if(!config->load(path)){
+                cerr << "Config at path " << path << " failed to load" << endl;
+            }
+            else{
+                configs.push_back(config);
+            }
+        }
+        return configs;
+    }
+
     static bool isValidPath(const std::string& path);
     static std::vector<std::string> getAllPaths(const std::string& folder, const std::string& extension);
 };

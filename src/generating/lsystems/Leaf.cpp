@@ -1,9 +1,9 @@
 #include "Leaf.h"
 #include "Family.h"
+#include "Assets.h"
 
 void Leaf::process(ProcessContext& pc)  {
-    static Family gen;
-    ModelPtr leaf = gen.getRandom()->copy(); 
+    ModelPtr leaf = Assets::LEAF_GENERATORS[0]->get()->copy(); 
     leaf->apply(pc.current.getWorldMat());
     pc.model->add(leaf);
 }
