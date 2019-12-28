@@ -44,7 +44,7 @@ vec2 Utils::toVec2(const vec3& v, Axis toOmit){
 }
 
 mat4 Utils::getScaleMat(float scale) {
-    return glm::scale(glm::mat4(1.0f), vec3(scale, scale, scale));
+    return glm::scale(mat4(1.0f), vec3(scale, scale, scale));
 }
 
 mat4 Utils::getRotateGlobalMat(vec3 globalY) {
@@ -68,12 +68,19 @@ vec3 Utils::rotateGlobal(vec3 vec, vec3 globalY){
     return static_cast<vec3>(vec4(vec.x, vec.y, vec.z, 0) * getRotateGlobalMat(globalY));
 }
 
-glm::mat3 Utils::calcNormM(glm::mat4 posM) {
+mat3 Utils::calcNormM(mat4 posM) {
     return transpose(inverse(posM));
 }
 
-float Utils::average(glm::vec3 v) {
+float Utils::average(vec3 v) {
     return (v.x + v.y + v.z) / 3;
+}
+
+vec3 Utils::toColor(int r, int g, int b) {
+    static auto cast = [](int val) {
+        return val / 255.f;
+    };
+    return vec3(cast(r), cast(g), cast(b));
 }
 
 ostream& operator<<(ostream& out, const vec3& v){

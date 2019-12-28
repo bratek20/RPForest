@@ -21,7 +21,7 @@ const ClassicMaterial Materials::DEBUG = ClassicMaterial("Debug",
 
 const LeafMaterial Materials::LEAF;
 const BarkMaterial Materials::BARK;
-const GroundMaterial Materials::GROUND;
+const TerrainMaterial Materials::TERRAIN;
 const PlantMaterial Materials::PLANT;
 
 ClassicMaterial Materials::SUN;
@@ -36,7 +36,7 @@ void Materials::init() {
     add(DEBUG);
     add(LEAF);
     add(BARK);
-    add(GROUND);
+    add(TERRAIN);
     add(PLANT);
     add(SUN);
 }

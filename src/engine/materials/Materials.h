@@ -4,7 +4,7 @@
 #include "ClassicMaterial.h"
 #include "LeafMaterial.h"
 #include "BarkMaterial.h"
-#include "GroundMaterial.h"
+#include "TerrainMaterial.h"
 #include "PlantMaterial.h"
 
 #include <unordered_map>
@@ -18,7 +18,7 @@ public:
     
     static const LeafMaterial LEAF;
     static const BarkMaterial BARK;
-    static const GroundMaterial GROUND;
+    static const TerrainMaterial TERRAIN;
     static const PlantMaterial PLANT;
 
     static ClassicMaterial SUN;

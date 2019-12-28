@@ -65,15 +65,16 @@ glm::vec3 SkyLightSampler::cast(Ray r) {
 }
 
 vec3 SkyLightSampler::getSunPos() const {
-    return sunSky.GetSunPosition() * radius;
+    vec3 pos = sunSky.GetSunPosition();
+    swap(pos.y, pos.z);
+    return pos * radius;
 }
 
 vec3 SkyLightSampler::calcColor(vec3 skyPos) {
     swap(skyPos.y, skyPos.z);
     vec3 radiance = sunSky.GetSkyxyYRadiance(skyPos);
-    const static float LUMINANCE_SCALE_FACTOR = 0.00009f;
     vec3 ans =
-        toRGB(LUMINANCE_SCALE_FACTOR * radiance.z, radiance.x, radiance.y);
+        toRGB(Assets::SKY_CONFIG.skyLuminanceFactor * radiance.z, radiance.x, radiance.y);
 
     if (isnan(ans.x) || isnan(ans.x) || isnan(ans.x)) {
         return vec3(0);

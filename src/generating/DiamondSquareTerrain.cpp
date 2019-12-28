@@ -75,6 +75,16 @@ void DiamondSquareTerrain::generateHeights(int n,
         }
         spread *= spreadReductionRate;
     }
+
+    float minHeight = Utils::INF;
+    for(auto& heightsRow : heights) {
+        minHeight = std::min(minHeight, *min_element(heightsRow.begin(), heightsRow.end()));
+    }
+    for(auto& heightsRow : heights) {
+        for(auto& height : heightsRow) {
+            height -= minHeight;
+        }
+    }
 }
 
 float DiamondSquareTerrain::calcRandomHeight(float spread) {
@@ -144,5 +154,5 @@ void DiamondSquareTerrain::generateMesh(float meshSize) {
         }
     }
 
-    mesh = Mesh::New(vertices, indices, true, Materials::GROUND);
+    mesh = Mesh::New(vertices, indices, true, Materials::TERRAIN);
 }

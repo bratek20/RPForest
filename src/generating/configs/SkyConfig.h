@@ -6,6 +6,7 @@
 struct SkyConfig : public ConfigParser {
     glm::vec3 sunColor;
     float sunPower;
+    float skyLuminanceFactor;
 
     float latitude;
     float longitude;
@@ -17,6 +18,7 @@ struct SkyConfig : public ConfigParser {
     SkyConfig() {
         parse("SunColor", &sunColor);
         parse("SunPower", &sunPower);
+        parse("SkyLuminanceFactor", &skyLuminanceFactor);
 
         parse("Latitude", &latitude);
         parse("Longitude", &longitude);

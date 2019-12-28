@@ -43,6 +43,8 @@ public:
 
     static float average(glm::vec3 v);
 
+    static glm::vec3 toColor(int r, int g, int b);
+    
     template<typename T>
     static std::vector<T> merge(const std::vector<T>& v1, const std::vector<T>& v2) {
         std::vector<T> ans = v1;

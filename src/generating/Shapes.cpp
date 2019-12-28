@@ -35,7 +35,7 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     vertices[3] = Vertex(vec3(hw, 0, hd), Utils::VY);
 
     vector<unsigned int> indices = {0,1,2, 3,2,1}; 
-    return Mesh::New(vertices, indices, false, Materials::GROUND);
+    return Mesh::New(vertices, indices, false, Materials::TERRAIN);
 }
 
 MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
@@ -50,15 +50,15 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
     }
 
     vector<unsigned int> indices;
-    for(int i=1;i<CONE_BASE_POINTS_NUM-1;i++){
-        indices.push_back(0);
-        indices.push_back(i);
-        indices.push_back(i + 1);
+    // for(int i=1;i<CONE_BASE_POINTS_NUM-1;i++){
+    //     indices.push_back(0);
+    //     indices.push_back(i);
+    //     indices.push_back(i + 1);
 
-        indices.push_back(CONE_BASE_POINTS_NUM);
-        indices.push_back(CONE_BASE_POINTS_NUM + i);
-        indices.push_back(CONE_BASE_POINTS_NUM + i + 1);
-    }
+    //     indices.push_back(CONE_BASE_POINTS_NUM);
+    //     indices.push_back(CONE_BASE_POINTS_NUM + i);
+    //     indices.push_back(CONE_BASE_POINTS_NUM + i + 1);
+    // }
 
     static auto next = [](int i){return (i + 1)%CONE_BASE_POINTS_NUM;};
     for(int i=0;i<CONE_BASE_POINTS_NUM;i++){
