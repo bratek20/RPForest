@@ -25,10 +25,25 @@ float DiamondSquareTerrain::calcHeight(float x, float z) {
 }
 
 vec3 DiamondSquareTerrain::calcBestCameraPos() {
-    vec3 ans = vec3(0, Utils::INF, 0);
+    float size = Assets::TERRAIN_CONFIG.size;
+    const CameraConfig& conf = Assets::CAMERA_CONFIG;
+    
+    auto checkOffset = [&](float val) {
+        return size / 2 - abs(val) > conf.edgeMinOffset;
+    };
+
+    vec3 ans = vec3(0);
+    float error = Utils::INF;
     for (auto& v : mesh->getVertices()){
-        if(v.position.y < ans.y){
-            ans = v.position;
+        auto& pos = v.position;
+        if(!checkOffset(pos.x) || !checkOffset(pos.z)) {
+            continue;
+        }
+        
+        float heightError = abs(pos.y - conf.expectedPositionY);
+        if(heightError < error) {
+            error = heightError;
+            ans = pos;
         }
     } 
     return ans;

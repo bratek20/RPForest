@@ -29,15 +29,24 @@ CameraPtr Camera::create(DiamondSquareTerrain& terrain) {
 
     float yView = 1;
     float xView = Window::getRatio() * yView;
-    camera->lookPoint->setPosition(INIT_DIR);
-    camera->allignToVector(INIT_DIR, config.lookDirection);
-    camera->up = Utils::VY;
-    camera->setCornerPoints(xView, yView,
-                            camera->lookPoint->getLocalPosition(), camera->up);
     
     vec3 pos = terrain.calcBestCameraPos();
     pos.y += config.lookHeight;
     camera->setPosition(pos);
+
+    vec3 lookDir = normalize(config.lookDirection); 
+    vec3 lookPos = pos + lookDir * config.lookDistance;
+    lookPos.y = terrain.calcHeight(lookPos.x, lookPos.z) + config.lookHeight;
+    vec3 lookHeightOffset = normalize(lookPos - pos);
+    lookDir += lookHeightOffset;
+    
+    camera->lookPoint->setPosition(INIT_DIR);
+    camera->allignToVector(INIT_DIR, lookDir);
+    camera->up = Utils::VY;
+    camera->setCornerPoints(xView, yView,
+                            camera->lookPoint->getLocalPosition(), camera->up);
+    
+    
     camera->velocity = config.debugVelocity;
     return camera;
 }
