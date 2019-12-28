@@ -6,30 +6,30 @@
 using namespace std;
 using namespace glm;
 
-SpawnerActor::SpawnerActor(const std::vector<GeneratorPtr>& generators,
+SpawnerActor::SpawnerActor(const SpawnerConfig& config,
                            DiamondSquareTerrain& terrain)
-    : Actor(nullptr), generators(generators), terrain(terrain) {}
+    : Actor(nullptr), config(config), generators(Assets::getGenerators(config.generatorType)), terrain(terrain) {}
 
 SpawnerActorPtr SpawnerActor::create(
-    const std::vector<GeneratorPtr>& generators,
+    const SpawnerConfig& config,
     DiamondSquareTerrain& terrain,
-    glm::vec3 center,
-    int xGridN,
-    int zGridN,
-    float cellSize) {
+    glm::vec3 cameraPos) {
 
     SpawnerActorPtr spawner =
-        SpawnerActorPtr(new SpawnerActor(generators, terrain));
-    spawner->spawnAll(center, xGridN, zGridN, cellSize);
+        SpawnerActorPtr(new SpawnerActor(config, terrain));
+    spawner->spawnAll(cameraPos);
     return spawner;
 }
 
-void SpawnerActor::spawnAll(vec3 center, int xGridN, int zGridN, float cellSize) {
-    for (int x = 0; x < xGridN; x++) {
-        for (int z = 0; z < zGridN; z++) {
-            float X = x * cellSize + center.x;
-            float Z = z * cellSize + center.z;  
-            spawn(X, Z);
+void SpawnerActor::spawnAll(vec3 cameraPos) {
+    for (int x = 0; x < config.xGridN; x++) {
+        for (int z = 0; z < config.zGridN; z++) {
+            float worldX = x * config.cellSize + cameraPos.x + config.cameraOffset.x;
+            float worldZ = z * config.cellSize + cameraPos.z + config.cameraOffset.y;  
+            
+            if(Random::tossCoin(config.spawnProbability)){
+                spawn(worldX, worldZ);
+            }
         }
     }
 }

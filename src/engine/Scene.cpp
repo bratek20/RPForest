@@ -45,9 +45,10 @@ void Scene::createWorld() {
     
     addChild(Actor::create(Model::New(terrain.getMesh())));
 
-    vec3 pos = terrain.calcLowestPoint();
-    addChild(SpawnerActor::create(Assets::PLANT_GENERATORS, terrain, pos + vec3(1,0,0), 4, 3, 3));
-    addChild(SpawnerActor::create(Assets::TREE_GENERATORS, terrain, pos, 5, 2, 4));
+    vec3 cameraPos = camera->getWorldPosition();
+    for(auto& spawnerConfig : Assets::SPAWNER_CONFIGS) {
+        addChild(SpawnerActor::create(spawnerConfig, terrain, cameraPos));
+    }
 }
 
 void Scene::render() {

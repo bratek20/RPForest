@@ -23,6 +23,8 @@ const vector<string> Assets::POSSIBLE_PATH_PREFIXES =
 Program3D Assets::PROGRAM_3D;
 SkyConfig Assets::SKY_CONFIG;
 TerrainConfig Assets::TERRAIN_CONFIG;
+CameraConfig Assets::CAMERA_CONFIG;
+vector<SpawnerConfig> Assets::SPAWNER_CONFIGS;
 
 vector<GeneratorPtr> Assets::PLANT_GENERATORS;
 vector<GeneratorPtr> Assets::TREE_GENERATORS;
@@ -36,6 +38,9 @@ void Assets::init(){
     string configsPath = ASSETS_PREFIX_PATH + "configs/";
     loadConfig(configsPath + "sky.conf", SKY_CONFIG);
     loadConfig(configsPath + "terrain.conf", TERRAIN_CONFIG);
+    loadConfig(configsPath + "camera.conf", CAMERA_CONFIG);
+ 
+    SPAWNER_CONFIGS = loadConfigs<SpawnerConfig>("spawners", ".spawner");
 
     PLANT_GENERATORS = loadGenerators<LSysGenerator, LSysConfig>("plants", ".lsys");
     
@@ -46,11 +51,13 @@ void Assets::init(){
     LEAF_GENERATORS = loadGenerators<Family, FamilyConfig>("leafs", ".family");
 }
 
-void Assets::loadConfig(const std::string& path, ConfigParser& config) {
+bool Assets::loadConfig(const std::string& path, ConfigParser& config) {
     cout << "Loading config at path: " << path << endl;
     if(!config.load(path)){
         cerr << "Config failed to load!!!" << endl;
+        return false;
     }
+    return true;
 }
 
 void Assets::clear(){
@@ -77,6 +84,18 @@ bool Assets::isValidPath(const string& path){
     return f.good();
 }
 
+const std::vector<GeneratorPtr>& Assets::getGenerators(const std::string& generatorType) {
+    if(generatorType == "Plant") {
+        return PLANT_GENERATORS;
+    }
+    if(generatorType == "Tree") {
+        return TREE_GENERATORS;
+    }
+
+    cerr << "No generators found for type: " << generatorType << endl;
+    static vector<GeneratorPtr> EMPTY;
+    return EMPTY;
+}
 vector<string> Assets::getAllPaths(const string& folder, const string& extension) {
     string fullFolderPath = ASSETS_PREFIX_PATH + folder;
 

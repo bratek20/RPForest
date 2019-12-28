@@ -24,7 +24,7 @@ float DiamondSquareTerrain::calcHeight(float x, float z) {
     return hit.pos.y;
 }
 
-vec3 DiamondSquareTerrain::calcLowestPoint() {
+vec3 DiamondSquareTerrain::calcBestCameraPos() {
     vec3 ans = vec3(0, Utils::INF, 0);
     for (auto& v : mesh->getVertices()){
         if(v.position.y < ans.y){

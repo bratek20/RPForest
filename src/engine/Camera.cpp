@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Globals.h"
 #include "Input.h"
+#include "Assets.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/vector_angle.hpp>
@@ -18,6 +19,8 @@ Camera::Camera() : Actor(nullptr) {
 }
 
 CameraPtr Camera::create(DiamondSquareTerrain& terrain) {
+    auto& config = Assets::CAMERA_CONFIG;
+
     static const vec3 INIT_DIR = vec3(0, 0, 1);
 
     CameraPtr camera = CameraPtr(new Camera());
@@ -27,17 +30,15 @@ CameraPtr Camera::create(DiamondSquareTerrain& terrain) {
     float yView = 1;
     float xView = Window::getRatio() * yView;
     camera->lookPoint->setPosition(INIT_DIR);
-    vec3 lookDir = INIT_DIR;
-    camera->allignToVector(INIT_DIR, lookDir);
+    camera->allignToVector(INIT_DIR, config.lookDirection);
     camera->up = Utils::VY;
     camera->setCornerPoints(xView, yView,
                             camera->lookPoint->getLocalPosition(), camera->up);
     
-    float height = 1.5f;
-    vec3 pos = terrain.calcLowestPoint();
-    pos.y += height;
+    vec3 pos = terrain.calcBestCameraPos();
+    pos.y += config.lookHeight;
     camera->setPosition(pos);
-    camera->velocity = 10;
+    camera->velocity = config.debugVelocity;
     return camera;
 }
 

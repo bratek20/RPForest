@@ -15,6 +15,8 @@
 #include "SkyConfig.h"
 #include "TerrainConfig.h"
 #include "Generator.h"
+#include "CameraConfig.h"
+#include "SpawnerConfig.h"
 
 class Assets {
     static const std::string ASSETS_PREFIX_PATH;
@@ -22,8 +24,11 @@ class Assets {
 
 public:
     static Program3D PROGRAM_3D;
+
     static SkyConfig SKY_CONFIG;
     static TerrainConfig TERRAIN_CONFIG;
+    static CameraConfig CAMERA_CONFIG;
+    static std::vector<SpawnerConfig> SPAWNER_CONFIGS;
 
     static std::vector<GeneratorPtr> PLANT_GENERATORS;
     static std::vector<GeneratorPtr> TREE_GENERATORS;
@@ -35,9 +40,24 @@ public:
     static std::string validPath(const std::string& path);
     static std::string photoSavePath(const std::string& name);
 
+    static const std::vector<GeneratorPtr>& getGenerators(const std::string& generatorType);
+
 private:
-    static void loadConfig(const std::string& path, ConfigParser& config);
+    static bool loadConfig(const std::string& path, ConfigParser& config);
     
+    template<typename T>
+    static std::vector<T> loadConfigs(const std::string& folder, const std::string& extension) {
+        using namespace std;
+        vector<T> configs;
+        for(auto path : getAllPaths(folder, extension)){
+            T config;
+            if(loadConfig(path, config)){
+                configs.push_back(config);
+            }
+        }
+        return configs;
+    }
+
     template<typename GeneratorType, typename ConfigType>
     static std::vector<GeneratorPtr> loadGenerators(const std::string& folder, const std::string& extension) {
         auto configs = loadGeneratorConfigs<ConfigType>(folder, extension);
@@ -54,10 +74,7 @@ private:
         vector<GeneratorConfigPtr> configs;
         for(auto path : getAllPaths(folder, extension)){
             GeneratorConfigPtr config = GeneratorConfigPtr(new T());
-            if(!config->load(path)){
-                cerr << "Config at path " << path << " failed to load" << endl;
-            }
-            else{
+            if(loadConfig(path, *config)){
                 configs.push_back(config);
             }
         }

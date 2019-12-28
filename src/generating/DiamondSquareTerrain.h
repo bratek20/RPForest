@@ -15,7 +15,7 @@ public:
     MeshPtr getMesh() const;
     
     float calcHeight(float x, float z);
-    glm::vec3 calcLowestPoint();
+    glm::vec3 calcBestCameraPos();
 
 private:
     void generateHeights(int n, float initHeight, float spread, float spreadReductionRate);

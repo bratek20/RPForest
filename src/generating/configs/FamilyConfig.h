@@ -12,7 +12,7 @@ struct FamilyConfig : public GeneratorConfig {
     float PD;
     
     FamilyConfig() {
-        parse("delta", &delta);
+        parse("Delta", &delta);
         parse("LA", &LA);
         parse("RA", &RA);
         parse("LB", &LB);

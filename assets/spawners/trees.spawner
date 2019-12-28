@@ -1,0 +1,8 @@
+CameraOffset 0 5
+
+XGridN 5
+ZGridN 2
+CellSize 4
+
+GeneratorType Tree
+SpawnProbability 1
