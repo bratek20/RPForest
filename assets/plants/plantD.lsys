@@ -1,6 +1,6 @@
 N 7
 Angle 20
-Height 1
+Height 0.5
 Axiom X
 Prod X > F[+X]F[-X]+X
 Prod F > FF 

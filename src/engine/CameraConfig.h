@@ -16,6 +16,7 @@ struct CameraConfig : public ConfigParser {
     CameraConfig() {
         parse("LookHeight", &lookHeight);
         parse("LookDirection", &lookDirection);
+        parse("LookDistance", &lookDistance);
         parse("EdgeMinOffset", &edgeMinOffset);
         parse("ExpectedPositionY", &expectedPositionY);
         parse("DebugVelocity", &debugVelocity);

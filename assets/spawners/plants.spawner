@@ -1,0 +1,12 @@
+CameraOffset 0 4
+
+XGridN 4
+ZGridN 6
+CellSize 0.5
+
+GeneratorType Plant
+SpawnProbability 0.8
+
+RandomPositionPercentage 0.8
+MinElementScale 0.8
+MaxElementScale 1.2
