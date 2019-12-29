@@ -16,11 +16,9 @@ ModelPtr Generator::generate() {
     }
 
     int prevPoints = Shapes::getConeBasePointsNum();
-    const Material* prevMat = Shapes::getConeMaterial();
     GeneratorConfigPtr prevConf = CONF;
 
     Shapes::setConeBasePointsNum(config->coneBasePoints);
-    Shapes::setConeMaterial(&Materials::get(config->material));
     CONF = config;
 
     vector<SymbolPtr> current = {axiom};
@@ -32,17 +30,16 @@ ModelPtr Generator::generate() {
         }
         current = std::move(next);
         next.clear();
-        //cout << current.size() << endl;
     }
 
     ProcessContext pc;
+    pc.material = &Materials::get(config->material);
     for (auto &s : current) {
         s->process(pc);
     }
     pc.model->matchHeight(config->height);
 
     Shapes::setConeBasePointsNum(prevPoints);
-    Shapes::setConeMaterial(prevMat);
     CONF = prevConf;
 
     return pc.model;

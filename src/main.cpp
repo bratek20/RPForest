@@ -25,18 +25,10 @@ void printCameraPosition(){
 
 void takePhoto(){
 	scene->takePhotoPathTracing(c);
-
 }
 
 void debugRay() {
 	scene->debugRay(c);
-}
-
-void debugRot(){
-	scene->getModel()->clear();
-	auto mesh = Shapes::genCone(0.02, 0.01, 0.5);
-	mesh->apply(t.getWorldMat());
-	scene->getModel()->add(mesh);
 }
 
 int main(int argc, char* argv[]){
@@ -52,7 +44,7 @@ int main(int argc, char* argv[]){
 	Globals::init(c);
 	Random::init();
 	Assets::init();
-	Materials::init();
+	Materials::init();	
 	
 	scene = Scene::create(c);
 
@@ -61,15 +53,6 @@ int main(int argc, char* argv[]){
 		Input::onKeyPressed(GLFW_KEY_P, takePhoto);
 		Input::onKeyPressed(GLFW_KEY_M, printCameraPosition);
 		Input::onKeyPressed(GLFW_KEY_L, debugRay);
-
-		float angle = 30;
-		Input::onKeyPressed(GLFW_KEY_KP_4, [&](){t.rotateUp(angle);});
-		Input::onKeyPressed(GLFW_KEY_KP_6, [&](){t.rotateUp(-angle);});
-		Input::onKeyPressed(GLFW_KEY_KP_8, [&](){t.rotateLeft(angle);});
-		Input::onKeyPressed(GLFW_KEY_KP_5, [&](){t.rotateLeft(-angle);});
-		Input::onKeyPressed(GLFW_KEY_KP_7, [&](){t.rotateFront(-angle);});
-		Input::onKeyPressed(GLFW_KEY_KP_9, [&](){t.rotateFront(angle);});
-		Input::onKeyPressed(GLFW_KEY_KP_0, debugRot);
 
 		while(!Window::shouldClose()){
 			Input::handle();

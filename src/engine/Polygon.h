@@ -8,7 +8,7 @@ class Polygon {
 
    public:
     void save(glm::vec3 pos);
-    MeshPtr genMesh();
+    MeshPtr genMesh(const Material& mat);
 };
 
 #endif

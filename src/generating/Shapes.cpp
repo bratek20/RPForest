@@ -6,7 +6,6 @@ using namespace std;
 using namespace glm;
 
 int Shapes::CONE_BASE_POINTS_NUM = 3;
-const Material* Shapes::CONE_MATERIAL = nullptr;
 
 void Shapes::setConeBasePointsNum(int num) {
     CONE_BASE_POINTS_NUM = num;
@@ -14,14 +13,6 @@ void Shapes::setConeBasePointsNum(int num) {
 
 int Shapes::getConeBasePointsNum() {
     return CONE_BASE_POINTS_NUM;
-}
-
-void Shapes::setConeMaterial(const Material* mat) {
-    CONE_MATERIAL = mat;
-}
-
-const Material* Shapes::getConeMaterial() {
-    return CONE_MATERIAL;
 }
 
 MeshPtr Shapes::genPlane(float width, float depth) {
@@ -38,7 +29,7 @@ MeshPtr Shapes::genPlane(float width, float depth) {
     return Mesh::New(vertices, indices, false, Materials::TERRAIN);
 }
 
-MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
+MeshPtr Shapes::genCone(float downRadius, float upRadius, float height, const Material& mat) {
     auto down = genCirclePoints(CONE_BASE_POINTS_NUM, downRadius, 0);
     auto up = genCirclePoints(CONE_BASE_POINTS_NUM, upRadius, height);
 
@@ -70,7 +61,7 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height) {
         indices.push_back(CONE_BASE_POINTS_NUM + next(i));
         indices.push_back(CONE_BASE_POINTS_NUM + i);
     }
-    return Mesh::New(vertices, indices, false, *CONE_MATERIAL);
+    return Mesh::New(vertices, indices, false, mat);
 }
 
 MeshPtr Shapes::genCircle(int pointsNum, float radius) {

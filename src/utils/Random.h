@@ -23,5 +23,10 @@ public:
     static glm::vec3 pointInTriangle(TrianglePtr triangle);
     
     static float noise(glm::vec3 v);
+
+    template<typename T>
+    static T randomElement(const std::vector<T>& v) {
+        return v[range(0, v.size())];
+    }
 };
 #endif

@@ -6,15 +6,12 @@
 
 class Shapes {
     static int CONE_BASE_POINTS_NUM;
-    static const Material* CONE_MATERIAL;
-    
+
 public:
     static void setConeBasePointsNum(int num);
     static int getConeBasePointsNum();
-    static void setConeMaterial(const Material* mat);
-    static const Material* getConeMaterial();
 
-    static MeshPtr genCone(float downRadius, float upRadius, float height);
+    static MeshPtr genCone(float downRadius, float upRadius, float height, const Material& mat);
     static MeshPtr genPlane(float width, float depth);
     static MeshPtr genCircle(int pointsNum, float radius);
 

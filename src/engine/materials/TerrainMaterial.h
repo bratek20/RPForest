@@ -9,7 +9,7 @@ public:
     
     glm::vec3 calcDiffuse(glm::vec3 pos) const override;
     
-    glm::vec3 calcGrassColor(glm::vec3 pos) const;
+    glm::vec3 calcGroundColor(glm::vec3 pos) const;
     glm::vec3 calcRockColor(glm::vec3 pos) const;
 };
 

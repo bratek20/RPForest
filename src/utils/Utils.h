@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "Color.h"
+#include "MaterialConfig.h"
 
 #include <functional>
 #include <glm/glm.hpp>
@@ -43,7 +43,8 @@ public:
 
     static float average(glm::vec3 v);
 
-    static glm::vec3 toColor(int r, int g, int b);
+    static glm::vec3 mixColors(const MaterialConfig& config, glm::vec3 pos);
+    static glm::vec3 mixColors(glm::vec3 color1, glm::vec3 color2, glm::vec3 pos, float noisePosFactor, float noiseValFactor);
     
     template<typename T>
     static std::vector<T> merge(const std::vector<T>& v1, const std::vector<T>& v2) {

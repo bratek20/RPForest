@@ -10,12 +10,18 @@ struct TerrainConfig : public ConfigParser {
     float spread;
     float spreadReductionRate;
     
+    float rockStartY = 10;
+    float groundEndY = 20;
+
     TerrainConfig() {
         parse("N", &n);
         parse("Size", &size);
         parse("InitHeight", &initHeight);
         parse("Spread", &spread);
         parse("SpreadReductionRate", &spreadReductionRate);
+
+        parse("RockStartY", &rockStartY);
+        parse("GroundEndY", &groundEndY);
     }
 };
 

@@ -30,15 +30,20 @@ vector<GeneratorPtr> Assets::PLANT_GENERATORS;
 vector<GeneratorPtr> Assets::TREE_GENERATORS;
 vector<GeneratorPtr> Assets::LEAF_GENERATORS;
 
+MaterialConfig Assets::GROUND_MATERIAL_CONFIG;
+MaterialConfig Assets::ROCK_MATERIAL_CONFIG;
+MaterialConfig Assets::PLANT_MATERIAL_CONFIG;
+MaterialConfig Assets::LEAF_MATERIAL_CONFIG;
+MaterialConfig Assets::BARK_MATERIAL_CONFIG;
+
 void Assets::init(){
     if(Globals::debug) {
         PROGRAM_3D = Program3D("../src/engine/Program3D.vs", "../src/engine/Program3D.fs");
     }
     
-    string configsPath = ASSETS_PREFIX_PATH + "configs/";
-    loadConfig(configsPath + "sky.conf", SKY_CONFIG);
-    loadConfig(configsPath + "terrain.conf", TERRAIN_CONFIG);
-    loadConfig(configsPath + "camera.conf", CAMERA_CONFIG);
+    loadConfig("configs", "sky.conf", SKY_CONFIG);
+    loadConfig("configs", "terrain.conf", TERRAIN_CONFIG);
+    loadConfig("configs", "camera.conf", CAMERA_CONFIG);
  
     SPAWNER_CONFIGS = loadConfigs<SpawnerConfig>("spawners", ".spawner");
 
@@ -49,6 +54,12 @@ void Assets::init(){
         loadGenerators<Honda, HondaConfig>("trees", ".honda"));
 
     LEAF_GENERATORS = loadGenerators<Family, FamilyConfig>("leafs", ".family");
+
+    loadConfig("materials", "ground.mat", GROUND_MATERIAL_CONFIG);
+    loadConfig("materials", "rock.mat", ROCK_MATERIAL_CONFIG);
+    loadConfig("materials", "plant.mat", PLANT_MATERIAL_CONFIG);
+    loadConfig("materials", "leaf.mat", LEAF_MATERIAL_CONFIG);
+    loadConfig("materials", "bark.mat", BARK_MATERIAL_CONFIG);
 }
 
 bool Assets::loadConfig(const std::string& path, ConfigParser& config) {
@@ -58,6 +69,10 @@ bool Assets::loadConfig(const std::string& path, ConfigParser& config) {
         return false;
     }
     return true;
+}
+
+bool Assets::loadConfig(const std::string& folder, const std::string& name, ConfigParser& config) {
+    loadConfig(ASSETS_PREFIX_PATH + folder + "/" + name, config);
 }
 
 void Assets::clear(){

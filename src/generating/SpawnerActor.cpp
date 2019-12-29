@@ -49,9 +49,7 @@ void SpawnerActor::spawnAll(vec3 cameraPos) {
 }
 
 ActorPtr SpawnerActor::spawn(float x, float z) {
-    int idx = Random::range(0, generators.size());
-    ModelPtr model = generators[idx]->get();
-    
+    ModelPtr model = Random::randomElement(generators)->get();
     ActorPtr actor = Actor::create(model);
     addChild(actor);
 

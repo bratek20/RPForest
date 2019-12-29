@@ -9,7 +9,8 @@ struct ProcessContext {
     Turtle current;
     std::vector<Turtle> stack;
     ModelPtr model = Model::New(); 
-    std::vector<Polygon> polygons;    
+    std::vector<Polygon> polygons;
+    const Material* material;    
 };
 
 #endif

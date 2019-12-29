@@ -9,7 +9,7 @@ unordered_map<std::string, const Material*> Materials::materials;
 const ClassicMaterial Materials::DEFAULT =
     ClassicMaterial("Default",
                     vec3(0.8f, 0.8f, 0.8f),
-                    vec3(0.1f, 0.8f, 0.2f),
+                    vec3(0.9f, 0.9f, 0.9f),
                     vec3(0.0f, 0.0f, 0.0f),
                     vec3(0, 0, 0));
 

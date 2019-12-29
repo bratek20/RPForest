@@ -8,7 +8,7 @@ public:
     EndPolygon() {} 
 
     void process(ProcessContext& pc) override {
-        pc.model->add(pc.polygons.back().genMesh());
+        pc.model->add(pc.polygons.back().genMesh(*pc.material));
         pc.polygons.pop_back();
     }
 

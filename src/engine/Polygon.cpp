@@ -8,7 +8,7 @@ void Polygon::save(glm::vec3 pos) {
     poses.push_back(pos);
 }
 
-MeshPtr Polygon::genMesh() {
+MeshPtr Polygon::genMesh(const Material& mat) {
     vector<Vertex> vertices;
     vector<unsigned int> indices;
 
@@ -22,5 +22,5 @@ MeshPtr Polygon::genMesh() {
             indices.push_back(i);
         }
     }
-    return Mesh::New(vertices, indices, true);
+    return Mesh::New(vertices, indices, true, mat);
 }

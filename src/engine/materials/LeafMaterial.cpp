@@ -1,9 +1,9 @@
 #include "LeafMaterial.h"
-#include "Random.h"
+#include "Utils.h"
+#include "Assets.h"
 
-using namespace std;
 using namespace glm;
 
 vec3 LeafMaterial::calcDiffuse(vec3 pos) const {
-    return vec3(0, Random::noise(pos), 0);
+    return Utils::mixColors(Assets::LEAF_MATERIAL_CONFIG, pos);
 }

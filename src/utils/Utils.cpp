@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include "Random.h"
 
 #include <limits>
 #define GLM_ENABLE_EXPERIMENTAL
@@ -76,11 +77,12 @@ float Utils::average(vec3 v) {
     return (v.x + v.y + v.z) / 3;
 }
 
-vec3 Utils::toColor(int r, int g, int b) {
-    static auto cast = [](int val) {
-        return val / 255.f;
-    };
-    return vec3(cast(r), cast(g), cast(b));
+vec3 Utils::mixColors(const MaterialConfig& config, glm::vec3 pos) {
+    return mixColors(config.color1, config.color2, pos, config.noisePositionFactor, config.noiseValueFactor);
+}
+
+vec3 Utils::mixColors(vec3 color1, vec3 color2, vec3 pos, float noisePosFactor, float noiseValFactor) {
+    return glm::mix(color1, color2, glm::clamp(Random::noise(pos * noisePosFactor) * noiseValFactor, 0.f, 1.f));
 }
 
 ostream& operator<<(ostream& out, const vec3& v){

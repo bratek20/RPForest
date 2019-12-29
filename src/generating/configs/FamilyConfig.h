@@ -19,7 +19,8 @@ struct FamilyConfig : public GeneratorConfig {
         parse("RB", &RB);
         parse("PD", &PD);
 
-        height = 0.2f;
+        material = "Leaf";
+        height = 0.4f;
     }
 };
 

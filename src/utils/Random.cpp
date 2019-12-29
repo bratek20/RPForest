@@ -61,5 +61,5 @@ glm::vec3 Random::pointInTriangle(TrianglePtr triangle){
 }
 
 float Random::noise(glm::vec3 v) {
-    return glm::perlin(v);
+    return glm::perlin(v) * 0.5f + 0.5f;
 }

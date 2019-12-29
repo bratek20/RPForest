@@ -12,7 +12,7 @@ public:
     ForwardConeDraw(float length, float radius) : length(length), radius(radius) {} 
 
     void process(ProcessContext& pc) override {
-        auto mesh = Shapes::genCone(pc.current.getRadius(radius), radius, length); 
+        auto mesh = Shapes::genCone(pc.current.getRadius(radius), radius, length, *pc.material); 
         mesh->apply(pc.current.getWorldMat());
         pc.current.move(length);
         pc.current.setRadius(radius);

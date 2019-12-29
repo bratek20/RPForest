@@ -17,6 +17,7 @@
 #include "Generator.h"
 #include "CameraConfig.h"
 #include "SpawnerConfig.h"
+#include "MaterialConfig.h"
 
 class Assets {
     static const std::string ASSETS_PREFIX_PATH;
@@ -34,6 +35,12 @@ public:
     static std::vector<GeneratorPtr> TREE_GENERATORS;
     static std::vector<GeneratorPtr> LEAF_GENERATORS;
 
+    static MaterialConfig GROUND_MATERIAL_CONFIG;
+    static MaterialConfig ROCK_MATERIAL_CONFIG;
+    static MaterialConfig PLANT_MATERIAL_CONFIG;
+    static MaterialConfig LEAF_MATERIAL_CONFIG;
+    static MaterialConfig BARK_MATERIAL_CONFIG;
+    
     static void init(); 
     static void clear();
 
@@ -44,7 +51,8 @@ public:
 
 private:
     static bool loadConfig(const std::string& path, ConfigParser& config);
-    
+    static bool loadConfig(const std::string& folder, const std::string& name, ConfigParser& config);
+
     template<typename T>
     static std::vector<T> loadConfigs(const std::string& folder, const std::string& extension) {
         using namespace std;
