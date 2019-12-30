@@ -14,12 +14,14 @@ struct GeneratorConfig : public ConfigParser {
     float height = -1;
     int coneBasePoints = 3;
     std::string material;
+    float initRadius;
 
     GeneratorConfig() {
         parse("N", &n);
         parse("Height", &height);
         parse("ConeBasePoints", &coneBasePoints);
         parse("Material", &material);
+        parse("InitRadius", &initRadius);
     }
 
     bool check() const {
@@ -33,6 +35,11 @@ struct GeneratorConfig : public ConfigParser {
             return false;
         }
         return true;
+    }
+
+    template<typename T>
+    const T& as() {
+        return static_cast<const T&>(*this);
     }
 };
 

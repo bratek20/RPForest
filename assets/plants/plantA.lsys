@@ -1,5 +1,6 @@
 N 5
 Height 0.5
 Angle 25.7
+InitRadius 1
 Axiom F
 Prod F > F[+F]F[-F]F 

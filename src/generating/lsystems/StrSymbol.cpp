@@ -10,7 +10,7 @@ StrSymbol::StrSymbol(std::string&& str, const LSysConfig& config) : str(str), co
 
 vector<SymbolPtr> StrSymbol::produce() {
     vector<SymbolPtr> symbols;
-    symbols.push_back(S<SetRadius>(0.3));
+    symbols.push_back(S<SetRadius>(config.initRadius));
     for(char c : str){
         auto symbol = createSymbol(c);
         if(symbol != nullptr){

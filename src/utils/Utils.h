@@ -42,7 +42,8 @@ public:
     static glm::mat3 calcNormM(glm::mat4 posM);
 
     static float average(glm::vec3 v);
-
+    static bool hasNaN(glm::vec3 v);
+    
     static glm::vec3 mixColors(const MaterialConfig& config, glm::vec3 pos);
     static glm::vec3 mixColors(glm::vec3 color1, glm::vec3 color2, glm::vec3 pos, float noisePosFactor, float noiseValFactor);
     

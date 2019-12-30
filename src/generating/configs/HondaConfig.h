@@ -22,6 +22,7 @@ struct HondaConfig : public GeneratorConfig {
         coneBasePoints = 6;
         height = 2.0f;
         material = "Bark";
+        initRadius = 0.2f;
     }
 };
 

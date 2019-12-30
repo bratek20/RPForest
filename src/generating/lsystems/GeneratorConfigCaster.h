@@ -7,7 +7,7 @@ template<typename T>
 class GeneratorConfigCaster {
 public:
     static const T& C(){
-        return static_cast<const T&>(*Generator::CONF);
+        return Generator::CONF->as<T>();
     }
 };
 

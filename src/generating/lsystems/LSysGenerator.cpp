@@ -4,7 +4,7 @@
 using namespace std;
 
 LSysGenerator::LSysGenerator(GeneratorConfigPtr config) 
-: Generator(generateAxiom(static_cast<const LSysConfig&>(*config)), config) {}
+: Generator(generateAxiom(config->as<LSysConfig>()), config) {}
 
 SymbolPtr LSysGenerator::generateAxiom(const LSysConfig& config) {
     auto& prods = config.productions;

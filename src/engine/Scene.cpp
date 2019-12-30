@@ -1,37 +1,35 @@
 #include "Scene.h"
 #include "Assets.h"
 #include "Color.h"
-#include "PhotoSaver.h"
-#include "SimpleAccStruct.h"
-#include "Timer.h"
-#include "PathTracer.h"
-#include "SkyLightSampler.h"
-#include "EmbreeWrapper.h"
 #include "DebugActor.h"
-#include "Shapes.h"
-#include "Honda.h"
-#include "Ternary.h"
+#include "EmbreeWrapper.h"
 #include "Family.h"
+#include "Honda.h"
 #include "LSysGenerator.h"
+#include "PathTracer.h"
+#include "PhotoSaver.h"
+#include "Shapes.h"
+#include "SimpleAccStruct.h"
+#include "SkyLightSampler.h"
 #include "SpawnerActor.h"
+#include "Ternary.h"
+#include "Timer.h"
 
 using namespace std;
 using namespace glm;
 
-Scene::Scene() : 
-    Actor(nullptr)
-    {}
+Scene::Scene() : Actor(nullptr) {}
 
-ScenePtr Scene::create(const Config &c) {
+ScenePtr Scene::create(const Config& c) {
     Timer::start("Creating scene");
-    
+
     ScenePtr scene = ScenePtr(new Scene());
-    
+
     DebugActorPtr debugActor = DebugActor::create();
     scene->addChild(debugActor);
 
     scene->createWorld();
-    //scene->debug();
+    // scene->debug();
     Timer::stop();
     return scene;
 }
@@ -42,11 +40,11 @@ void Scene::createWorld() {
 
     sky = SkyActor::create();
     addChild(sky);
-    
+
     addChild(Actor::create(Model::New(terrain.getMesh())));
 
     vec3 cameraPos = camera->getWorldPosition();
-    for(auto& spawnerConfig : Assets::SPAWNER_CONFIGS) {
+    for (auto& spawnerConfig : Assets::SPAWNER_CONFIGS) {
         addChild(SpawnerActor::create(spawnerConfig, terrain, cameraPos));
     }
 }
@@ -59,11 +57,13 @@ void Scene::render() {
     Actor::render(mat4(1.0f));
 }
 
-CameraPtr Scene::getCamera() const { return camera; }
+CameraPtr Scene::getCamera() const {
+    return camera;
+}
 
-void Scene::takePhotoPathTracing(const Config &c) {
+void Scene::takePhotoPathTracing(const Config& c) {
     cout << "Taking photo..." << endl;
-    
+
     float xRes = c.resolution.x;
     float yRes = c.resolution.y;
     PhotoSaver photo(xRes, yRes);
@@ -71,12 +71,12 @@ void Scene::takePhotoPathTracing(const Config &c) {
     vec3 origin = camera->getWorldPosition();
     cout << "Camera position: " << origin << endl;
     auto model = genFlatModel();
-    auto &triangles = model->getTriangles();
-    auto &meshes = model->getMeshes();
+    auto& triangles = model->getTriangles();
+    auto& meshes = model->getMeshes();
     cout << "Triangles number: " << triangles.size() << endl;
     cout << "Resolution: " << xRes << " x " << yRes << endl;
     cout << "Samples per pixel: " << c.samples << endl;
-    
+
     Timer::start("Building accStruct");
     EmbreeWrapper accStruct(meshes);
     Timer::stop();
@@ -89,28 +89,24 @@ void Scene::takePhotoPathTracing(const Config &c) {
         for (int y = 0; y < yRes; y++) {
             float xShift = x / xRes;
             float yShift = y / yRes;
-            
+
             vec3 pos = -leftTop + mix(leftTop, rightTop, xShift) +
-                            mix(leftTop, leftBottom, yShift);
+                       mix(leftTop, leftBottom, yShift);
             vec3 direction = normalize(pos - origin);
             Ray r(origin, direction);
 
             vec3 color = vec3(0);
-            vec3 emittance = vec3(0);
-            for(int i=0;i<c.samples;i++){
-                PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, sky->getLightSampler());
-                vec3 sampleC = data.hit ? data.emittance : vec3(0); 
-                
+            for (int i = 0; i < c.samples; i++) {
+                PathTracer::CastData data = PathTracer::cast(
+                    r, c.maxRayBounces, accStruct, sky->getLightSampler());
+                vec3 sampleC = data.hit ? data.emittance : vec3(0);
                 color += sampleC;
-                emittance += data.emittance;
             }
-            
+
             color /= c.samples;
-            emittance /= c.samples;
-             
             photo.setPixel(x, y, color);
-            
-            int progress = 100 * (x*yRes + y) / (xRes * yRes);
+
+            int progress = 100 * (x * yRes + y) / (xRes * yRes);
             cout << "\rProgress: " << progress << "%";
         }
     }
@@ -127,7 +123,7 @@ void Scene::debugRay(const Config& c) {
     DebugActor::get()->getModel()->clear();
 
     auto model = genFlatModel(mat4(1.0f));
-    auto &meshes = model->getMeshes();
+    auto& meshes = model->getMeshes();
     EmbreeWrapper accStruct(meshes);
 
     vec3 origin = camera->getWorldPosition();
@@ -136,13 +132,14 @@ void Scene::debugRay(const Config& c) {
     vec3 rightTop = camera->getRightTop();
 
     vec3 pos = -leftTop + mix(leftTop, rightTop, 0.5f) +
-                    mix(leftTop, leftBottom, 0.5f);
+               mix(leftTop, leftBottom, 0.5f);
     vec3 direction = normalize(pos - origin);
     Ray r(origin, direction);
 
-    for(int i=0;i<c.samples;i++){
-        PathTracer::CastData data = PathTracer::cast(r, c.maxRayBounces, accStruct, sky->getLightSampler());
-    }           
+    for (int i = 0; i < c.samples; i++) {
+        PathTracer::CastData data = PathTracer::cast(
+            r, c.maxRayBounces, accStruct, sky->getLightSampler());
+    }
 
     PathTracer::drawLines = false;
 }

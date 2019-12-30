@@ -1,6 +1,7 @@
 N 7
 Angle 25.7
 Height 0.5
+InitRadius 1.2
 Axiom X
 Prod X > F[+X][-X]FX
 Prod F > FF 

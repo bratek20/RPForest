@@ -2,6 +2,8 @@
 
 #include "Triangle.h"
 #include "Materials.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/normal.hpp>
 
 using namespace std;
 
@@ -51,8 +53,12 @@ glm::vec3 Triangle::getNormal(glm::vec3 pos) const {
 }
 
 glm::vec3 Triangle::calcBaseNormal() const {
-    return glm::normalize(
-        glm::cross(v2.position - v1.position, v3.position - v1.position));
+    auto ans = glm::triangleNormal(v1.position, v2.position, v3.position);
+    if(Utils::hasNaN(ans)){
+        return Utils::VY;
+    }
+    return ans;
+        
 }
 
 vector<glm::vec3> Triangle::getPositions() const {

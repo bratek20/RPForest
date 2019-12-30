@@ -77,6 +77,10 @@ float Utils::average(vec3 v) {
     return (v.x + v.y + v.z) / 3;
 }
 
+bool Utils::hasNaN(glm::vec3 v) {
+    return isnan(v.x) || isnan(v.y) || isnan(v.z); 
+}
+
 vec3 Utils::mixColors(const MaterialConfig& config, glm::vec3 pos) {
     return mixColors(config.color1, config.color2, pos, config.noisePositionFactor, config.noiseValueFactor);
 }

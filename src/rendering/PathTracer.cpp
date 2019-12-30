@@ -71,7 +71,7 @@ vec3 PathTracer::calcIndirectLight(HitData& hit, int k, AccStruct &accStruct, Sk
         DebugActor::get()->drawLine(hit.pos, incomingHit.pos);
         drawLines = false;
     }
-    
+
     return ans;
 }
 

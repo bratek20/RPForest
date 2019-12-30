@@ -12,7 +12,7 @@ struct LSysConfig : GeneratorConfig {
     std::unordered_map<char, std::string> productions;
 
     LSysConfig() {
-        parse("Angle", &angle);
+        parse("Angle", &angle);        
         parse("Axiom", &axiom);
         customParse("Prod", [&](std::ifstream& file){
             std::string symbol, arrow, production;
@@ -24,6 +24,7 @@ struct LSysConfig : GeneratorConfig {
             n = 1;
         });
 
+        initRadius = 0.3f;
         material = "Plant";
     }
 };
