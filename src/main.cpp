@@ -37,12 +37,18 @@ int main(int argc, char* argv[]){
 		cerr << "Loading config failed!" << endl;
 		return -1;
 	}
-    if(!Window::open("RPForest", c)){
+    
+	unsigned seed = Random::SEED_NOT_SET;
+	if(argc > 2){
+		seed = atoi(argv[2]);
+	}
+
+	if(!Window::open("RPForest", c)){
         return -1;
     }
 
 	Globals::init(c);
-	Random::init();
+	Random::init(seed);
 	Assets::init();
 	Materials::init();	
 	

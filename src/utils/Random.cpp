@@ -8,10 +8,13 @@
 
 using namespace std;
 
+const unsigned Random::SEED_NOT_SET = numeric_limits<unsigned>::max();
 default_random_engine Random::generator;
 
-void Random::init() {
-    unsigned seed = time(NULL) % 999979;
+void Random::init(unsigned seed) {
+    if(seed == SEED_NOT_SET) {
+        seed = time(NULL) % 999979;
+    }
     generator.seed(seed);
     cout << "Seed: " << seed << endl;
 }

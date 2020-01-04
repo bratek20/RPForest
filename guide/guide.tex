@@ -1,7 +1,7 @@
 % Opcje klasy 'iithesis' opisane sa w komentarzach w pliku klasy. Za ich pomoca
 % ustawia sie przede wszystkim jezyk i rodzaj (lic/inz/mgr) pracy, oraz czy na
 % drugiej stronie pracy ma byc skladany wzor oswiadczenia o autorskim wykonaniu.
-\documentclass[declaration,shortabstract]{iithesis}
+\documentclass[inz,longabstract]{iithesis}
 
 \usepackage[utf8]{inputenc}
 
@@ -12,9 +12,9 @@
 % zlamaniu wierszy w temacie pracy, zwlaszcza tego w jezyku pracy. Uzyj do tego
 % polecenia \fmlinebreak.
 \polishtitle    {Realistyczny rendering krajobrazów leśnych\fmlinebreak generowanych proceduralnie}
-\englishtitle   {English title}
-\polishabstract {\ldots}
-\englishabstract{\ldots}
+\englishtitle   {Realistic rendering of procedural generated forest landscapes}
+\polishabstract {Strzeszczenie po polsku\ldots}
+\englishabstract{English abstract\ldots}
 % w pracach wielu autorow nazwiska mozna oddzielic poleceniem \and
 \author         {Bartosz Rudzki}
 % w przypadku kilku promotorow, lub koniecznosci podania ich afiliacji, linie
@@ -22,8 +22,8 @@
 \advisor        {dr Andrzej Łukaszewski}
 %\date          {}                     % Data zlozenia pracy
 % Dane do oswiadczenia o autorskim wykonaniu
-%\transcriptnum {}                     % Numer indeksu
-%\advisorgen    {dr. Jana Kowalskiego} % Nazwisko promotora w dopelniaczu
+\transcriptnum {291481}                     % Numer indeksu
+\advisorgen    {dr Andrzeja Łukaszewskiego} % Nazwisko promotora w dopelniaczu
 %%%%%
 
 %%%%% WLASNE DODATKOWE PAKIETY
@@ -43,12 +43,36 @@
 \begin{document}
 
 %%%%% POCZĄTEK ZASADNICZEGO TEKSTU PRACY
-
 \chapter{Wprowadzenie}
+    Pracy skupia się na zbadaniu i zastosowaniu dwóch pojęć z dziedziny grafiki komputerowej: realistyczny rendering i generowanie proceduralne. 
+    
+    Pierwsze zagadnienie dotyczy przedstawienia wcześniej przygotowanego modelu w sposób zrozumiały dla człowieka. Modelem może być plik opisujący kształt dzbanka. Przykładowa reprezentacja to zbiór trójkątów rozmieszczonych w przestrzeni z uwzględnieniem dodatkowych informacji takich np. kolor. Rendering takiego modelu polegałby na zamianie wszystkich tych danych na obraz, który mógłby być pokazany człowiekowi. O realistycznym renderingu możemy mówić wtedy, kiedy stworzony przez nas obraz przypomina prawdziwy dzbanek, który chcieliśmy zamodelować. 
+    
+    Generowanie proceduralne skupia się na tworzeniu modeli przy pomocy algorytmów. Człowiek może wpływać na finalny produkt przy pomocy zmiany parametrów jednak nie uczestniczy w samym procesie tworzenia. Jest to bardzo wydajna metoda pozwalająca na tworzenie nieskończenie wielu różnych modeli o zadanych właściwościach jak np. rośliny.
+    
+    Celem programu napisanego w ramach tej pracy jest generowanie prostego krajobrazu leśnego, a następnie względnie realistyczny rendering stworzonego środowiska. Sam program jest wysoce sparametryzowany, dzięki czemu użytkownik może realnie wpływać na finalny rezultat.
+    
+\chapter{Zastosowane rozwiązania}
+    \section{Generowanie}
+        \subsection{L systemy}
+        \subsection{Teren}
+        \subsection{Tekstury}
+        \subsection{Umiejscawianie kamery}
+    \section{Rendering}
+        \subsection{Pathtracer}
+        \subsection{Niebo}
+        \subsection{Słońce}
+        
+\chapter{Poradnik użytkowania}
 
-\ldots
+\chapter{Szczegóły programistyczne}
+
+\chapter{Przykłady użycia}
 
 %%%%% BIBLIOGRAFIA
+
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
 
 %\begin{thebibliography}{1}
 %\bibitem{example} \ldots

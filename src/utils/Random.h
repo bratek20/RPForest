@@ -12,7 +12,9 @@ class Random {
     static std::default_random_engine generator;
 
 public:
-    static void init();
+    static const unsigned SEED_NOT_SET;
+    
+    static void init(unsigned seed = SEED_NOT_SET);
 
     static int range(int b, int e);
     static float uniform(float a = 0.0f, float b = 1.0f);
