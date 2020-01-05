@@ -29,9 +29,10 @@
 %%%%% WLASNE DODATKOWE PAKIETY
 %
 %\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
+\usepackage{graphicx, amsmath,gensymb}
 %
 %%%%% WŁASNE DEFINICJE I POLECENIA
-%
+\graphicspath{{./pictures/}}
 %\theoremstyle{definition} \newtheorem{definition}{Definition}[chapter]
 %\theoremstyle{remark} \newtheorem{remark}[definition]{Observation}
 %\theoremstyle{plain} \newtheorem{theorem}[definition]{Theorem}
@@ -53,12 +54,40 @@
     Celem programu napisanego w ramach tej pracy jest generowanie prostego krajobrazu leśnego, a następnie względnie realistyczny rendering stworzonego środowiska. Sam program jest wysoce sparametryzowany, dzięki czemu użytkownik może realnie wpływać na finalny rezultat.
     
 \chapter{Zastosowane rozwiązania}
-    \section{Generowanie}
-        \subsection{L systemy}
+    \section{Generowanie proceduralne}
+        \subsection{Rośliny}
+            Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L-systemów. Jest to sposób reprezentacji modelu pod postacią zestawu reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy wstanie wygenerować zbiór symboli - słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
+            \begin{align*}
+                axiom &: \alpha \\
+                prod1 &: \alpha \rightarrow \alpha\beta\alpha \\
+                prod2 &: \beta \rightarrow \beta\beta
+            \end{align*}
+            Produkcje aplikowane są jednocześnie w obrębie jednej iteracji. Podając liczbę iteracji możemy generować coraz dłuższe ciągi. Dla N = 1 otrzymujemy $\alpha\beta\alpha$, a dla N = 2 mamy $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$.
+            
+            Finalnym produktem L-systemu jest słowo, które możemy potraktować jako polecenia dla rysującego żółwia. Żółw czytając słowo od lewej do prawej będzie interpretować każdy symbol jako komendę. Przykłady poleceń to: idź prosto rysując linię albo skręć w lewo o wcześniej ustalony kąt. W przypadku gdy żółw nie zna symbolu nie robi nic i czyta dalej. Rysunek \ref{fig:turtleExample} przedstawia przykładową interpretację słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$ gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.
+            \begin{figure}
+                \includegraphics[width=\linewidth]{turtleExample.png}
+                \caption{Interpretacja dla słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$, gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.}
+                \label{fig:turtleExample}
+            \end{figure}
+            
+            Aby żółw był wstanie rysować rośliny potrzebujemy symbol pozwalający się rozgałęziać. Można osiągnąć to poprzez dodanie stosu pamiętającego aktualny stan żółwia oraz symbole na nim operujące:
+            \begin{description}
+                \item[{[}] - odłóż aktualny stan na stos
+                \item[{]}] - ściągnij i zaaplikuj stan z góry stosu 
+            \end{description}
+            Stanem żółwia jest wszystko co zmienia się przy pomocy symboli np. pozycja, orientacja lub długość rysowanej linii. Rysunek \ref{fig:lsystemPlants} pokazuje przykładowe L-systemy z książki \cite{plants} 
+            \begin{figure}
+                \includegraphics[width=\linewidth]{lsystemPlants.png}
+                \caption{Przykład użycia symboli operujących na stosie\cite{plants}} 
+                \label{fig:lsystemPlants}
+            \end{figure}
+            
         \subsection{Teren}
         \subsection{Tekstury}
+        \subsection{Rozmieszczanie roślin}
         \subsection{Umiejscawianie kamery}
-    \section{Rendering}
+    \section{Realistyczny rendering}
         \subsection{Pathtracer}
         \subsection{Niebo}
         \subsection{Słońce}
