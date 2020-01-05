@@ -29,7 +29,7 @@
 %%%%% WLASNE DODATKOWE PAKIETY
 %
 %\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
-\usepackage{graphicx, amsmath,gensymb}
+\usepackage{graphicx, amsmath, gensymb, float}
 %
 %%%%% WŁASNE DEFINICJE I POLECENIA
 \graphicspath{{./pictures/}}
@@ -65,7 +65,7 @@
             Produkcje aplikowane są jednocześnie w obrębie jednej iteracji. Podając liczbę iteracji możemy generować coraz dłuższe ciągi. Dla N = 1 otrzymujemy $\alpha\beta\alpha$, a dla N = 2 mamy $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$.
             
             Finalnym produktem L-systemu jest słowo, które możemy potraktować jako polecenia dla rysującego żółwia. Żółw czytając słowo od lewej do prawej będzie interpretować każdy symbol jako komendę. Przykłady poleceń to: idź prosto rysując linię albo skręć w lewo o wcześniej ustalony kąt. W przypadku gdy żółw nie zna symbolu nie robi nic i czyta dalej. Rysunek \ref{fig:turtleExample} przedstawia przykładową interpretację słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$ gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.
-            \begin{figure}
+            \begin{figure}[h]
                 \includegraphics[width=\linewidth]{turtleExample.png}
                 \caption{Interpretacja dla słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$, gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.}
                 \label{fig:turtleExample}
@@ -76,12 +76,34 @@
                 \item[{[}] - odłóż aktualny stan na stos
                 \item[{]}] - ściągnij i zaaplikuj stan z góry stosu 
             \end{description}
-            Stanem żółwia jest wszystko co zmienia się przy pomocy symboli np. pozycja, orientacja lub długość rysowanej linii. Rysunek \ref{fig:lsystemPlants} pokazuje przykładowe L-systemy z książki \cite{plants} 
-            \begin{figure}
+            Stanem żółwia jest wszystko co zmienia się przy pomocy symboli np. pozycja, orientacja lub długość rysowanej linii. Rysunek \ref{fig:lsystemPlants} pokazuje przykładowe L-systemy z książki \textit{The Algorithmic Beauty of Plants}\cite{plants}, które używają symboli tworzących rozgałęzienia. 
+            \begin{figure}[h]
                 \includegraphics[width=\linewidth]{lsystemPlants.png}
                 \caption{Przykład użycia symboli operujących na stosie\cite{plants}} 
                 \label{fig:lsystemPlants}
             \end{figure}
+            
+            Wspomniana wcześniej książka Prusinkiewicza i Lindenmayer'a\cite{plants} dokładnie opisuje L-systemy jako zagadnienie naukowe oraz podaje wiele przykładów produkcji tworzących realistycznie wyglądające rośliny. Część z nich wymaga bardziej zaawansowanych technik produkcji symbolów np. L-systemy parametryczne. Do tej pory zakładaliśmy, że wszystkie parametry (np. kąt skrętu, długość kroku) były ustalone na początku i nie zmieniały się. Parametryzując symbole i produkcje możemy wpływać lepiej na finalny kształt. Ma to zastosowanie między innymi w generowaniu drzew. Rysunek \ref{fig:hondaTrees} przedstawia produkcje drzew wymyślonych przez Hondę\cite{honda}, a pokazanych u Prusinkiewicza\cite{plants}.
+            \begin{figure}[h]
+                \includegraphics[width=\linewidth]{hondaTrees.png}
+                \caption{L-system parametryczny generujący drzewa \cite{plants}\cite{honda}} 
+                \label{fig:hondaTrees}
+            \end{figure}
+            
+            L-systemy mogę również generować wielokąty. Jest to szczególnie przydatne w tworzeniu liści. Rysunek \ref{fig:lsystemLeafs} prezentuje kilka rodzajów liści wygenerowanych z jednego L-systemu. Możliwe jest to dzięki wprowadzeniu nowych symboli:
+            \begin{description}
+                \item[\texttt{\{}] - zacznij tworzyć nowy wielokąt 
+                \item[.] - zapisz aktualną pozycję jako wierzchołek
+                \item[\texttt{\}}] - zakończ aktualny wielokąt
+            \end{description}
+            \begin{figure}[h]
+                \includegraphics[width=\linewidth]{lsystemLeafs.png}
+                \caption{L-system parametryczny generujący liście \cite{plants}} 
+                \label{fig:lsystemLeafs}
+            \end{figure}
+            
+            Wcześniej opisane zastosowania L-systemów pokazują dlaczego jest to idealny kandydat do tworzenia realistycznych modeli roślin. Różnorodność definiowanych kształtów, rozbudowywanie funkcjonalności poprzez dodawanie nowych symboli oraz łatwe parametryzowanie to jedne z wielu zalet tej techniki. Wszystko to sprawia, że L-systemy są często wykorzystywane w wielu różnych projektach - również w tym. 
+            
             
         \subsection{Teren}
         \subsection{Tekstury}
