@@ -29,7 +29,7 @@
 %%%%% WLASNE DODATKOWE PAKIETY
 %
 %\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
-\usepackage{graphicx, amsmath, gensymb, float}
+\usepackage{graphicx, amsmath, gensymb, float, textcomp}
 %
 %%%%% WŁASNE DEFINICJE I POLECENIA
 \graphicspath{{./pictures/}}
@@ -65,7 +65,7 @@
             Produkcje aplikowane są jednocześnie w obrębie jednej iteracji. Podając liczbę iteracji możemy generować coraz dłuższe ciągi. Dla N = 1 otrzymujemy $\alpha\beta\alpha$, a dla N = 2 mamy $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$.
             
             Finalnym produktem L-systemu jest słowo, które możemy potraktować jako polecenia dla rysującego żółwia. Żółw czytając słowo od lewej do prawej będzie interpretować każdy symbol jako komendę. Przykłady poleceń to: idź prosto rysując linię albo skręć w lewo o wcześniej ustalony kąt. W przypadku gdy żółw nie zna symbolu nie robi nic i czyta dalej. Rysunek \ref{fig:turtleExample} przedstawia przykładową interpretację słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$ gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.
-            \begin{figure}[h]
+            \begin{figure}[H]
                 \includegraphics[width=\linewidth]{turtleExample.png}
                 \caption{Interpretacja dla słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$, gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.}
                 \label{fig:turtleExample}
@@ -77,14 +77,14 @@
                 \item[{]}] - ściągnij i zaaplikuj stan z góry stosu 
             \end{description}
             Stanem żółwia jest wszystko co zmienia się przy pomocy symboli np. pozycja, orientacja lub długość rysowanej linii. Rysunek \ref{fig:lsystemPlants} pokazuje przykładowe L-systemy z książki \textit{The Algorithmic Beauty of Plants}\cite{plants}, które używają symboli tworzących rozgałęzienia. 
-            \begin{figure}[h]
+            \begin{figure}[H]
                 \includegraphics[width=\linewidth]{lsystemPlants.png}
                 \caption{Przykład użycia symboli operujących na stosie\cite{plants}} 
                 \label{fig:lsystemPlants}
             \end{figure}
             
             Wspomniana wcześniej książka Prusinkiewicza i Lindenmayer'a\cite{plants} dokładnie opisuje L-systemy jako zagadnienie naukowe oraz podaje wiele przykładów produkcji tworzących realistycznie wyglądające rośliny. Część z nich wymaga bardziej zaawansowanych technik produkcji symbolów np. L-systemy parametryczne. Do tej pory zakładaliśmy, że wszystkie parametry (np. kąt skrętu, długość kroku) były ustalone na początku i nie zmieniały się. Parametryzując symbole i produkcje możemy wpływać lepiej na finalny kształt. Ma to zastosowanie między innymi w generowaniu drzew. Rysunek \ref{fig:hondaTrees} przedstawia produkcje drzew wymyślonych przez Hondę\cite{honda}, a pokazanych u Prusinkiewicza\cite{plants}.
-            \begin{figure}[h]
+            \begin{figure}[H]
                 \includegraphics[width=\linewidth]{hondaTrees.png}
                 \caption{L-system parametryczny generujący drzewa \cite{plants}\cite{honda}} 
                 \label{fig:hondaTrees}
@@ -96,7 +96,7 @@
                 \item[.] - zapisz aktualną pozycję jako wierzchołek
                 \item[\texttt{\}}] - zakończ aktualny wielokąt
             \end{description}
-            \begin{figure}[h]
+            \begin{figure}[H]
                 \includegraphics[width=\linewidth]{lsystemLeafs.png}
                 \caption{L-system parametryczny generujący liście \cite{plants}} 
                 \label{fig:lsystemLeafs}
@@ -104,9 +104,47 @@
             
             Wcześniej opisane zastosowania L-systemów pokazują dlaczego jest to idealny kandydat do tworzenia realistycznych modeli roślin. Różnorodność definiowanych kształtów, rozbudowywanie funkcjonalności poprzez dodawanie nowych symboli oraz łatwe parametryzowanie to jedne z wielu zalet tej techniki. Wszystko to sprawia, że L-systemy są często wykorzystywane w wielu różnych projektach - również w tym. 
             
-            
         \subsection{Teren}
+            Problem generowania terenu można sprowadzić do problemu generowania mapy wysokości. Jest to macierz wypełniona liczbami reprezentującymi wysokość wybranych punktów. Owe punkty pomiaru rozłożone są równomiernie na osi X i Z. Mając taką macierz w łatwy sposób jesteśmy wstanie wygenerować teren - tworzymy kwadraty dla każdej czwórki sąsiadujących punktów - patrz rysunek \ref{fig:heightmap}. 
+            \begin{figure}[H]
+                \includegraphics[width=\linewidth]{heightmap.png}
+                \caption{Przykładowy teren wygenerowany przy użyciu mapy wysokości\cite{heightmap}} 
+                \label{fig:heightmap}
+            \end{figure}
+            
+            Istnieje wiele algorytmów generujących mapy wysokości. Mój wybór padł na tak zwany \textit{Diamond-square algorithm}. Dla ustalonego N generuje on mapę wysokości o rozmiarze $2^N$+1 x $2^N$+1. Na początku ustala się wartości w rogach macierzy. Następnie wykonuje się na przemiennie fazę diamond i square, aż do ustalenia wszystkich wysokości. 
+            
+            Faza diamond polega na wygenerowaniu wysokości w środku każdego kwadratu, który nie ma ustalonej tej wartości. Faza square robi to samo tylko, ze dla punktów tworzących kształt rombu. Rysunek \ref{fig:diamondSquare} obrazuje przebieg algorytmu. 
+            \begin{figure}[H]
+                \includegraphics[width=\linewidth]{diamondSquare.png}
+                \caption{Przebieg algorytmu diamond-square dla N = 2.} 
+                \label{fig:diamondSquare}
+            \end{figure}
+            
+            Obliczanie nowej wartości w środku polega na wzięciu średniej z wysokości wierzchołków tworzących kształt (kwadrat, romb). Dodatkowo dodajemy do obliczanej wartości pewien czynnik losowy, z przedziału (-X, X) dla ustalonego X. Dla każdej kolejnej pary faz ów czynnik jest zmniejszany poprzez przemnożenie go przez pewne $R < 1$.
+            
+            \textit{Diamond-square algorithm} jest zarówno prosty jak i efektywny. Ustalając kilka parametrów jesteśmy wstanie tworzyć bardzo różnorodny teren. 
+            
         \subsection{Tekstury}
+            Mając wygenerowany model - kształt,  musimy nadać mu również kolor. Jednym z założeniem programu było w pełni proceduralne podejście. Dotyczy to również tekstur. Każda tekstura w programie opisywana jest przez materiał. Materiał oblicza kolor na podstawie funkcji \textit{calcDiffuse(pos3D) \textrightarrow color}, gdzie $pos3D$ to pozycja w świecie. W celu uproszczenia i ujednolicenia systemu zdecydowałem się zaimplementować jeden wzór, który został zastosowany do każdego materiału. Wygląda on następująco:
+            \begin{gather*}
+                calcDiffuse(pos3D) = mix(color1, color2, factor) \\
+                gdzie \\
+                factor = clamp(noise(pos3D * posF) * valF, 0, 1)
+            \end{gather*}
+            
+
+            Finalny kolor to mieszanka $color1$ i $color2$ w stosunku $1 - factor$ i $factor$. Sam $factor$ to odpowiednio obliczona wartość szumu Perlina. Dzięki $posF$ możemy skalować szum, a dzięki $valF$ możemy wymuszać faworyzowanie wartości bliższych 0 albo 1.
+            
+            Jedynym materiałem w programie odbiegającym od tej metody jest materiał terenu. Łączy on ze sobą dwa inne materiały - grunt i skały. Do pewnej ustalonej wysokości kolor obliczany jest tylko dla gruntu. Analogicznie powyżej pewnego poziomu stosuję tylko kolor skał. Po środku dochodzi do mieszania kolorów w stosunku zależnym od odległości do ustalonych granic:
+            \begin{gather*}
+            mix(calcRockColor(pos), calcGroundColor(pos), groundFactor) \\
+            gdzie \\
+            groundFactor = (groundEndY - posY) / (groundEndY - rockStartY) \\
+            \end{gather*}
+            
+            Zaprezentowane rozwiązanie okazało się wystarczające, aby osiągnąć zadowalające rezultaty. Jest łatwe do implementacji, ujednolicone dla użytkownika oraz na tyle rozbudowane aby wyrażać niebanalną kolorystkę.
+            
         \subsection{Rozmieszczanie roślin}
         \subsection{Umiejscawianie kamery}
     \section{Realistyczny rendering}

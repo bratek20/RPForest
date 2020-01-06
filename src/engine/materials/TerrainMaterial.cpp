@@ -12,8 +12,8 @@ vec3 TerrainMaterial::calcDiffuse(vec3 pos) const {
         return calcRockColor(pos);
     }
     if(pos.y >= rockStartY) {
-        float grassFactor = (groundEndY - pos.y) / (groundEndY - rockStartY);
-        return mix(calcRockColor(pos), calcGroundColor(pos), grassFactor);
+        float groundFactor = (groundEndY - pos.y) / (groundEndY - rockStartY);
+        return mix(calcRockColor(pos), calcGroundColor(pos), groundFactor);
     }
     return calcGroundColor(pos); 
 }
