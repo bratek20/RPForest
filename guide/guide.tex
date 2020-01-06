@@ -143,10 +143,19 @@
             groundFactor = (groundEndY - posY) / (groundEndY - rockStartY) \\
             \end{gather*}
             
-            Zaprezentowane rozwiązanie okazało się wystarczające, aby osiągnąć zadowalające rezultaty. Jest łatwe do implementacji, ujednolicone dla użytkownika oraz na tyle rozbudowane aby wyrażać niebanalną kolorystkę.
+            Zaprezentowane rozwiązanie okazało się wystarczające, aby osiągnąć zadowalające rezultaty. Jest łatwe do implementacji, ujednolicone dla użytkownika oraz na tyle rozbudowane, aby wyrażać niebanalną kolorystkę.
             
         \subsection{Rozmieszczanie roślin}
-        \subsection{Umiejscawianie kamery}
+            Po wygenerowaniu wystarczającej liczby modeli roślin trzeba je umieścić w świecie. Można to robić w mniej lub bardziej wyszukany sposób. W tym przypadku zdecydowałem się na jedno z najprostszych rozwiązań - losowe rozmieszczanie wewnątrz komórek kraty. Krata o wymiarach N x M posiada $N * M$ kwadratowych komórek o ustalonym rozmiarze. Wewnątrz takiej komórki z pewnym prawdopodobieństwem możemy umieścić losowy model. Pozycja modelu wewnątrz kraty również jest losowa i może zostać ograniczona przez parametr mówiący jak bardzo od środka może zostać wylosowana pozycja. Przykładowo dla wartości 0 obiekt zawsze będzie umieszczany w środku kraty, a dla 1 może pojawić się w całej kracie. 
+            
+        \subsection{Wybór miejsca renderingu}
+            Aby teren wydawał się realistyczny musi zajmować dużą część świata. Dobrze byłoby wpływać na to czy chcemy renderować naszą scenę ze szczytu góry czy z terenu nizinnego. W jakim kierunku powinna być skierowana kamera oraz co ważniejsze uwzględniać ukształtowanie otaczającego ją terenu. W przypadku gdy kamera zostanie umieszczona przed górą chcielibyśmy, aby patrzyła do góry, a kiedy jest na szczycie w dół. 
+            
+            Odpowiednie umieszczenie możemy wybrać poprzez parametr sugerujący na jakiej wysokości chcemy się znajdować. Dobrze zdefiniować również minimalną odległość od krawędzi końca świata, aby uniknąć sytuacji patrzenia w pustą przestrzeń. Żeby uwzględnić ukształtowanie terenu przy kierunku patrzenia możemy dodać parametr mówiący jak daleko od nas znajduję się miejsce które nas interesuje. Następnie obliczamy wysokość tego miejsca i korygujemy nasz kierunek patrzenia względem otrzymanej wartości.
+            
+        \subsection{Ograniczenie liczby modeli}
+            Przy generowaniu tak dużego świata musimy liczyć się z ograniczeniami sprzętowymi. Niezoptymalizowane modele otrzymywane z L-systemów mają nawet po kilkanaście tysięcy trójkątów! W takim przypadku dobrym sposobem tworzenia sceny jest umieszczenia wszystkich generowanych modeli względnie blisko kamery. Duże modele będą zasłaniać znaczną część pola widzenia ukrywając niewypełnioną przestrzeń. Rozwiązanie nie jest idealne ale ma szanse wygenerować scenę o zadowalającym rezultacie.
+            
     \section{Realistyczny rendering}
         \subsection{Pathtracer}
         \subsection{Niebo}
