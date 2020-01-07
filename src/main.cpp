@@ -32,7 +32,7 @@ void debugRay() {
 }
 
 int main(int argc, char* argv[]){
-	string configPath = argc >= 2 ? argv[1] : "config.rtc";
+	string configPath = argc >= 2 ? argv[1] : "default.rtc";
 	if(!c.load(configPath)){
 		cerr << "Loading config failed!" << endl;
 		return -1;

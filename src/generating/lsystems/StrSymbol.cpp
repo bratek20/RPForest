@@ -25,14 +25,32 @@ SymbolPtr StrSymbol::createSymbol(char c) {
     {
     case 'F':
         return S<ForwardDraw>(1);
+    case 'f':
+        return S<ForwardMove>(1);
     case '[':
         return S<StartBranch>();
     case ']':
         return S<EndBranch>();
     case '+':
-        return S<Turn>(config.angle);
+        return S<Turn>(config.turnAngle);
     case '-':
-        return S<Turn>(-config.angle); 
+        return S<Turn>(-config.turnAngle); 
+    case '^':
+        return S<Pitch>(-config.pitchAngle);
+    case '&':
+        return S<Pitch>(config.pitchAngle); 
+    case '\\':
+        return S<Roll>(config.rollAngle);
+    case '/':
+        return S<Roll>(-config.rollAngle);
+    case '|':
+        return S<Turn>(180);  
+    case '{':
+        return S<StartPolygon>(); 
+    case '.':
+        return S<SaveVertex>(); 
+    case '}':
+        return S<EndPolygon>();   
     default:
         return nullptr;
     }

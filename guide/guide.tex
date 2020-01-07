@@ -54,6 +54,8 @@
     Celem programu napisanego w ramach tej pracy jest generowanie prostego krajobrazu leśnego, a następnie względnie realistyczny rendering stworzonego środowiska. Sam program jest wysoce sparametryzowany, dzięki czemu użytkownik może realnie wpływać na finalny rezultat.
     
 \chapter{Zastosowane rozwiązania}
+    W tym rozdziale przedstawię najważniejsze rozwiązania, które zastosowałem w swoim programie. Postaram przybliżyć się najważniejsze zagadnienia głownie po to, aby potencjalny użytkownik programu świadomie mógł wpływać na jego działanie. 
+    
     \section{Generowanie proceduralne}
         \subsection{Rośliny}
             Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L-systemów. Jest to sposób reprezentacji modelu pod postacią zestawu reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy wstanie wygenerować zbiór symboli - słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
@@ -157,12 +159,149 @@
             Przy generowaniu tak dużego świata musimy liczyć się z ograniczeniami sprzętowymi. Niezoptymalizowane modele otrzymywane z L-systemów mają nawet po kilkanaście tysięcy trójkątów! W takim przypadku dobrym sposobem tworzenia sceny jest umieszczenia wszystkich generowanych modeli względnie blisko kamery. Duże modele będą zasłaniać znaczną część pola widzenia ukrywając niewypełnioną przestrzeń. Rozwiązanie nie jest idealne ale ma szanse wygenerować scenę o zadowalającym rezultacie.
             
     \section{Realistyczny rendering}
-        \subsection{Pathtracer}
-        \subsection{Niebo}
-        \subsection{Słońce}
+        Do tej pory opisywałem techniki pozwalające generowanie różnych modeli składających się w jeden wielki świat. W tej sekcji skupię się jak uchwycić część tego co udało się stworzyć. Sam proces zwany renderingiem w tym przypadku przypominać będzie nic innego jak zrobienie zdjęcia. Wcześniej wspomniałem o koncepcie kamery, która znajduje się w świecie oraz jest zwrócona w określonym kierunku. To co należy zrobić teraz to uchwycić obraz z jej perspektywy. 
         
-\chapter{Poradnik użytkowania}
+        \subsection{Path tracer}
+            Głównym zadaniem path tracer'a jest obliczanie koloru docierającego do kamery z ustalonego kierunku. Kolor w tym przypadku to nic innego jak promień światła, który po wielu odbiciach dotarł do kamery. Postaramy odtworzyć się to zjawisko, z tym wyjątkiem, że promień zostanie wypuszczony od kamery i będzie podążać do światła. Cały proces jest wysoce losowy, jako że promień mógł dotrzeć do nas wieloma różnymi ścieżkami. W celu otrzymania jak najlepszych wyników w jednym kierunku będziemy puszczać wiele promieni, a na końcu je uśrednimy.
+            
+            Aby otrzymać realistyczny obraz path tracer przy obliczaniu koloru będzie korzystać z tak zwanego \textit{równania renderingu}. Samo równanie korzystając z zasady zachowania energii wylicza radiancję światła wychodzącą z ustalonego punktu na płaszczyźnie dla zadanego kierunku. W uproszczonej formie wygląda ono następująco:
+            
+            \begin{equation}
+            L_o = L_e + \int_{\Omega} L_i*f_r*cos\theta*d\omega_i
+            \end{equation}
 
+            
+        \subsection{Niebo}
+            Path tracing często stosuje się dla zamkniętych scen z kilkoma źródłami światła. W przypadku rendorowania krajobrazów mamy do czynienia z czymś zupełnie innym. Mamy jedno źródło światła (słońce) oraz pół otwartą scenę z wielkim niebem pochłaniającym większość promieni. Fizycznie poprawny model nieba został opisany w pracy \textit{A Practical Analytic Model for Daylight}\cite{sky}, która powstała na Uniwersytecie w Utah. Opisuje on niebo w danym miejscu na ziemi o ustalonej porze. 
+            
+            Został również udostępniony gotowy kod implementujący zaprezentowane rozwiązanie. Dołączyłem go do swojego programu i korzystam z niego jak z zewnętrznej biblioteki nie wnikając w szczegóły implementacyjne. Niebo w moim programie to półsfera rozciągająca się nad całym wygenerowanym terenem. Implikuje to, że im większy jest teren, tym większe jest niebo.
+        
+        \subsection{Słońce}
+            O ile model nieba z poprzedniej sekcji dobrze oddaje kolorystykę nieba to jest ona dosyć jednolita. Dodatkowo jako, że niebo otacza scenę praktycznie z każdej strony, to nie może być traktowane jako główne źródło światła. Żeby otrzymać ładne cienie obiektów dołożyłem dodatkowo własne słońce jako źródło światła o dużej mocy. Model nieba oblicza również pozycję słońca i korzystam z tego, aby odpowiednio umieścić moje. Umieszczam je na półsferze nieba stąd odległość słońca od ziemi jest zależna od wielkości terenu (patrz poprzednia sekcja).
+            
+\chapter{Poradnik użytkowania}
+    Poprzedni rozdział opisywał rozwiązania, które zastosowałem w programie. Ten skupi się jak uruchomić program oraz na przedstawieniu w jaki sposób można wpływać na rendering i generowane elementy.
+    
+    \section{Uruchomienie programu}
+        W celu kompilacji programu należy uruchomić skrypt \textit{build.sh} w głównym katalogu. Utworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake}. Dodatkowo w folderze bin powinien pojawić się plik binarny do uruchamiania programu - \textit{rpforest.exe}. Program posiada dwa opcjonalne argumenty wywołania. 
+        
+        Pierwszy to ścieżka do pliku konfiguracyjnego path tracingu. Kilka przykładowych plików znajduje się w folderze bin. Wszystkie mają rozszerzenie \textit{.rtc} i ich struktura zostanie opisana w kolejnej sekcji. W przypadku nie podania ścieżki zostanie załadowany plik \textit{default.rtc}.
+        
+        Drugi argument to ziarno losowości. W przypadku nie ustawienia żadnego, zostanie wybrane losowe - zależne od czasu. W logach programu można znaleźć ziarno dla danego uruchomienia. Możemy wybrać je podobnie jeśli chcemy wygenerować ten sam świat. 
+        
+    \section{Pliki konfiguracyjne}
+        Każdy plik konfiguracyjny jest parsowany w ten sam sposób. Pojedynczy wpis składa się z nazwy parametru i argumentów zależnych od typu parametru. Kolejność nie ma znaczenia. Każdy parametr musi być zdefiniowany w osobnej linii. Część parametrów ma domyślne wartości 
+        
+        \subsection{Ustawienia path tracingu}
+        \textit{.rtc}
+        \begin{itemize}
+            \item \textit{string PhotoName} - nazwa 
+            \item \textit{vec2 Resolution} - rozmiar 
+            \item \textit{int Samples = 1} - 
+            \item \textit{int MaxRayBounces} = 5 -  
+            \item \textit{bool DebugMode} = 0 - 
+        \end{itemize}
+
+        \subsection{Ustawienia kamery}
+        \textit{camera.conf}
+        \begin{itemize}
+            \item \textit{float LookHeight = 1} - 
+            \item \textit{vec3 LookDirection = (0, 0, 1)} - 
+            \item \textit{float LookDistance = 2} - 
+            \item \textit{float EdgeMinOffset = 10} - 
+            \item \textit{float ExpectedPositionY = 0} -
+            \item \textit{float DebugVelocity = 10} -
+        \end{itemize}
+        
+        \subsection{Ustawienia nieba}
+        \textit{sky.conf}
+        \begin{itemize}
+            \item \textit{vec3 SunColor} -
+            \item \textit{float SunPower} -
+            \item \textit{float SkyLuminanceFactor} -
+            \item \textit{float Latitude} -
+            \item \textit{float Longitude} -
+            \item \textit{int StandardMeridian} -
+            \item \textit{int JulianDay} -
+            \item \textit{float TimeOfDay} -
+            \item \textit{float Turbidity} -
+        \end{itemize}
+        
+        \subsection{Ustawienia terenu}
+        \textit{terrain.conf}
+        \begin{itemize}
+            \item \textit{int N} -
+            \item \textit{float Size} -
+            \item \textit{float InitHeight} -
+            \item \textit{float Spread} -
+            \item \textit{float SpreadReductionRate} -
+            \item \textit{float RockStartY = 10} -
+            \item \textit{float GroundEndY = 20} -
+        \end{itemize}
+        
+        \subsection{Ustawienia Tekstur}
+        \textit{.mat}
+        \begin{itemize}
+            \item \textit{vec3 Color1} -
+            \item \textit{vec3 Color2} -
+            \item \textit{float NoisePositionFactor = 1} -
+            \item \textit{float NoiseValueFactor = 1} -
+        \end{itemize}
+        
+        \subsection{Bazowe ustawienia generatorów}
+        \begin{itemize}
+            \item \textit{int N} -
+            \item \textit{float Height} -
+            \item \textit{int ConeBasePoints = 3} -
+            \item \textit{string Material} -
+            \item \textit{float InitRadius} -
+        \end{itemize}
+        
+        \subsection{Definiowanie własnych L-systemów}
+        \textit{.lsys}
+        \begin{itemize}
+            \item \textit{float TurnAngle = 0} -
+            \item \textit{float PitchAngle = 0} -
+            \item \textit{float RollAngle = 0} -
+            \item \textit{string Axiom} -
+            \item \textit{char string Prod} -
+        \end{itemize}
+        
+        \subsection{Ustawienia predefiniowanych L-systemów}
+        \textit{.honda}
+        \begin{itemize}
+            \item \textit{float R1} -
+            \item \textit{float R2} -
+            \item \textit{float A0} -
+            \item \textit{float A2} -
+            \item \textit{float D} -
+            \item \textit{float Wr} -
+        \end{itemize}    
+        
+        \textit{.family}
+        \begin{itemize}
+            \item \textit{float Delta} -
+            \item \textit{float LA} -
+            \item \textit{float RA} -
+            \item \textit{float LB} -
+            \item \textit{float RB} -
+            \item \textit{float PD} -
+        \end{itemize}    
+        
+        \subsection{Ustawienia rozmieszczania roślin}
+        \textit{.spawner}
+        \begin{itemize}
+            \item \textit{vec2 CameraOffset} -
+            \item \textit{int XGridN = 1} -
+            \item \textit{int ZGridN = 1} -
+            \item \textit{float CellSize = 0} -
+            \item \textit{string GeneratorType} -
+            \item \textit{float SpawnProbability = 1} -
+            \item \textit{float RandomPositionPercentage = 0.5} -
+            \item \textit{float MinElementScale = 0.5} -
+            \item \textit{float MaxElementScale = 2} -
+        \end{itemize}
+        
 \chapter{Szczegóły programistyczne}
 
 \chapter{Przykłady użycia}

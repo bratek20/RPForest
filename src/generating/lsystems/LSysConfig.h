@@ -7,12 +7,19 @@
 
 struct LSysConfig : GeneratorConfig {
     int lSysN;
-    float angle;
+    
+    float turnAngle = 0;
+    float pitchAngle = 0;
+    float rollAngle = 0;
+
     std::string axiom;
     std::unordered_map<char, std::string> productions;
 
     LSysConfig() {
-        parse("Angle", &angle);        
+        parse("TurnAngle", &turnAngle);
+        parse("PitchAngle", &pitchAngle);
+        parse("RollAngle", &rollAngle);        
+        
         parse("Axiom", &axiom);
         customParse("Prod", [&](std::ifstream& file){
             std::string symbol, arrow, production;
