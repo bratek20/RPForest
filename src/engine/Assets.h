@@ -18,10 +18,13 @@
 #include "CameraConfig.h"
 #include "SpawnerConfig.h"
 #include "MaterialConfig.h"
+#include "PathTracerConfig.h"
+#include "DebugConfig.h"
 
 class Assets {
-    static const std::string ASSETS_PREFIX_PATH;
+    static const std::string CONFIGS_PREFIX_PATH;
     static const std::vector<std::string> POSSIBLE_PATH_PREFIXES;
+    static std::string CONFIG_FOLDER;
 
 public:
     static Program3D PROGRAM_3D;
@@ -29,6 +32,8 @@ public:
     static SkyConfig SKY_CONFIG;
     static TerrainConfig TERRAIN_CONFIG;
     static CameraConfig CAMERA_CONFIG;
+    static PathTracerConfig PATH_TRACER_CONFIG;
+    static DebugConfig DEBUG_CONFIG;
     static std::vector<SpawnerConfig> SPAWNER_CONFIGS;
 
     static std::vector<GeneratorPtr> PLANT_GENERATORS;
@@ -41,7 +46,8 @@ public:
     static MaterialConfig LEAF_MATERIAL_CONFIG;
     static MaterialConfig BARK_MATERIAL_CONFIG;
     
-    static void init(); 
+    static void init(const std::string& configFolder);
+    static void loadProgram3D();
     static void clear();
 
     static std::string validPath(const std::string& path);

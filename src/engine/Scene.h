@@ -3,7 +3,6 @@
 
 #include "Camera.h"
 #include "Light.h"
-#include "Config.h"
 #include "SkyLightSampler.h"
 #include "DiamondSquareTerrain.h"
 #include "SkyActor.h"
@@ -17,12 +16,12 @@ class Scene : public Actor {
     DiamondSquareTerrain terrain;
 
 public:
-    static ScenePtr create(const Config& c);
+    static ScenePtr create();
     void render();
 
     CameraPtr getCamera() const;
-    void takePhotoPathTracing(const Config& c);
-    void debugRay(const Config& c);
+    void takePhotoPathTracing();
+    void debugRay();
 
 protected:
     Scene();

@@ -10,8 +10,6 @@ struct CameraConfig : public ConfigParser {
     
     float edgeMinOffset = 10;
     float expectedPositionY = 0;
-
-    float debugVelocity = 10;
     
     CameraConfig() {
         parse("LookHeight", &lookHeight);
@@ -19,7 +17,6 @@ struct CameraConfig : public ConfigParser {
         parse("LookDistance", &lookDistance);
         parse("EdgeMinOffset", &edgeMinOffset);
         parse("ExpectedPositionY", &expectedPositionY);
-        parse("DebugVelocity", &debugVelocity);
     }
 };
 

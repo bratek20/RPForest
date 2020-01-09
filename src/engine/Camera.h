@@ -2,7 +2,6 @@
 #define CAMERA_H
 
 #include "Actor.h"
-#include "Config.h"
 #include "DiamondSquareTerrain.h"
 
 class Camera;

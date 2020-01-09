@@ -1,12 +1,14 @@
 #include "Window.h"
+#include "Assets.h"
 #include <cstdio>
 
 GLFWwindow *Window::window;
 float Window::ratio;
 
-bool Window::open(const std::string &name, const Config &c) {
+bool Window::open(const std::string &name) {
+    auto& c = Assets::DEBUG_CONFIG;
     setRatio(c.resolution.x, c.resolution.y);
-    if (!c.debugMode) {
+    if (!c.enabled) {
         return true;
     }
 	

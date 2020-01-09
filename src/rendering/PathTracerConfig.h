@@ -1,16 +1,16 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef PATH_TRACER_CONFIG_H
+#define PATH_TRACER_CONFIG_H
 
 #include "ConfigParser.h"
 
-struct Config : public ConfigParser {
+struct PathTracerConfig : public ConfigParser {
     std::string photoName;
     glm::vec2 resolution;
     int samples = 1;
     int maxRayBounces = 5;
     bool debugMode = false;
     
-    Config() {
+    PathTracerConfig() {
         customParse("#", [](std::ifstream& file){
             std::string comment;
             getline(file, comment);

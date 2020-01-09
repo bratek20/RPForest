@@ -20,7 +20,7 @@ using namespace glm;
 
 Scene::Scene() : Actor(nullptr) {}
 
-ScenePtr Scene::create(const Config& c) {
+ScenePtr Scene::create() {
     Timer::start("Creating scene");
 
     ScenePtr scene = ScenePtr(new Scene());
@@ -61,9 +61,10 @@ CameraPtr Scene::getCamera() const {
     return camera;
 }
 
-void Scene::takePhotoPathTracing(const Config& c) {
+void Scene::takePhotoPathTracing() {
     cout << "Taking photo..." << endl;
 
+    const PathTracerConfig& c = Assets::PATH_TRACER_CONFIG;
     float xRes = c.resolution.x;
     float yRes = c.resolution.y;
     PhotoSaver photo(xRes, yRes);
@@ -118,7 +119,9 @@ void Scene::takePhotoPathTracing(const Config& c) {
     cout << "Photo taken and saved to: " << photoSavePath << endl;
 }
 
-void Scene::debugRay(const Config& c) {
+void Scene::debugRay() {
+    const PathTracerConfig& c = Assets::PATH_TRACER_CONFIG;
+    
     PathTracer::drawLines = true;
     DebugActor::get()->getModel()->clear();
 

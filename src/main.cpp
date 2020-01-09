@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Color.h"
 #include "Assets.h"
-#include "Config.h"
 
 #include <iostream>
 #include <algorithm>
@@ -16,7 +15,6 @@
 using namespace std;
 
 ScenePtr scene;
-Config c;
 Turtle t;
 
 void printCameraPosition(){
@@ -24,37 +22,30 @@ void printCameraPosition(){
 }
 
 void takePhoto(){
-	scene->takePhotoPathTracing(c);
+	scene->takePhotoPathTracing();
 }
 
 void debugRay() {
-	scene->debugRay(c);
+	scene->debugRay();
 }
 
 int main(int argc, char* argv[]){
-	string configPath = argc >= 2 ? argv[1] : "default.rtc";
-	if(!c.load(configPath)){
-		cerr << "Loading config failed!" << endl;
-		return -1;
-	}
-    
-	unsigned seed = Random::SEED_NOT_SET;
-	if(argc > 2){
-		seed = atoi(argv[2]);
-	}
-
-	if(!Window::open("RPForest", c)){
+	string configFolder = argc >= 2 ? argv[1] : "default";    
+	unsigned seed = argc > 2 ? atoi(argv[2]) : Random::SEED_NOT_SET;
+	
+	Random::init(seed);
+	Assets::init(configFolder);
+	Globals::init();
+	
+	if(!Window::open("RPForest")){
         return -1;
     }
 
-	Globals::init(c);
-	Random::init(seed);
-	Assets::init();
+	Assets::loadProgram3D();
 	Materials::init();	
-	
-	scene = Scene::create(c);
+	scene = Scene::create();
 
-	if(c.debugMode){		
+	if(Globals::debug){		
 		Input::init();
 		Input::onKeyPressed(GLFW_KEY_P, takePhoto);
 		Input::onKeyPressed(GLFW_KEY_M, printCameraPosition);

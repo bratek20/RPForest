@@ -47,7 +47,7 @@ CameraPtr Camera::create(DiamondSquareTerrain& terrain) {
                             camera->lookPoint->getLocalPosition(), camera->up);
     
     
-    camera->velocity = config.debugVelocity;
+    camera->velocity = Assets::DEBUG_CONFIG.cameraVelocity;
     return camera;
 }
 

@@ -13,17 +13,20 @@ namespace fs = std::experimental::filesystem;
 
 using namespace std;
 
-const string Assets::ASSETS_PREFIX_PATH = "../assets/";
+const string Assets::CONFIGS_PREFIX_PATH = "../configs/";
 const vector<string> Assets::POSSIBLE_PATH_PREFIXES = 
 {
     "",
-    ASSETS_PREFIX_PATH
+    CONFIGS_PREFIX_PATH
 };
+string Assets::CONFIG_FOLDER;
 
 Program3D Assets::PROGRAM_3D;
 SkyConfig Assets::SKY_CONFIG;
 TerrainConfig Assets::TERRAIN_CONFIG;
 CameraConfig Assets::CAMERA_CONFIG;
+PathTracerConfig Assets::PATH_TRACER_CONFIG;
+DebugConfig Assets::DEBUG_CONFIG;
 vector<SpawnerConfig> Assets::SPAWNER_CONFIGS;
 
 vector<GeneratorPtr> Assets::PLANT_GENERATORS;
@@ -36,15 +39,15 @@ MaterialConfig Assets::PLANT_MATERIAL_CONFIG;
 MaterialConfig Assets::LEAF_MATERIAL_CONFIG;
 MaterialConfig Assets::BARK_MATERIAL_CONFIG;
 
-void Assets::init(){
-    if(Globals::debug) {
-        PROGRAM_3D = Program3D("../src/engine/Program3D.vs", "../src/engine/Program3D.fs");
-    }
+void Assets::init(const std::string& configFolder){
+    CONFIG_FOLDER = configFolder;
     
-    loadConfig("configs", "sky.conf", SKY_CONFIG);
-    loadConfig("configs", "terrain.conf", TERRAIN_CONFIG);
-    loadConfig("configs", "camera.conf", CAMERA_CONFIG);
- 
+    loadConfig("", "sky.conf", SKY_CONFIG);
+    loadConfig("", "terrain.conf", TERRAIN_CONFIG);
+    loadConfig("", "camera.conf", CAMERA_CONFIG);
+    loadConfig("", "pathTracer.conf", PATH_TRACER_CONFIG);
+    loadConfig("", "debug.conf", DEBUG_CONFIG);
+    
     SPAWNER_CONFIGS = loadConfigs<SpawnerConfig>("spawners", ".spawner");
 
     PLANT_GENERATORS = loadGenerators<LSysGenerator, LSysConfig>("plants", ".lsys");
@@ -59,7 +62,13 @@ void Assets::init(){
     loadConfig("materials", "rock.mat", ROCK_MATERIAL_CONFIG);
     loadConfig("materials", "plant.mat", PLANT_MATERIAL_CONFIG);
     loadConfig("materials", "leaf.mat", LEAF_MATERIAL_CONFIG);
-    loadConfig("materials", "bark.mat", BARK_MATERIAL_CONFIG);
+    loadConfig("materials", "bark.mat", BARK_MATERIAL_CONFIG);    
+}
+
+void Assets::loadProgram3D() {
+    if(DEBUG_CONFIG.enabled) {
+        PROGRAM_3D = Program3D("../src/engine/Program3D.vs", "../src/engine/Program3D.fs");
+    }
 }
 
 bool Assets::loadConfig(const std::string& path, ConfigParser& config) {
@@ -72,7 +81,8 @@ bool Assets::loadConfig(const std::string& path, ConfigParser& config) {
 }
 
 bool Assets::loadConfig(const std::string& folder, const std::string& name, ConfigParser& config) {
-    loadConfig(ASSETS_PREFIX_PATH + folder + "/" + name, config);
+    string insidePath = folder == "" ? name : folder + "/" + name; 
+    loadConfig(CONFIGS_PREFIX_PATH + CONFIG_FOLDER + "/" + insidePath, config);
 }
 
 void Assets::clear(){
@@ -91,7 +101,7 @@ string Assets::validPath(const string& path){
 }
 
 string Assets::photoSavePath(const string& name){
-    return "../photos/" + name;
+    return "../photos/" + name + ".exr";
 }
 
 bool Assets::isValidPath(const string& path){
@@ -112,7 +122,7 @@ const std::vector<GeneratorPtr>& Assets::getGenerators(const std::string& genera
     return EMPTY;
 }
 vector<string> Assets::getAllPaths(const string& folder, const string& extension) {
-    string fullFolderPath = ASSETS_PREFIX_PATH + folder;
+    string fullFolderPath = CONFIGS_PREFIX_PATH + CONFIG_FOLDER + "/" + folder;
 
     vector<string> paths;
     for (const auto & entry : fs::directory_iterator(fullFolderPath)) {

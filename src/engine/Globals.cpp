@@ -1,5 +1,7 @@
 #include "Globals.h"
 
+#include "Assets.h"
+
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <limits>
@@ -9,11 +11,11 @@ float Globals::currentFrameTime;
 float Globals::deltaTime;
 bool Globals::debug;
 
-void Globals::init(const Config& c){
+void Globals::init(){
     currentFrameTime = glfwGetTime();
 	deltaTime = 1.0f / 60.0f; 
 	previousFrameTime = currentFrameTime - deltaTime;
-    debug = c.debugMode;
+    debug = Assets::DEBUG_CONFIG.enabled;
 }
 
 void Globals::updateTime(){

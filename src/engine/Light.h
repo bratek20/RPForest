@@ -4,7 +4,6 @@
 #include "Actor.h"
 #include "Color.h"
 #include "Shader.h"
-#include "Config.h"
 #include "Mesh.h"
 
 class Light;

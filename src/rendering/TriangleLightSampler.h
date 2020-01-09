@@ -3,7 +3,6 @@
 
 #include "LightSampler.h"
 #include "Mesh.h"
-#include "Config.h"
 
 class TriangleLightSampler : public LightSampler{
     std::vector<TrianglePtr> lightSources;
