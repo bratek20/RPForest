@@ -58,7 +58,7 @@
     
     \section{Generowanie proceduralne}
         \subsection{Rośliny}
-            Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L-systemów. Jest to sposób reprezentacji modelu pod postacią zestawu reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy wstanie wygenerować zbiór symboli - słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
+            Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L-systemów. Jest to sposób reprezentacji modelu pod postacią zestawu reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy wstanie wygenerować zbiór symboli --- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
             \begin{align*}
                 axiom &: \alpha \\
                 prod1 &: \alpha \rightarrow \alpha\beta\alpha \\
@@ -74,7 +74,7 @@
             \end{figure}
             
             Aby żółw był wstanie rysować rośliny potrzebujemy symbol pozwalający się rozgałęziać. Można osiągnąć to poprzez dodanie stosu pamiętającego aktualny stan żółwia oraz symbole na nim operujące:
-            \begin{description}
+            \begin{description}\itemsep=5ex
                 \item[{[}] - odłóż aktualny stan na stos
                 \item[{]}] - ściągnij i zaaplikuj stan z góry stosu 
             \end{description}
@@ -129,7 +129,7 @@
             
         \subsection{Tekstury}
             Mając wygenerowany model - kształt,  musimy nadać mu również kolor. Jednym z założeniem programu było w pełni proceduralne podejście. Dotyczy to również tekstur. Każda tekstura w programie opisywana jest przez materiał. Materiał oblicza kolor na podstawie funkcji \textit{calcDiffuse(pos3D) \textrightarrow color}, gdzie $pos3D$ to pozycja w świecie. W celu uproszczenia i ujednolicenia systemu zdecydowałem się zaimplementować jeden wzór, który został zastosowany do każdego materiału. Wygląda on następująco:
-            \begin{gather*}
+            \begin{gather*} \label{eqn:material}
                 calcDiffuse(pos3D) = mix(color1, color2, factor) \\
                 gdzie \\
                 factor = clamp(noise(pos3D * posF) * valF, 0, 1)
@@ -190,117 +190,146 @@
         Drugi argument to ziarno losowości. W przypadku nie ustawienia żadnego, zostanie wybrane losowe - zależne od czasu. W logach programu można znaleźć ziarno dla danego uruchomienia. Możemy wybrać je podobnie jeśli chcemy wygenerować ten sam świat. 
         
     \section{Pliki konfiguracyjne}
-        Każdy plik konfiguracyjny jest parsowany w ten sam sposób. Pojedynczy wpis składa się z nazwy parametru i argumentów zależnych od typu parametru. Kolejność nie ma znaczenia. Każdy parametr musi być zdefiniowany w osobnej linii. Część parametrów ma domyślne wartości 
+        Każdy plik konfiguracyjny jest parsowany w ten sam sposób. Pojedynczy wpis składa się z nazwy parametru i argumentów zależnych od typu parametru. Kolejność nie ma znaczenia. Każdy parametr musi być zdefiniowany w osobnej linii. Część parametrów ma domyślne wartości. 
+        
+        Prawie wszystkie pliki znajdują się w folderze \textit{assets} lub jego podfolderach. Ich rozszerzenia mają znaczenie. Jeśli plik nie konfiguruje pojedynczej funkcjonalności (teren, niebo itd.), to można wyłączyć jego wczytywanie poprzez zmienienie rozszerzenia.
+        
+        Poniżej zostaną opisane parametry poszczególnych plików konfiguracyjnych. Przyjęta konwencja to:
+        \begin{itemize}
+            \item \textit{NazwaParametru : typ = wartość domyślna jeśli istnieje} - opis
+        \end{itemize}
         
         \subsection{Ustawienia path tracingu}
-        \textit{.rtc}
+        Jedyny plik konfiguracyjny, który nie jest wczytywany z folderu \textit{assets}. Opisuje ustawienia path tracingu. Jako, że użytkownik może mieć kilka różnych przydatnych ustawień (np. debug lub highQuality) to wczytywany on jest poprzez podanie ścieżki w argumencie wywołania programu. Kilka przykłądowych plików znajduje się w folderze \textit{bin} i mają rozszerzenie \textit{.rtc}.
+        
+        Można zdefiniować następujące parametry:
         \begin{itemize}
-            \item \textit{string PhotoName} - nazwa 
-            \item \textit{vec2 Resolution} - rozmiar 
-            \item \textit{int Samples = 1} - 
-            \item \textit{int MaxRayBounces} = 5 -  
-            \item \textit{bool DebugMode} = 0 - 
+            \item \textit{PhotoName : string} - nazwa pliku do którego zostanie zapisany finalny render. Będzie on w formacie exr i umieszczony zostanie w folderze \textit{photos}.
+            \item \textit{Resolution : vec2} - rozmiar renderowanej fotografii oraz wielkość okna debuggerskiego
+            \item \textit{Samples : int = 1} - liczba promieni wystrzelona per jeden pixel
+            \item \textit{MaxRayBounces : int = 5} - maksymalna dopuszczalna liczba odbić jednego promienia  
+            \item \textit{DebugMode : bool = 0} - jeśli wartość jest ustawiona na 1 to program otworzy się w trybie debuggerskim
         \end{itemize}
 
         \subsection{Ustawienia kamery}
-        \textit{camera.conf}
+        Plik opisujący ustawienia kamery. Znajduje się pod ścieżką
+        \textit{assets/configs/camera.conf}.
+        
+        Parametry:
         \begin{itemize}
-            \item \textit{float LookHeight = 1} - 
-            \item \textit{vec3 LookDirection = (0, 0, 1)} - 
-            \item \textit{float LookDistance = 2} - 
-            \item \textit{float EdgeMinOffset = 10} - 
-            \item \textit{float ExpectedPositionY = 0} -
-            \item \textit{float DebugVelocity = 10} -
+            \item \textit{LookHeight : float = 1} - wysokość liczona od  powierzchni ziemi 
+            \item \textit{LookDirection : vec3 = 0 0 1} - kierunek patrzenia 
+            \item \textit{LookDistance : float = 2} - odległości od kamery względem której zostanie dostosowane pochylenie kamery (patrzenie pod góre/w dół)
+            \item \textit{EdgeMinOffset : float = 10} - minimalna odległość od krawędzi świata  
+            \item \textit{ExpectedPositionY : float = 0} - oczekiwana pozycja Y, na której powinna zostać umieszczona kamera. Dzięki temu można wymuszać np. robienie zdjęć ze szczytów gór. 
+            \item \textit{DebugVelocity : float = 10} - szybkość poruszania się kamery w trybie debuggerskim
         \end{itemize}
         
         \subsection{Ustawienia nieba}
-        \textit{sky.conf}
+        Plik do konfiguracji nieba. Ścieżka: 
+        \textit{assets/configs/sky.conf}. Większość parametrów służy do ustawień parametrów modelu nieba opracowanego w pracy z Uniwersytetu w Utah\cite{sky}.
+        
+        Parametry słońca:
         \begin{itemize}
-            \item \textit{vec3 SunColor} -
-            \item \textit{float SunPower} -
-            \item \textit{float SkyLuminanceFactor} -
-            \item \textit{float Latitude} -
-            \item \textit{float Longitude} -
-            \item \textit{int StandardMeridian} -
-            \item \textit{int JulianDay} -
-            \item \textit{float TimeOfDay} -
-            \item \textit{float Turbidity} -
+            \item \textit{SunColor : vec3} - kolor słońca 
+            \item \textit{SunPower : float} - moc słońca
+        \end{itemize}
+        
+        Parametry modelu nieba:
+        \begin{itemize}
+            \item \textit{SkyLuminanceFactor : float} - mnożnik do zmniejszania jasności pochodzącej od nieba
+            \item \textit{Latitude : float} - szerokość geograficzna
+            \item \textit{Longitude : float} - długość geograficzna
+            \item \textit{StandardMeridian : int} - numer strefy czasowej
+            \item \textit{JulianDay : int} - dzień
+            \item \textit{TimeOfDay : float} - czas
+            \item \textit{Turbidity : float} - zagęszczenie mgły 
         \end{itemize}
         
         \subsection{Ustawienia terenu}
+        Ścieżka do pliku: \textit{assets/configs/terrain.conf}. Ustawienia terenu wpływające na algorytm \textit{diamond-square} oraz teksturowanie:
         \textit{terrain.conf}
         \begin{itemize}
-            \item \textit{int N} -
-            \item \textit{float Size} -
-            \item \textit{float InitHeight} -
-            \item \textit{float Spread} -
-            \item \textit{float SpreadReductionRate} -
-            \item \textit{float RockStartY = 10} -
-            \item \textit{float GroundEndY = 20} -
+            \item \textit{N : int} - wpływa na liczbę elementów mapy wysokości. Finalny rozmiar to $2^N$+1 x $2^N$+1.
+            \item \textit{Size : float} - wielkość generowane terenu 
+            \item \textit{InitHeight : float} - wartość do wyliczania początkowych wartości na rogach mapy. Zostaną wylosowane z przedziału (-\textit{InitHeight}:\textit{InitHeight}).
+            \item \textit{Spread : float} - początkowa rozpiętość losowej wysokości dodawanej do uśrednianych wartości
+            \item \textit{SpreadReductionRate : float} - jak zmienia się rozpiętość wzgledem kolejnych iteracji algorytmu 
+            \item \textit{RockStartY : float = 10} - od jakiej wysokości powinnien być aplikowany materiał skał
+            \item \textit{GroundEndY : float = 20} - do jakiej wysokości powinien być aplikowany materiał gruntu
         \end{itemize}
         
         \subsection{Ustawienia Tekstur}
-        \textit{.mat}
+        Wszystkie pliki konfiguracyjne materiałów znajdują się w folderze \textit{assets/materials} i mają rozszerzenie \textit{.mat}. W plikach ustala się wartości parametrów ze wzoru \ref{eqn:material}. 
         \begin{itemize}
-            \item \textit{vec3 Color1} -
-            \item \textit{vec3 Color2} -
-            \item \textit{float NoisePositionFactor = 1} -
-            \item \textit{float NoiseValueFactor = 1} -
+            \item \textit{Color1 : vec3} - pierwszy kolor do mieszania
+            \item \textit{Color2 : vec3} - drugi kolor do mieszania
+            \item \textit{NoisePositionFactor : float = 1} - czynnik zmieniający pozycję obliczania szumu 
+            \item \textit{NoiseValueFactor : float = 1} - czynnik zmieniający wartość szumu
         \end{itemize}
         
         \subsection{Bazowe ustawienia generatorów}
+        Program pozwala definiować własne L-systemy oraz udostępnia kilka predefiniowanych. Oba podejścia konfigurowane są przez odpowiednie pliki, które współdzielą część parametrów:
+        
         \begin{itemize}
-            \item \textit{int N} -
-            \item \textit{float Height} -
-            \item \textit{int ConeBasePoints = 3} -
-            \item \textit{string Material} -
-            \item \textit{float InitRadius} -
+            \item \textit{N : int} - liczba iteracji aplikowania produkcji L-systemu 
+            \item \textit{Height : float} - finalna wysokość wygenerowanego modelu
+            \item \textit{ConeBasePoints : int = 3} - ile punktów w podstawie mają cylindry tworzące model
+            \item \textit{Material : string} - nazwa materiału (Leaf, Bark, Plant)
+            \item \textit{InitRadius : float} - początkowy promień cylindrów tworzących model
         \end{itemize}
         
         \subsection{Definiowanie własnych L-systemów}
-        \textit{.lsys}
+        Wszystkie pliki definiujące własne L-systemy mają rozszerzenie \textit{.lsys}. Można umieścić je w jednym z trzech folderów: \textit{trees}, \textit{plants}, \textit{leafs}. Znajdują się one w folderze \textit{assets}. Umieszczenie wpływa na to jak program będzie traktować dany L-system.
+        
         \begin{itemize}
-            \item \textit{float TurnAngle = 0} -
-            \item \textit{float PitchAngle = 0} -
-            \item \textit{float RollAngle = 0} -
-            \item \textit{string Axiom} -
-            \item \textit{char $>$ string Prod} -
+            \item \textit{TurnAngle : float = 0} - kąt skrętu żółwia w lewo/prawo
+            \item \textit{PitchAngle : float = 0} - kąt skrętu żółwia w dół/górę 
+            \item \textit{RollAngle : float = 0} - kąt skrętu wokół własnej osi
+            \item \textit{Axiom : char} - początkowy symbol
+            \item \textit{Prod : char $>$ string } - pojedyncza definicja produkcji. Plik może zawierać kilka takich wpisów (każdy w osobnej linii) i wszystkie zostaną uwzględnione. Poprawny zapis to symbol, znak $>$ (dla lepszej czytelności) i produkowane słowo np. \textit{Prod A $>$ ABC}. 
         \end{itemize}
         
         \subsection{Ustawienia predefiniowanych L-systemów}
-        \textit{.honda}
+        W programie zostały zaimplementowane dwa L-systemy: jeden do generowania drzew, drugi do liści.
+        
+        Pliki konfiguracyjne do do generowania drzew mają rozszerzenie \textit{.honda} i znajdują się w folderze \textit{assets/trees}. Opisują one wartość L-systemu wymyślonego przez Hondę\cite{honda} i zaprezentowanego przez Prusinkiewicza\cite{plants} - patrz Rysunek \ref{fig:hondaTrees}.
+        
+        Parametry z rysunku z dokładnością do wielkości liter:
         \begin{itemize}
-            \item \textit{float R1} -
-            \item \textit{float R2} -
-            \item \textit{float A0} -
-            \item \textit{float A2} -
-            \item \textit{float D} -
-            \item \textit{float Wr} -
+            \item \textit{R1 : float} - współczynnik zmniejszania długości pnia
+            \item \textit{R2 : float} - współczynnik zmniejszania długości gałęzi
+            \item \textit{A0 : float} - kąt pod którym rosną gałęzie
+            \item \textit{A2 : float} - kąt pod którym wyrastają pomniejsze gałęzie
+            \item \textit{D : float} - kąt o ile rotuje wokół własnej osi żółw po stworzeniu gałęzi
+            \item \textit{Wr : float} - współczynnik zmniejszania promienia pnia i gałęzi
         \end{itemize}    
         
         \textit{.family}
         \begin{itemize}
-            \item \textit{float Delta} -
-            \item \textit{float LA} -
-            \item \textit{float RA} -
-            \item \textit{float LB} -
-            \item \textit{float RB} -
-            \item \textit{float PD} -
+            \item \textit{Delta : float} -
+            \item \textit{LA : float} -
+            \item \textit{RA : float} -
+            \item \textit{LB : float} -
+            \item \textit{RB : float} -
+            \item \textit{PD : float} -
         \end{itemize}    
         
         \subsection{Ustawienia rozmieszczania roślin}
         \textit{.spawner}
         \begin{itemize}
-            \item \textit{vec2 CameraOffset} -
-            \item \textit{int XGridN = 1} -
-            \item \textit{int ZGridN = 1} -
-            \item \textit{float CellSize = 0} -
-            \item \textit{string GeneratorType} -
-            \item \textit{float SpawnProbability = 1} -
-            \item \textit{float RandomPositionPercentage = 0.5} -
-            \item \textit{float MinElementScale = 0.5} -
-            \item \textit{float MaxElementScale = 2} -
+            \item \textit{CameraOffset : vec2} -
+            \item \textit{XGridN : int = 1} -
+            \item \textit{ZGridN : int = 1} -
+            \item \textit{CellSize : float = 0} -
+            \item \textit{GeneratorType : string} -
+            \item \textit{SpawnProbability : float = 1} -
+            \item \textit{RandomPositionPercentage : float = 0.5} -
+            \item \textit{MinElementScale : float = 0.5} -
+            \item \textit{MaxElementScale : float = 2} -
         \end{itemize}
+        
+    \section{Tryb debuggerski}
         
 \chapter{Szczegóły programistyczne}
 
