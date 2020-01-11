@@ -56,7 +56,7 @@
 \chapter{Zastosowane rozwiązania}
     W tym rozdziale przedstawię najważniejsze rozwiązania, które zastosowałem w swoim programie. Postaram przybliżyć się najważniejsze zagadnienia głownie po to, aby potencjalny użytkownik programu świadomie mógł wpływać na jego działanie. 
     
-    \section{Generowanie proceduralne}
+    \section{Generowanie proceduralne krajobrazów}
         \subsection{Rośliny}
             Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L-systemów. Jest to sposób reprezentacji modelu pod postacią zestawu reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy wstanie wygenerować zbiór symboli --- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
             \begin{align*}
@@ -183,37 +183,49 @@
     Poprzedni rozdział opisywał rozwiązania, które zastosowałem w programie. Ten skupi się jak uruchomić program oraz na przedstawieniu w jaki sposób można wpływać na rendering i generowane elementy.
     
     \section{Uruchomienie programu}
-        W celu kompilacji programu należy uruchomić skrypt \textit{build.sh} w głównym katalogu. Utworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake}. Dodatkowo w folderze bin powinien pojawić się plik binarny do uruchamiania programu - \textit{rpforest.exe}. Program posiada dwa opcjonalne argumenty wywołania. 
+        W celu kompilacji programu należy uruchomić skrypt \textit{build.sh} w głównym katalogu. Utworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake}. Dodatkowo w folderze bin powinien pojawić się plik binarny do uruchamiania programu - \textit{rpforest.exe}. Należy uruchomić go z linii poleceń. Program posiada dwa opcjonalne argumenty wywołania. 
         
-        Pierwszy to ścieżka do pliku konfiguracyjnego path tracingu. Kilka przykładowych plików znajduje się w folderze bin. Wszystkie mają rozszerzenie \textit{.rtc} i ich struktura zostanie opisana w kolejnej sekcji. W przypadku nie podania ścieżki zostanie załadowany plik \textit{default.rtc}.
+        Pierwszy to nazwa folderu z plikami konfiguracyjnymi. Katalog musi znajdować się w folderze \textit{configs}. Znajduje się tam domyślna konfiguracja \textit{default}, która jest wczytywana jeśli użytkownik nie poda żadnego argumentu. 
         
         Drugi argument to ziarno losowości. W przypadku nie ustawienia żadnego, zostanie wybrane losowe - zależne od czasu. W logach programu można znaleźć ziarno dla danego uruchomienia. Możemy wybrać je podobnie jeśli chcemy wygenerować ten sam świat. 
+    
+    \section{Tryb zwykły i debugowania}
+        Program ma dwa tryby: zwykły i debugowania. 
         
+        Tryb zwykły po uruchomieniu od razu generuje finalny obraz i kończy działanie. 
+        
+        Tryb debugowania otwiera okno wyświetlające wygenerowany świat. Widzimy go z pozycji kamery. Możemy poruszać się w świecie w celu wyboru lepszego miejsca renderingu i wygenerować finalny obraz klikając odpowiedni przycisk na klawiaturze. Wyświetlany obraz w trybie debugowania różni się od generowane finalnego obrazu. Wynika to z faktu zastosowania zupełnie innej technologi, w celu płynnego wyświetlania świata w czasie rzeczywistym.
+        
+        Pełny opis możliwych akcji:
+        \begin{itemize}
+            \item zmiana kierunku patrzenia kamery - ruch myszką
+            \item poruszanie kamerą - W (przód), S (tył), A (lewo), D (prawo) lub odpowiednie strzałki
+            \item rendering aktualnego widoku - przycisk P
+            \item wypuszczenie testowych promienia - przycisk L. Po naciśnięciu przycisku w kierunku patrzenia kamery. Liczba promieni i oraz liczba odbić każdego z nich jest zależna od ustawien path tracingu.
+        \end{itemize}
     \section{Pliki konfiguracyjne}
         Każdy plik konfiguracyjny jest parsowany w ten sam sposób. Pojedynczy wpis składa się z nazwy parametru i argumentów zależnych od typu parametru. Kolejność nie ma znaczenia. Każdy parametr musi być zdefiniowany w osobnej linii. Część parametrów ma domyślne wartości. 
         
-        Prawie wszystkie pliki znajdują się w folderze \textit{assets} lub jego podfolderach. Ich rozszerzenia mają znaczenie. Jeśli plik nie konfiguruje pojedynczej funkcjonalności (teren, niebo itd.), to można wyłączyć jego wczytywanie poprzez zmienienie rozszerzenia.
+        Wszystkie pliki powinny znajdować się w katalogu umieszczonym w folderze \textit{configs} którego nazwa została podana jako pierwszy argument programu. Ich rozszerzenia oraz umieszczenie w podfolderach ma znaczenie.
         
-        Poniżej zostaną opisane parametry poszczególnych plików konfiguracyjnych. Przyjęta konwencja to:
+        Poniżej zostaną opisane parametry poszczególnych plików konfiguracyjnych, ich lokalizacja oraz zastosowanie. Przyjęta konwencja to:
         \begin{itemize}
             \item \textit{NazwaParametru : typ = wartość domyślna jeśli istnieje} - opis
         \end{itemize}
         
         \subsection{Ustawienia path tracingu}
-        Jedyny plik konfiguracyjny, który nie jest wczytywany z folderu \textit{assets}. Opisuje ustawienia path tracingu. Jako, że użytkownik może mieć kilka różnych przydatnych ustawień (np. debug lub highQuality) to wczytywany on jest poprzez podanie ścieżki w argumencie wywołania programu. Kilka przykłądowych plików znajduje się w folderze \textit{bin} i mają rozszerzenie \textit{.rtc}.
+        Plik opisujący path tracing umieszczony w głównym folderze z konfiguracjami o nazwie \textit{pathTracer.conf}.
         
         Można zdefiniować następujące parametry:
         \begin{itemize}
             \item \textit{PhotoName : string} - nazwa pliku do którego zostanie zapisany finalny render. Będzie on w formacie exr i umieszczony zostanie w folderze \textit{photos}.
-            \item \textit{Resolution : vec2} - rozmiar renderowanej fotografii oraz wielkość okna debuggerskiego
+            \item \textit{Resolution : vec2} - rozmiar renderowanej fotografii
             \item \textit{Samples : int = 1} - liczba promieni wystrzelona per jeden pixel
             \item \textit{MaxRayBounces : int = 5} - maksymalna dopuszczalna liczba odbić jednego promienia  
-            \item \textit{DebugMode : bool = 0} - jeśli wartość jest ustawiona na 1 to program otworzy się w trybie debuggerskim
         \end{itemize}
 
         \subsection{Ustawienia kamery}
-        Plik opisujący ustawienia kamery. Znajduje się pod ścieżką
-        \textit{assets/configs/camera.conf}.
+        Plik opisujący ustawienia kamery: \textit{camera.conf}.
         
         Parametry:
         \begin{itemize}
@@ -222,12 +234,20 @@
             \item \textit{LookDistance : float = 2} - odległości od kamery względem której zostanie dostosowane pochylenie kamery (patrzenie pod góre/w dół)
             \item \textit{EdgeMinOffset : float = 10} - minimalna odległość od krawędzi świata  
             \item \textit{ExpectedPositionY : float = 0} - oczekiwana pozycja Y, na której powinna zostać umieszczona kamera. Dzięki temu można wymuszać np. robienie zdjęć ze szczytów gór. 
-            \item \textit{DebugVelocity : float = 10} - szybkość poruszania się kamery w trybie debuggerskim
+        \end{itemize}
+        
+        \subsection{Ustawienia debugowania}
+        Plik do zmiany ustawień debugowania: \textit{debug.conf}.
+        
+        Parametry:
+        \begin{itemize}
+            \item \textit{Enabled : bool = false} - czy debugowanie jest włączone
+            \item \textit{Resolution : vec2 = 800 600} - rozmiar okna debugowania
+            \item \textit{CameraVelocity : float = 10} - prędkość poruszania się kamery 
         \end{itemize}
         
         \subsection{Ustawienia nieba}
-        Plik do konfiguracji nieba. Ścieżka: 
-        \textit{assets/configs/sky.conf}. Większość parametrów służy do ustawień parametrów modelu nieba opracowanego w pracy z Uniwersytetu w Utah\cite{sky}.
+        Plik do konfiguracji nieba: \textit{sky.conf}. Większość parametrów służy do ustawień modelu nieba opracowanego w pracy z Uniwersytetu w Utah\cite{sky}.
         
         Parametry słońca:
         \begin{itemize}
@@ -247,8 +267,7 @@
         \end{itemize}
         
         \subsection{Ustawienia terenu}
-        Ścieżka do pliku: \textit{assets/configs/terrain.conf}. Ustawienia terenu wpływające na algorytm \textit{diamond-square} oraz teksturowanie:
-        \textit{terrain.conf}
+        Ustawienia terenu wpływające na algorytm \textit{diamond-square} oraz teksturowanie są opisane w pliku: \textit{terrain.conf}.
         \begin{itemize}
             \item \textit{N : int} - wpływa na liczbę elementów mapy wysokości. Finalny rozmiar to $2^N$+1 x $2^N$+1.
             \item \textit{Size : float} - wielkość generowane terenu 
@@ -259,8 +278,8 @@
             \item \textit{GroundEndY : float = 20} - do jakiej wysokości powinien być aplikowany materiał gruntu
         \end{itemize}
         
-        \subsection{Ustawienia Tekstur}
-        Wszystkie pliki konfiguracyjne materiałów znajdują się w folderze \textit{assets/materials} i mają rozszerzenie \textit{.mat}. W plikach ustala się wartości parametrów ze wzoru \ref{eqn:material}. 
+        \subsection{Ustawienia tekstur}
+        Wszystkie pliki konfiguracyjne materiałów znajdują się w folderze \textit{materials} i mają rozszerzenie \textit{.mat}. W plikach ustala się wartości parametrów ze wzoru \ref{eqn:material}. 
         \begin{itemize}
             \item \textit{Color1 : vec3} - pierwszy kolor do mieszania
             \item \textit{Color2 : vec3} - drugi kolor do mieszania
@@ -280,7 +299,7 @@
         \end{itemize}
         
         \subsection{Definiowanie własnych L-systemów}
-        Wszystkie pliki definiujące własne L-systemy mają rozszerzenie \textit{.lsys}. Można umieścić je w jednym z trzech folderów: \textit{trees}, \textit{plants}, \textit{leafs}. Znajdują się one w folderze \textit{assets}. Umieszczenie wpływa na to jak program będzie traktować dany L-system.
+        Wszystkie pliki definiujące własne L-systemy mają rozszerzenie \textit{.lsys}. Można umieścić je w jednym z trzech folderów: \textit{trees}, \textit{plants}, \textit{leafs}. Umieszczenie wpływa na to jak program będzie traktować dany L-system.
         
         \begin{itemize}
             \item \textit{TurnAngle : float = 0} - kąt skrętu żółwia w lewo/prawo
@@ -293,7 +312,7 @@
         \subsection{Ustawienia predefiniowanych L-systemów}
         W programie zostały zaimplementowane dwa L-systemy: jeden do generowania drzew, drugi do liści.
         
-        Pliki konfiguracyjne do do generowania drzew mają rozszerzenie \textit{.honda} i znajdują się w folderze \textit{assets/trees}. Opisują one wartość L-systemu wymyślonego przez Hondę\cite{honda} i zaprezentowanego przez Prusinkiewicza\cite{plants} - patrz Rysunek \ref{fig:hondaTrees}.
+        Pliki konfiguracyjne do generowania drzew mają rozszerzenie \textit{.honda} i znajdują się w folderze \textit{trees}. Opisują one wartość L-systemu wymyślonego przez Hondę\cite{honda} i zaprezentowanego przez Prusinkiewicza\cite{plants} - patrz Rysunek \ref{fig:hondaTrees}.
         
         Parametry z rysunku z dokładnością do wielkości liter:
         \begin{itemize}
@@ -305,31 +324,31 @@
             \item \textit{Wr : float} - współczynnik zmniejszania promienia pnia i gałęzi
         \end{itemize}    
         
-        \textit{.family}
+        Przykładowy L-system tworzący liście został przedstawiony na rysunku \ref{fig:lsystemLeafs}. Pliki go opisujące mają rozszerzenie \textit{.family} i umieszczone są w folderze \textit{leafs}. Zawierają:
         \begin{itemize}
-            \item \textit{Delta : float} -
-            \item \textit{LA : float} -
-            \item \textit{RA : float} -
-            \item \textit{LB : float} -
-            \item \textit{RB : float} -
-            \item \textit{PD : float} -
+            \item \textit{Delta : float} - kąt skrętu żółwia w lewo/prawo
+            \item \textit{LA : float} - początkowa długość głównego segmentu
+            \item \textit{RA : float} - współczynnik wzrostu głównego segmentu
+            \item \textit{LB : float} - początkowa długość bocznych segmentów
+            \item \textit{RB : float} - współczynnik wzrostu bocznych segmentów
+            \item \textit{PD : float} - ubytek rośnięcia bocznych fragmentów
         \end{itemize}    
         
         \subsection{Ustawienia rozmieszczania roślin}
-        \textit{.spawner}
+        Grupy elementów można umieszczać w świecie przy pomocy plików o rozszerzeniu
+        \textit{.spawner} umieszczonych w folderze \textit{sprawners}.
         \begin{itemize}
-            \item \textit{CameraOffset : vec2} -
-            \item \textit{XGridN : int = 1} -
-            \item \textit{ZGridN : int = 1} -
-            \item \textit{CellSize : float = 0} -
-            \item \textit{GeneratorType : string} -
-            \item \textit{SpawnProbability : float = 1} -
-            \item \textit{RandomPositionPercentage : float = 0.5} -
-            \item \textit{MinElementScale : float = 0.5} -
-            \item \textit{MaxElementScale : float = 2} -
+            \item \textit{CameraOffset : vec2} - przesunięcie środka kraty względem pozycji kamery
+            \item \textit{XGridN : int = 1} - liczba komórek kraty wzdłuż osi X
+            \item \textit{ZGridN : int = 1} - liczba komórek kraty wzdłuż osi Z
+            \item \textit{CellSize : float = 0} - rozmiar pojedynczej komórki
+            \item \textit{GeneratorType : string} - typ użytego generatorów (Tree, Plant)
+            \item \textit{SpawnProbability : float = 1} - szansa na stworzenie pojedynczego elementu 
+            \item \textit{RandomPositionPercentage : float = 0.5} - na jak dużym obszarze wokół środka komórki mogą być tworzone elementy
+            \item \textit{MinElementScale : float = 0.5} - minimalna wartość, która może zostać wybrana do skalowania pojedynczego elementu
+            \item \textit{MaxElementScale : float = 2} - maksymalna wartość, która może zostać wybrana do skalowania pojedynczego elementu
         \end{itemize}
-        
-    \section{Tryb debuggerski}
+    
         
 \chapter{Szczegóły programistyczne}
 

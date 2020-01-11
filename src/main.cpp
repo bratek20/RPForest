@@ -17,10 +17,6 @@ using namespace std;
 ScenePtr scene;
 Turtle t;
 
-void printCameraPosition(){
-	cout << "Camera pos: " << scene->getCamera()->getWorldPosition() << endl;
-}
-
 void takePhoto(){
 	scene->takePhotoPathTracing();
 }
@@ -48,7 +44,6 @@ int main(int argc, char* argv[]){
 	if(Globals::debug){		
 		Input::init();
 		Input::onKeyPressed(GLFW_KEY_P, takePhoto);
-		Input::onKeyPressed(GLFW_KEY_M, printCameraPosition);
 		Input::onKeyPressed(GLFW_KEY_L, debugRay);
 
 		while(!Window::shouldClose()){

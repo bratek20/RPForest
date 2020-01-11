@@ -5,7 +5,7 @@
 
 struct DebugConfig : public ConfigParser {
     bool enabled = false;
-    glm::vec2 resolution;
+    glm::vec2 resolution = glm::vec2(800, 600);
     float cameraVelocity = 10;
     
     DebugConfig() {
