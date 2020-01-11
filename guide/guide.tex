@@ -351,7 +351,65 @@
     
         
 \chapter{Szczegóły programistyczne}
-
+    \section{Wykaz użytych narzędzi}
+        Większość obliczeń matematycznych korzysta z typów i operacji zawartych w bibliotece \textbf{GLM}.
+        
+        Tryb debugowania korzysta z OpenGL w celu wyświetlania świata. Użyte biblioteki to \textbf{GLEW} oraz \textbf{GLFW3}. Są one ogólnie dostępne, dobrze udokumentowane i łatwe w użyciu. 
+        
+        Path tracer korzysta z biblioteki \textbf{Embree3}. Pozwala w bardzo szybki sposób obliczać przecięcia promieni z trójkątami, co jest kluczowym elementem path tracingu. Do tworzenia obrazów w formacie \textit{.exr} wykorzystana została biblioteka \textbf{OpenEXR}.
+    \section{Struktura projektu}
+        Program składa się z czterech modułów:
+        \begin{itemize}
+            \item \textit{engine} - baza całego programu, przypominająca silnik 3D. Implementuje podstawowe funkcjonalności wykorzystywane i rozszerzane przez inne moduły. 
+            \item \textit{rendering} - moduł implementujący wszystkie zagadnienia związane z path tracingiem
+            \item \textit{generating} - moduł implementujący wszystkie zagadnienia związane z generowaniem proceduralnym
+            \item \textit{utils} - moduł implementujący małe lub pomocnicze funkcjonalności
+        \end{itemize}
+        
+        \subsection{Moduł \textit{engine}}
+            Zarówno rendering przy pomocy OpenGL jak i techniką path tracingu wymaga reprezentacji obiektu, który ma renderować. Podstawowym sposobem opisów złożonych kształtów jest przedstawienie ich przy pomocy zbioru trójkątów. Każdy trójkąt (klasa \textbf{Triangle}) składa się z trzech wierzchołków (klasa \textbf{Vertex}), które poza pozycją w świecie zawierają takie informacje jak wektory normalne (reprezentujące orientację w przestrzeni). Pojedynczy zbiór trójkątów trzymany jest w obrębie obiektu klasy \textbf{Mesh}, która dodatkowo definiuje kolorystykę reprezentowanego kształtu przy pomocy materiału (klasa \textbf{Material}). Finalny model (klasa \textbf{Model}) to zbiór mesh'y. Pozwala to wyrazić dowolnie skomplikowany (pod względem kształtu i kolorystki) obiekt. 
+            
+            Jedną z najważniejszych klas modułu jest \textbf{Actor}. Reprezentuje on dowolny obiektu w świecie. Aktor może mieć kształt opisany przy pomocy klasy \textbf{Model}. Posiada on dodatkowo zbiór parametrów pozwalający wpływać na finalną reprezentację np. pozycja, skala, rotacja. Pozwala to na umieszczenie tych samych modeli w różnych miejscach w świecie i zmienić ich rozmiar.
+            
+            Cały świat reprezentowany przy pomocy klasy \textbf{Scene}. Scena to rodzaj aktora, który zbiera wszystkich innych aktorów, odpowiednio ich inicjalizuje i rozmieszcza. Jednym z aktorów umieszczonych na scenie jest między innymi kamera (klasa \textbf{Camera}). Pozwala na to funkcjonalność aktora: relacja rodzic-dziecko. Każdy aktor może mieć niezerową liczbę dzieci. Wszystkie parametry rodzica wpływają na dziecko np. zmieniając pozycję rodzica, przemieścimy wszystkie jego dzieci oraz dzieci tych dzieci (wnuki) itd. Dodatkowo akcje jak aktualizowanie (funkcja \textbf{update}) albo renderowanie w trybie debugowania (funkcja \textbf{render}) działają pierw na rodzica, a następnie na jego wszystkie dzieci.
+            
+            Moduł implementuje dodatkowo wiele klas, bez których program nie mógłby funkcjonować:
+            \begin{itemize}
+                \item \textbf{Window} - wyświetla okno trybu debugowania
+                \item \textbf{Input} - zbiera akcje użytkownika i pozwala na nie reagować
+                \item \textbf{Assets} - wczytuje zasoby potrzebne programowi (np. pliki konfiguracyjne) i udostępnia je innym częściom programu 
+            \end{itemize}
+            
+        \subsection{Moduł \textit{rendering}}
+            Najważniejszym klasą modułu to \textbf{PathTracer}. Implementuje ona obliczanie koloru pochodzącego z danego kierunku. Korzysta z dwóch pomocniczych klas:
+            \begin{itemize}
+                \item \textbf{AccStruct} - interfejs struktury obliczającej przecięcie danego promienia z najbliższym trójkątem. Przykładowa implementacja to \textbf{EmbreeWrapper}, która wykorzystuje bibliotekę Embree do obliczania przecięć. 
+                \item \textbf{SkyLightSampler} - klasa obliczająca kolor nieba oraz próbkująca promienie pochodzące od słońca
+            \end{itemize}
+            
+            Dodatkowo w głównym folderze moduły znajduje się podfolder \textit{ASky}, w którym modelu nieba opisany i zaimplementowany przez pracowników z Uniwersytetu z Utah \cite{sky}.
+            
+        \subsection{Moduł \textit{generating}}
+            Implementacje wszystkich zagadnień opisanych w pracy znajdują się w tym folderze. Duża część kodu zawiera implementację różnych symboli z L-systemów. Bazą jest klasa \textbf{Symbol}, która udostępnia dwie metody wirtualne: \textbf{vector \textless SymbolPtr \textgreater produce()} oraz \textbf{void process(ProcessContext\&)}. Pierwsza metoda służy do produkcji słowa dla aktualnego stanu symbolu. Pozwala to implementować zarówno parametryczne jak i losowe symbole. Druga metoda służy do wpływania na aktualny stan przetwarzania słowa z wygenerowanego L-systemu. Operuje ona na obiekcie struktury \textbf{ProcessContext}. Stuktura składuje między innymi: aktualny stan żółwia (klasa \textbf{Turtle}), stos odłożonych stanów żółwia (przy pomocy operatora rozgałęziania) oraz wygenerowany do tej pory model.
+            
+            Samo generowanie odbywa się w klasach pochodnych klasy \textbf{Generator}. Generator wymaga symbolu startowego oraz konfiguracji bazowej \textbf{GeneratorConfig}, aby wygenerować finalny model.
+            
+            Przykładowe klasy pochodne generatora to \textbf{LSysGenerator} albo \textbf{Honda}. Pierwszy implementuje obsługę plików konfiguracyjnych \textit{.lsys}, a drugi prezentuje implementację predefiniowanego L-systemu.
+            
+            Pozostałe klasy, na które warto zwrócić uwagę to:
+            \begin{itemize}
+                \item \textbf{DiamonSquareTerrain} - klasa implementująca algorytm \textit{Diamond-square}. Udostępniająca również metodę do obliczania wysokości terenu dla zdanego punktu oraz optymalne umiejscowienie kamery.
+                \item \textbf{SpawnerActor} - specjalny rodzaj aktora, który rozmieszcza wygenerowane modele w zależności od konfiguracji z pliku \textit{.lsys} 
+            \end{itemize}
+            
+        \subsection{Moduł \textit{utils}}
+            Główna klasa modułu to \textbf{Utils}. Jest to klasa statyczna zawierająca wszystkie pomocnicze funkcje, wykorzystywane przez inne moduły. Dodatkowo posiada wiele stałych jak np. \textbf{PI} albo \textbf{INF}.
+            
+            Inne klasy modułu to:
+            \begin{itemize}
+                \item \textbf{Random} - implementuje wiele losowych metod jak np. losowanie wektora na półsferze, obliczanie szumu perlina albo wybieranie elementu z tablicy
+                \item \textbf{Timer} - prosta klasa do mierzenia czasu  
+            \end{itemize}
 \chapter{Przykłady użycia}
 
 %%%%% BIBLIOGRAFIA
