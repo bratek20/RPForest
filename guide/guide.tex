@@ -29,7 +29,7 @@
 %%%%% WLASNE DODATKOWE PAKIETY
 %
 %\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
-\usepackage{graphicx, amsmath, gensymb, float, textcomp, enumitem}
+\usepackage{graphicx, amsmath, gensymb, float, textcomp, enumitem, hyperref}
 %
 %%%%% WŁASNE DEFINICJE I POLECENIA
 \graphicspath{{./pictures/}}
@@ -57,13 +57,13 @@
     
 \chapter{Generowanie proceduralne krajobrazów}
     \section{Rośliny}
-        Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L--systemów. Jest to sposób reprezentacji modelu przy pomocy reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy w stanie wygenerować zbiór symboli -- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
+        Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L--systemów. Jest to sposób reprezentacji modelu jako reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy w stanie wygenerować zbiór symboli -- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
         \begin{align*}
             axiom &: \alpha \\
             prod1 &: \alpha \rightarrow \alpha\beta\alpha \\
             prod2 &: \beta \rightarrow \beta\beta
         \end{align*}
-        Produkcje aplikowane są jednocześnie w obrębie jednej iteracji. Podając liczbę iteracji możemy generować coraz dłuższe ciągi. Dla N = 1 otrzymujemy $\alpha\beta\alpha$, a dla N = 2 mamy $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$.
+        Produkcje aplikowane są jednocześnie w obrębie jednej iteracji. Podając liczbę iteracji możemy generować coraz dłuższe ciągi. Dla $N = 1$ otrzymujemy $\alpha\beta\alpha$, a dla $N = 2$ mamy $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$.
         
         Finalnym produktem L--systemu jest słowo, które możemy potraktować jako polecenia dla rysującego żółwia. Żółw czytając słowo od lewej do prawej będzie interpretować każdy symbol jako komendę. Przykłady poleceń to: idź prosto rysując linię albo skręć w lewo o wcześniej ustalony kąt. W przypadku gdy żółw nie zna symbolu nie robi nic i czyta dalej. Rysunek \ref{fig:turtleExample} przedstawia przykładową interpretację słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$ gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.
         \begin{figure}[H]
@@ -92,7 +92,7 @@
             \label{fig:hondaTrees}
         \end{figure}
         
-        L--systemy mogę również generować wielokąty. Jest to szczególnie przydatne w tworzeniu liści. Rysunek \ref{fig:lsystemLeafs} prezentuje kilka rodzajów liści wygenerowanych z jednego L--systemu. Możliwe jest to dzięki wprowadzeniu nowych symboli:
+        L--systemy mogą również generować wielokąty. Jest to szczególnie przydatne w tworzeniu liści. Rysunek \ref{fig:lsystemLeafs} prezentuje kilka rodzajów liści wygenerowanych z jednego L--systemu. Możliwe jest to dzięki wprowadzeniu nowych symboli:
         \begin{description}[itemsep=2pt, parsep=2pt, topsep=2pt, partopsep=2pt]
             \item[\text{\{}] -- zacznij tworzyć nowy wielokąt 
             \item[.] -- zapisz aktualną pozycję jako wierzchołek
@@ -100,35 +100,35 @@
         \end{description}
         \begin{figure}[H]
             \includegraphics[width=\linewidth]{lsystemLeafs.png}
-            \caption{L--system parametryczny generujący liście \cite{plants}} 
+            \caption{L--system parametryczny generujący liście \cite{plants}.} 
             \label{fig:lsystemLeafs}
         \end{figure}
         
         Wcześniej opisane zastosowania L--systemów pokazują dlaczego jest to idealny kandydat do tworzenia realistycznych modeli roślin. Różnorodność definiowanych kształtów, rozbudowywanie funkcjonalności poprzez dodawanie nowych symboli oraz łatwe parametryzowanie to jedne z wielu zalet tej techniki. Wszystko to sprawia, że L--systemy są często wykorzystywane w wielu różnych projektach -- również w tym. 
         
     \section{Teren}
-        Problem generowania terenu można sprowadzić do problemu generowania mapy wysokości. Jest to macierz wypełniona liczbami reprezentującymi wysokość wybranych punktów. Owe punkty pomiaru rozłożone są równomiernie na osi X i Z. Mając taką macierz w łatwy sposób jesteśmy w stanie wygenerować teren -- tworzymy kwadraty dla każdej czwórki sąsiadujących punktów (rysunek \ref{fig:heightmap}). 
+        Problem generowania terenu można sprowadzić do problemu generowania mapy wysokości. Jest to macierz wypełniona liczbami reprezentującymi wysokość wybranych punktów. Owe punkty pomiaru rozłożone są równomiernie na osi $X$ i $Z$. Mając taką macierz w łatwy sposób jesteśmy w stanie wygenerować teren -- tworzymy kwadraty dla każdej czwórki sąsiadujących punktów (rysunek \ref{fig:heightmap}). 
         \begin{figure}[H]
             \includegraphics[width=\linewidth]{heightmap.png}
             \caption{Przykładowy teren wygenerowany przy użyciu mapy wysokości \cite{heightmap}} 
             \label{fig:heightmap}
         \end{figure}
         
-        Istnieje wiele algorytmów generujących mapy wysokości. Mój wybór padł na tak zwany \textit{Diamond--square algorithm}. Dla ustalonego N generuje on mapę wysokości o rozmiarze $2^N$+1 x $2^N$+1. Na początku ustala się wartości w rogach macierzy. Następnie wykonuje się na przemiennie fazę diamond i square, aż do ustalenia wszystkich wysokości. 
+        Istnieje wiele algorytmów generujących mapy wysokości. W programie użyto tak zwanego \textit{Diamond--square algorithm}. Dla ustalonego N generuje on mapę wysokości o rozmiarze $2^N$+1 x $2^N$+1. Na początku ustala się wartości w rogach macierzy. Następnie wykonuje się na przemiennie fazę diamond i square, aż do ustalenia wszystkich wysokości. 
         
-        Faza diamond polega na wygenerowaniu wysokości w środku każdego kwadratu, który nie ma ustalonej tej wartości. Faza square robi to samo tylko, ze dla punktów tworzących kształt rombu. Rysunek \ref{fig:diamondSquare} obrazuje przebieg algorytmu. 
+        Faza diamond polega na wygenerowaniu wysokości w środku każdego kwadratu, który nie ma ustalonej wartości. Faza square robi to samo tylko, że dla punktów tworzących kształt rombu. Rysunek \ref{fig:diamondSquare} obrazuje przebieg algorytmu. 
         \begin{figure}[H]
             \includegraphics[width=\linewidth]{diamondSquare.png}
             \caption{Przebieg algorytmu diamond--square dla N = 2.} 
             \label{fig:diamondSquare}
         \end{figure}
         
-        Obliczanie nowej wartości w środku polega na wzięciu średniej z wysokości wierzchołków tworzących kształt (kwadrat, romb). Dodatkowo dodajemy do obliczanej wartości pewien czynnik losowy, z przedziału $(-X, X)$ dla ustalonego X. Dla każdej kolejnej pary faz ów czynnik jest zmniejszany poprzez przemnożenie go przez pewne $R < 1$.
+        Obliczanie nowej wartości w środku polega na wzięciu średniej z wysokości wierzchołków tworzących kształt (kwadrat, romb). Dodatkowo dodajemy do obliczanej wartości pewien czynnik losowy z przedziału $(-X, X)$ dla ustalonego $X$. Dla każdej kolejnej pary faz ów czynnik jest zmniejszany poprzez przemnożenie go przez ustalone $R < 1$.
         
-        \textit{Diamond--square algorithm} jest zarówno prosty jak i efektywny. Ustalając kilka parametrów jesteśmy w stanie tworzyć bardzo różnorodny teren. 
+        \textit{Diamond--square algorithm} jest zarówno prosty jak i efektywny. Ustalając kilka parametrów jesteśmy w stanie tworzyć bardzo różnorodny teren. W łatwy sposób możemy wpływać na dokładność modelu oraz kształt. Wszystko to sprawia, że ten algorytm jest dobrym kandydatem do generowania terenu.
         
     \section{Tekstury}
-        Mając wygenerowany model -- kształt,  musimy nadać mu również kolor. Jednym z założeniem programu było w pełni proceduralne podejście. Dotyczy to również tekstur. Każda tekstura w programie opisywana jest przez materiał. Materiał oblicza kolor na podstawie funkcji \textit{calcDiffuse(pos3D) \textrightarrow color}, gdzie $pos3D$ to pozycja w świecie. W celu uproszczenia i ujednolicenia systemu zdecydowałem się zaimplementować jeden wzór, który został zastosowany do każdego materiału. Wygląda on następująco:
+        Aby wygenerowany model był kompletny poza kształtem musimy również nadać mu kolor. Jednym z założeń programu było w pełni proceduralne podejście. Dotyczy to również tekstur. Każda tekstura w programie opisywana jest przez materiał. Materiał oblicza kolor na podstawie funkcji \textit{calcDiffuse(pos3D) \textrightarrow color}, gdzie $pos3D$ to pozycja w świecie. W celu uproszczenia i ujednolicenia systemu zaimplementowano jeden wzór, który został zastosowany do każdego materiału. Wygląda on następująco:
         \begin{gather*} \label{eqn:material}
             calcDiffuse(pos3D) = mix(color1, color2, factor) \\
             gdzie \\
@@ -138,7 +138,7 @@
 
         Finalny kolor to mieszanka $color1$ i $color2$ w stosunku $1 - factor$ i $factor$. Sam $factor$ to odpowiednio obliczona wartość szumu Perlina \cite{perlinNoise}. Dzięki $posF$ możemy skalować szum, a dzięki $valF$ możemy wymuszać faworyzowanie wartości bliższych 0 albo 1.
         
-        Jedynym materiałem w programie odbiegającym od tej metody jest materiał terenu. Łączy on ze sobą dwa inne materiały -- grunt i skały. Do pewnej ustalonej wysokości kolor obliczany jest tylko dla gruntu. Analogicznie powyżej pewnego poziomu stosuję tylko kolor skał. Po środku dochodzi do mieszania kolorów w stosunku zależnym od odległości do ustalonych granic:
+        Jedynym materiałem w programie odbiegającym od tej metody jest materiał terenu. Łączy on ze sobą dwa inne materiały -- grunt i skały. Do pewnej ustalonej wysokości kolor obliczany jest tylko dla gruntu. Analogicznie powyżej pewnego poziomu aplikowany jest tylko kolor skał. Po środku dochodzi do mieszania kolorów w stosunku zależnym od odległości do ustalonych granic:
         \begin{gather*}
         mix(calcRockColor(pos), calcGroundColor(pos), groundFactor) \\
         gdzie \\
@@ -148,20 +148,20 @@
         Zaprezentowane rozwiązanie okazało się wystarczające, aby osiągnąć zadowalające rezultaty. Jest łatwe do implementacji, ujednolicone dla użytkownika oraz na tyle rozbudowane, aby wyrażać niebanalną kolorystkę.
         
     \section{Rozmieszczanie roślin}
-        Po wygenerowaniu wystarczającej liczby modeli roślin trzeba je umieścić w świecie. Można to robić w mniej lub bardziej wyszukany sposób. W tym przypadku zdecydowałem się na jedno z najprostszych rozwiązań -- losowe rozmieszczanie wewnątrz komórek kraty. Krata o wymiarach N x M posiada $N * M$ kwadratowych komórek o ustalonym rozmiarze. Wewnątrz takiej komórki z pewnym prawdopodobieństwem możemy umieścić losowy model. Pozycja modelu wewnątrz kraty również jest losowa i może zostać ograniczona przez parametr mówiący jak bardzo od środka może zostać wylosowana pozycja. Przykładowo dla wartości 0 obiekt zawsze będzie umieszczany w środku kraty, a dla 1 może pojawić się w całej kracie. 
+        Po wygenerowaniu wystarczającej liczby modeli roślin trzeba je umieścić w świecie. Można to robić w mniej lub bardziej wyszukany sposób. W tym przypadku zastosowano jedno z najprostszych rozwiązań -- losowe rozmieszczanie wewnątrz komórek kraty. Krata o wymiarach $N$ x $M$ posiada $N * M$ kwadratowych komórek o ustalonym rozmiarze. Wewnątrz takiej komórki z pewnym prawdopodobieństwem możemy umieścić losowy model. Pozycja modelu wewnątrz kraty również jest losowa i może zostać ograniczona przez parametr mówiący jak bardzo od środka może zostać wylosowana. Przykładowo dla wartości 0 obiekt zawsze będzie umieszczany w środku kraty, a dla 1 może pojawić się w całej kracie. 
         
     \section{Ograniczenie liczby modeli}
-        Przy generowaniu tak dużego świata musimy liczyć się z ograniczeniami sprzętowymi. Niezoptymalizowane modele otrzymywane z L--systemów mają nawet po kilkanaście tysięcy trójkątów! W takim przypadku dobrym sposobem tworzenia sceny jest umieszczenia wszystkich generowanych modeli względnie blisko kamery. Duże modele będą zasłaniać znaczną część pola widzenia ukrywając niewypełnioną przestrzeń. Rozwiązanie nie jest idealne ale ma szanse wygenerować scenę o zadowalającym rezultacie.
+        Przy generowaniu tak dużego świata musimy liczyć się z ograniczeniami sprzętowymi. Niezoptymalizowane modele otrzymywane z L--systemów mają nawet po kilkanaście tysięcy trójkątów! W takim przypadku dobrym sposobem tworzenia sceny jest umieszczenia wszystkich generowanych modeli względnie blisko kamery, która renderuje obraz. Duże modele będą zasłaniać znaczną część pola widzenia ukrywając niewypełnioną przestrzeń. Rozwiązanie nie jest idealne ale ma szanse wygenerować scenę o zadowalającym rezultacie. To podejście ma swoje odwzorowanie w implementacji rozmieszczania roślin, które jest robione zależnie od położenia kamery.
         
 \chapter{Realistyczny rendering}
-    Do tej pory opisywałem techniki pozwalające generowanie różnych modeli składających się w jeden wielki świat. W tej sekcji skupię się jak uchwycić część tego co udało się stworzyć. Sam proces zwany renderingiem w tym przypadku przypominać będzie nic innego jak zrobienie zdjęcia. Wcześniej wspomniałem o koncepcie kamery, która znajduje się w świecie oraz jest zwrócona w określonym kierunku. To co należy zrobić teraz to uchwycić obraz z jej perspektywy. 
+    Do tej pory przyjrzeliśmy się technikom pozwalającym generować różne modele składające się w jeden wielki świat. W tej sekcji skupimy się jak uchwycić część tego co udało się stworzyć. Sam proces zwany renderingiem w tym przypadku przypominać będzie nic innego jak zrobienie zdjęcia. Wcześniej pojawiło się pojęcie kamery. Jest to niewidoczny obiekt umieszczony w świecie, zwrócony w określonym kierunku. To co należy zrobić to uchwycić obraz z jego perspektywy. 
     
     \section{Path tracer}
         Głównym zadaniem path tracer'a jest obliczanie koloru docierającego do kamery z ustalonego kierunku. Kolor w tym przypadku to nic innego jak promień światła, który po wielu odbiciach dotarł do kamery. Postaramy odtworzyć się to zjawisko, z tym wyjątkiem, że promień zostanie wypuszczony od kamery i będzie podążać do światła. Cały proces jest wysoce losowy, jako że promień mógł dotrzeć do nas wieloma różnymi ścieżkami. W celu otrzymania jak najlepszych wyników w jednym kierunku będziemy puszczać wiele promieni, a na końcu je uśrednimy.
         
-        TODO(czy jeszcze coś tu cytować, sama technika jest ogólnie znana, a wzór pewnie nie został wymyślony w PBRT) 
+        \textbf{TODO(czy jeszcze coś tu cytować, sama technika jest ogólnie znana, a wzór pewnie nie został wymyślony w PBRT)} 
         
-        Aby otrzymać realistyczny obraz path tracer przy obliczaniu koloru będzie korzystać z tak zwanego \textit{równania renderingu}. Samo równanie korzystając z zasady zachowania energii wylicza radiancję światła wychodzącą z ustalonego punktu na płaszczyźnie dla zadanego kierunku. Wygląda ono następująco:
+        Aby otrzymać realistyczny obraz, path tracer przy obliczaniu koloru będzie korzystać z tak zwanego \textit{równania renderingu} \cite{pbrt}. Samo równanie korzystając z zasady zachowania energii wylicza radiancję światła wychodzącą z ustalonego punktu na płaszczyźnie dla zadanego kierunku. Wygląda ono następująco:
         
         \begin{equation*}
             L_o(p, \omega_o) = L_e(p, \omega_o) + \int_{\Omega} f_r(p, \omega_o, \omega_i) * L_i(p, \omega_i)*cos\theta_i*d\omega_i
@@ -190,24 +190,28 @@
         \end{figure}
         
     \section{Niebo}
-        Path tracing często stosuje się dla zamkniętych scen z kilkoma źródłami światła. W przypadku renderowania krajobrazów mamy do czynienia z czymś zupełnie innym. Mamy jedno źródło światła (słońce) oraz pół otwartą scenę z wielkim niebem pochłaniającym większość promieni. Fizycznie poprawny model nieba został opisany w pracy  A. J. Preetham, 
-        Peter Shirley i Brian Smits pod tytułem \textit{A Practical Analytic Model for Daylight} \cite{sky}, która powstała na Uniwersytecie w Utah. Opisuje on niebo w danym miejscu na ziemi o ustalonej porze. 
+        Path tracing często stosuje się dla zamkniętych scen z kilkoma źródłami światła. W przypadku renderowania krajobrazów mamy do czynienia z czymś zupełnie innym -- jedno źródło światła (słońce) oraz pół otwarta scena z wielkim niebem pochłaniającym większość promieni. Fizycznie poprawny model nieba został opisany w pracy  A. J. Preetham'a, 
+        Peter Shirley'a i Brian Smits'a pod tytułem \textit{A Practical Analytic Model for Daylight} \cite{sky}, która powstała na Uniwersytecie w Utah. Model opisuje niebo w danym miejscu na ziemi o ustalonej porze. 
         
         Został również udostępniony gotowy kod implementujący zaprezentowane rozwiązanie. Dołączony do programu, wykorzystywany jest jak zewnętrzna biblioteka bez wnikania w szczegóły implementacyjne. Niebo w programie to półsfera rozciągająca się nad całym wygenerowanym terenem. Implikuje to, że im większy jest teren, tym większe jest niebo.
     
     \section{Słońce}
-        O ile model nieba z poprzedniej sekcji dobrze oddaje kolorystykę nieba to jest ona dosyć jednolita. Dodatkowo jako, że niebo otacza scenę praktycznie z każdej strony, to nie może być traktowane jako główne źródło światła. Żeby otrzymać ładne cienie obiektów dołożyłem dodatkowo własne słońce jako źródło światła o dużej mocy. Model nieba oblicza również pozycję słońca i korzystam z tego, aby odpowiednio umieścić moje. Umieszczam je na półsferze nieba stąd odległość słońca od ziemi jest zależna od wielkości terenu (patrz poprzednia sekcja).
+        O ile model nieba z poprzedniej sekcji dobrze oddaje kolorystykę nieba, to jest ona dosyć jednolita. Dodatkowo jako, że niebo otacza scenę praktycznie z każdej strony, to nie może być traktowane jako główne źródło światła. Żeby otrzymać realistyczne cienie obiektów dołożono dodatkowo słońce jako źródło światła o dużej mocy. Umieszczane jest zgodnie z wyliczeniami z modelu nieba. Znajduje się na półsferze nieba stąd odległość słońca od ziemi jest zależna od wielkości terenu (patrz poprzednia sekcja).
         
     \section{Wybór miejsca renderingu}
         Aby teren wydawał się realistyczny musi zajmować dużą część świata. Dobrze byłoby wpływać na to czy chcemy renderować naszą scenę ze szczytu góry czy z terenu nizinnego. W jakim kierunku powinna być skierowana kamera oraz co ważniejsze uwzględniać ukształtowanie otaczającego ją terenu. W przypadku gdy kamera zostanie umieszczona przed górą chcielibyśmy, aby patrzyła do góry, a kiedy jest na szczycie w dół. 
         
-        Odpowiednie umieszczenie możemy wybrać poprzez parametr sugerujący na jakiej wysokości chcemy się znajdować. Dobrze zdefiniować również minimalną odległość od krawędzi końca świata, aby uniknąć sytuacji patrzenia w pustą przestrzeń. Żeby uwzględnić ukształtowanie terenu przy kierunku patrzenia możemy dodać parametr mówiący jak daleko od nas znajduję się miejsce które nas interesuje. Następnie obliczamy wysokość tego miejsca i korygujemy nasz kierunek patrzenia względem otrzymanej wartości.
+        Odpowiednie umieszczenie możemy wybrać poprzez parametr sugerujący na jakiej wysokości chcemy się znajdować. Dobrze zdefiniować również minimalną odległość od krawędzi końca świata, aby uniknąć sytuacji patrzenia w pustą przestrzeń. Żeby uwzględnić ukształtowanie terenu przy kierunku patrzenia możemy dodać parametr, mówiący jak daleko od nas znajduję się miejsce, które nas interesuje. Następnie obliczamy wysokość tego miejsca i korygujemy nasz kierunek patrzenia względem otrzymanej wartości.
         
 \chapter{Poradnik użytkowania}
-    Poprzedni rozdział opisywał rozwiązania, które zastosowałem w programie. Ten skupi się jak uruchomić program oraz na przedstawieniu w jaki sposób można wpływać na rendering i generowane elementy.
+    W poprzednich dwóch rozdziałach opisano rozwiązania zastosowane w programie. Ten skupi się jak go uruchomić oraz przedstawi w jaki sposób wpływać na rendering i generowane elementy.
     
     \section{Uruchomienie programu}
-        W celu kompilacji programu należy uruchomić skrypt \textit{build.sh} w głównym katalogu. Utworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake}. Dodatkowo w folderze bin powinien pojawić się plik binarny do uruchamiania programu -- \textit{rpforest.exe}. Należy uruchomić go z linii poleceń. Program posiada dwa opcjonalne argumenty wywołania. 
+        Program powinien być uruchamiany na systemie operacyjnym \textit{Linux}.
+        Repozytorium można sklonować z adresu: \url{https://github.com/bratek20/RPForest}.
+        \textbf{TODO podać wymagane biblioteki do zainstalowania}
+        
+        W celu kompilacji programu należy uruchomić skrypt \textit{build.sh} w głównym katalogu. Skrypt tworzy folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake}. Dodatkowo w folderze \textit{bin} pojawi się plik binarny do uruchamiania programu -- \textit{rpforest.exe}. Należy uruchomić go z linii poleceń. Program posiada dwa opcjonalne argumenty wywołania. 
         
         Pierwszy to nazwa folderu z plikami konfiguracyjnymi. Katalog musi znajdować się w folderze \textit{configs}. Znajduje się tam domyślna konfiguracja \textit{default}, która jest wczytywana jeśli użytkownik nie poda żadnego argumentu. 
         
@@ -225,20 +229,23 @@
             \item zmiana kierunku patrzenia kamery -- ruch myszką
             \item poruszanie kamerą -- W (przód), S (tył), A (lewo), D (prawo) lub odpowiednie strzałki
             \item rendering aktualnego widoku -- przycisk P
-            \item wypuszczenie testowych promienia -- przycisk L. Po naciśnięciu przycisku w kierunku patrzenia kamery. Liczba promieni i oraz liczba odbić każdego z nich jest zależna od ustawien path tracingu.
+            \item wypuszczenie testowych promieni -- przycisk L. Po naciśnięciu przycisku w kierunku patrzenia kamery, zostanie wystrzelone kilka promieni. Liczba promieni oraz liczba odbić każdego z nich jest zależna od ustawień path tracingu.
         \end{itemize}
+        
     \section{Pliki konfiguracyjne}
         Każdy plik konfiguracyjny jest parsowany w ten sam sposób. Pojedynczy wpis składa się z nazwy parametru i argumentów zależnych od typu parametru. Kolejność nie ma znaczenia. Każdy parametr musi być zdefiniowany w osobnej linii. Część parametrów ma domyślne wartości. 
         
-        Wszystkie pliki powinny znajdować się w katalogu umieszczonym w folderze \textit{configs} którego nazwa została podana jako pierwszy argument programu. Ich rozszerzenia oraz umieszczenie w podfolderach ma znaczenie.
+        Wszystkie pliki powinny znajdować się w katalogu umieszczonym w folderze \textit{configs}, którego nazwa została podana jako pierwszy argument programu. Ich rozszerzenia oraz umieszczenie w podfolderach ma znaczenie.
         
         Poniżej zostaną opisane parametry poszczególnych plików konfiguracyjnych, ich lokalizacja oraz zastosowanie. Przyjęta konwencja to:
         \begin{itemize}
             \item \textit{NazwaParametru : typ = wartość domyślna jeśli istnieje} -- opis
         \end{itemize}
         
+        Jeśli nie jest sprecyzowana nazwa pliku, a jedynie rozszerzenie to znaczy, że może być wiele plików konfigurującą daną funkcjonalność. W takim przypadku użytkownik może tworzyć nowe pliki lub usuwać istniejące.
+        
         \subsection{Ustawienia path tracingu}
-        Plik opisujący path tracing umieszczony w głównym folderze z konfiguracjami o nazwie \textit{pathTracer.conf}.
+        Plik opisujący path tracing umieszczony jest w głównym folderze konfiguracyjnym i ma nazwę \textit{pathTracer.conf}.
         
         Można zdefiniować następujące parametry:
         \begin{itemize}
@@ -249,29 +256,29 @@
         \end{itemize}
 
         \subsection{Ustawienia kamery}
-        Plik opisujący ustawienia kamery: \textit{camera.conf}.
+        Plik opisujący ustawienia kamery z głównego folderu: \textit{camera.conf}.
         
         Parametry:
         \begin{itemize}
             \item \textit{LookHeight : float = 1} -- wysokość liczona od  powierzchni ziemi 
             \item \textit{LookDirection : vec3 = 0 0 1} -- kierunek patrzenia 
-            \item \textit{LookDistance : float = 2} -- odległości od kamery względem której zostanie dostosowane pochylenie kamery (patrzenie pod góre/w dół)
+            \item \textit{LookDistance : float = 2} -- odległości od kamery, względem której zostanie dostosowane pochylenie kamery (patrzenie pod góre/w dół)
             \item \textit{EdgeMinOffset : float = 10} -- minimalna odległość od krawędzi świata  
-            \item \textit{ExpectedPositionY : float = 0} -- oczekiwana pozycja Y, na której powinna zostać umieszczona kamera. Dzięki temu można wymuszać np. robienie zdjęć ze szczytów gór. 
+            \item \textit{ExpectedPositionY : float = 0} -- oczekiwana pozycja Y, na której powinna zostać umieszczona kamera. Dzięki temu można wymuszać np. robienie zdjęć ze szczytów gór poprzez ustawienie bardzo dużej wartości (kamera zawsze będzie \textit{LookHeight} nad ziemią). 
         \end{itemize}
         
         \subsection{Ustawienia debugowania}
-        Plik do zmiany ustawień debugowania: \textit{debug.conf}.
+        Plik do zmiany ustawień debugowania znajdujący się w głównym folderze: \textit{debug.conf}.
         
         Parametry:
         \begin{itemize}
-            \item \textit{Enabled : bool = false} -- czy debugowanie jest włączone
+            \item \textit{Enabled : bool = false} -- czy jest włączony tryb debugowania
             \item \textit{Resolution : vec2 = 800 600} -- rozmiar okna debugowania
             \item \textit{CameraVelocity : float = 10} -- prędkość poruszania się kamery 
         \end{itemize}
         
         \subsection{Ustawienia nieba}
-        Plik do konfiguracji nieba: \textit{sky.conf}. Większość parametrów służy do ustawień modelu nieba opracowanego w pracy z Uniwersytetu w Utah \cite{sky}.
+        Plik do konfiguracji nieba z głównego folderu: \textit{sky.conf}. Większość parametrów służy do ustawień modelu nieba opracowanego w pracy z Uniwersytetu w Utah \cite{sky}.
         
         Parametry słońca:
         \begin{itemize}
@@ -291,15 +298,16 @@
         \end{itemize}
         
         \subsection{Ustawienia terenu}
-        Ustawienia terenu wpływające na algorytm \textit{diamond--square} oraz teksturowanie są opisane w pliku: \textit{terrain.conf}.
+        Ustawienia terenu wpływające na algorytm \textit{diamond--square} oraz teksturowanie są opisane w pliku: \textit{terrain.conf} umieszczonym w głównym folderze.
+        
         \begin{itemize}
-            \item \textit{N : int} -- wpływa na liczbę elementów mapy wysokości. Finalny rozmiar to $2^N$+1 x $2^N$+1.
+            \item \textit{N : int} -- wpływa na liczbę elementów mapy wysokości. Finalny rozmiar to $2^N+1$ x $2^N+1$.
             \item \textit{Size : float} -- wielkość generowane terenu 
             \item \textit{InitHeight : float} -- wartość do wyliczania początkowych wartości na rogach mapy. Zostaną wylosowane z przedziału $(-\textit{InitHeight}:\textit{InitHeight})$.
-            \item \textit{Spread : float} -- początkowa rozpiętość losowej wysokości dodawanej do uśrednianych wartości
-            \item \textit{SpreadReductionRate : float} -- jak zmienia się rozpiętość wzgledem kolejnych iteracji algorytmu 
-            \item \textit{RockStartY : float = 10} -- od jakiej wysokości powinnien być aplikowany materiał skał
-            \item \textit{GroundEndY : float = 20} -- do jakiej wysokości powinien być aplikowany materiał gruntu
+            \item \textit{Spread : float} -- początkowa rozpiętość losowej wysokości dodawanej do uśrednianych wartości. Losowa wysokość losowana jest z przedziału $(-\textit{Spread}:\textit{Spread})$, gdzie \textit{Spread} będzie maleć z każdą iteracją algorytmu.
+            \item \textit{SpreadReductionRate : float} -- jak zmienia się rozpiętość wzgledem kolejnych iteracji algorytmu. Parametr powinien mieć wartość mniejszą niż 1. 
+            \item \textit{RockStartY : float = 10} -- od jakiej wysokości powinien być aplikowany materiał skał
+            \item \textit{GroundEndY : float = 20} -- do jakiej wysokości powinien być aplikowany materiał gruntu. Parametr powinien mieć wartość większą niż \textit{RockStartY}. 
         \end{itemize}
         
         \subsection{Ustawienia tekstur}
@@ -319,11 +327,11 @@
             \item \textit{Height : float} -- finalna wysokość wygenerowanego modelu
             \item \textit{ConeBasePoints : int = 3} -- ile punktów w podstawie mają cylindry tworzące model
             \item \textit{Material : string} -- nazwa materiału (Leaf, Bark, Plant)
-            \item \textit{InitRadius : float} -- początkowy promień cylindrów tworzących model
+            \item \textit{InitRadius : float} -- początkowy promień cylindrów tworzących model. Finalnie model jest przeskalowany tak by miał wysokość \textit{Height}, więc ten parametr służy do zmieniania stosunku grubości do wysokości. 
         \end{itemize}
         
         \subsection{Definiowanie własnych L--systemów}
-        Wszystkie pliki definiujące własne L--systemy mają rozszerzenie \textit{.lsys}. Można umieścić je w jednym z trzech folderów: \textit{trees}, \textit{plants}, \textit{leafs}. Umieszczenie wpływa na to jak program będzie traktować dany L--system.
+        Wszystkie pliki definiujące własne L--systemy mają rozszerzenie \textit{.lsys}. Można umieścić je w jednym z trzech folderów: \textit{trees}, \textit{plants} albo \textit{leafs}. Umieszczenie wpływa na to jak program będzie traktować dany L--system.
         
         \begin{itemize}
             \item \textit{TurnAngle : float = 0} -- kąt skrętu żółwia w lewo/prawo
@@ -333,10 +341,12 @@
             \item \textit{Prod : char $>$ string } -- pojedyncza definicja produkcji. Plik może zawierać kilka takich wpisów (każdy w osobnej linii) i wszystkie zostaną uwzględnione. Poprawny zapis to symbol, znak $>$ (dla lepszej czytelności) i produkowane słowo np. \textit{Prod A $>$ ABC}. 
         \end{itemize}
         
+        \textbf{TODO spis wszystkich symboli}
+        
         \subsection{Ustawienia predefiniowanych L--systemów}
         W programie zostały zaimplementowane dwa L--systemy: jeden do generowania drzew, drugi do liści.
         
-        Pliki konfiguracyjne do generowania drzew mają rozszerzenie \textit{.honda} i znajdują się w folderze \textit{trees}. Opisują one wartość L--systemu wymyślonego przez Hondę \cite{honda} i zaprezentowanego przez Prusinkiewicza \cite{plants} -- patrz Rysunek \ref{fig:hondaTrees}.
+        Pliki konfiguracyjne do generowania drzew mają rozszerzenie \textit{.honda} i muszą znajdować się w folderze \textit{trees}. Opisują one wartość L--systemu wymyślonego przez Hondę \cite{honda} i zaprezentowanego przez Prusinkiewicza \cite{plants} -- patrz Rysunek \ref{fig:hondaTrees}.
         
         Parametry z rysunku z dokładnością do wielkości liter:
         \begin{itemize}
@@ -380,22 +390,25 @@
         
         Tryb debugowania korzysta z OpenGL w celu wyświetlania świata. Użyte biblioteki to \textbf{GLEW} oraz \textbf{GLFW3}. Są one ogólnie dostępne, dobrze udokumentowane i łatwe w użyciu. 
         
-        Path tracer korzysta z biblioteki \textbf{Embree3}. Pozwala w bardzo szybki sposób obliczać przecięcia promieni z trójkątami, co jest kluczowym elementem path tracingu. Do tworzenia obrazów w formacie \textit{.exr} wykorzystana została biblioteka \textbf{OpenEXR}.
+        Path tracer korzysta z biblioteki \textbf{Embree3}. Pozwala w bardzo szybki sposób obliczać przecięcia promieni z trójkątami, co jest kluczowym elementem path tracingu. 
+        
+        Do tworzenia obrazów w formacie \textit{.exr} wykorzystana została biblioteka \textbf{OpenEXR}. Pliki w tym formacie można wyświetlić np. przy pomocy programu \textit{exrdisplay}. 
+        
     \section{Struktura projektu}
         Program składa się z czterech modułów:
         \begin{itemize}
             \item \textit{engine} -- baza całego programu, przypominająca silnik 3D. Implementuje podstawowe funkcjonalności wykorzystywane i rozszerzane przez inne moduły. 
             \item \textit{rendering} -- moduł implementujący wszystkie zagadnienia związane z path tracingiem
             \item \textit{generating} -- moduł implementujący wszystkie zagadnienia związane z generowaniem proceduralnym
-            \item \textit{utils} -- moduł implementujący małe lub pomocnicze funkcjonalności
+            \item \textit{utils} -- moduł implementujący niezależne lub pomocnicze funkcjonalności
         \end{itemize}
         
         \subsection{Moduł \textit{engine}}
             Zarówno rendering przy pomocy OpenGL jak i techniką path tracingu wymaga reprezentacji obiektu, który ma renderować. Podstawowym sposobem opisów złożonych kształtów jest przedstawienie ich przy pomocy zbioru trójkątów. Każdy trójkąt (klasa \textbf{Triangle}) składa się z trzech wierzchołków (klasa \textbf{Vertex}), które poza pozycją w świecie zawierają takie informacje jak wektory normalne (reprezentujące orientację w przestrzeni). Pojedynczy zbiór trójkątów trzymany jest w obrębie obiektu klasy \textbf{Mesh}, która dodatkowo definiuje kolorystykę reprezentowanego kształtu przy pomocy materiału (klasa \textbf{Material}). Finalny model (klasa \textbf{Model}) to zbiór mesh'y. Pozwala to wyrazić dowolnie skomplikowany (pod względem kształtu i kolorystki) obiekt. 
             
-            Jedną z najważniejszych klas modułu jest \textbf{Actor}. Reprezentuje on dowolny obiektu w świecie. Aktor może mieć kształt opisany przy pomocy klasy \textbf{Model}. Posiada on dodatkowo zbiór parametrów pozwalający wpływać na finalną reprezentację np. pozycja, skala, rotacja. Pozwala to na umieszczenie tych samych modeli w różnych miejscach w świecie i zmienić ich rozmiar.
+            Jedną z najważniejszych klas modułu jest \textbf{Actor}. Reprezentuje on dowolny obiektu w świecie. Aktor może mieć kształt opisany przy pomocy klasy \textbf{Model}. Posiada on dodatkowo zbiór parametrów pozwalający wpływać na finalną reprezentację np. pozycja, skala, rotacja. Dzięki temu możemy umieścić ten sam model w różnych miejscach w świecie i zmienić jego rozmiar.
             
-            Cały świat reprezentowany przy pomocy klasy \textbf{Scene}. Scena to rodzaj aktora, który zbiera wszystkich innych aktorów, odpowiednio ich inicjalizuje i rozmieszcza. Jednym z aktorów umieszczonych na scenie jest między innymi kamera (klasa \textbf{Camera}). Pozwala na to funkcjonalność aktora: relacja rodzic--dziecko. Każdy aktor może mieć niezerową liczbę dzieci. Wszystkie parametry rodzica wpływają na dziecko np. zmieniając pozycję rodzica, przemieścimy wszystkie jego dzieci oraz dzieci tych dzieci (wnuki) itd. Dodatkowo akcje jak aktualizowanie (funkcja \textbf{update}) albo renderowanie w trybie debugowania (funkcja \textbf{render}) działają pierw na rodzica, a następnie na jego wszystkie dzieci.
+            Cały świat reprezentowany przy pomocy klasy \textbf{Scene}. Scena to rodzaj aktora, który zbiera wszystkich innych aktorów, odpowiednio ich inicjalizuje i rozmieszcza. Jednym z aktorów umieszczonych na scenie jest między innymi kamera (klasa \textbf{Camera}). Scena wykorzystuje funkcjonalność aktora: relacja rodzic--dziecko. Każdy aktor może mieć niezerową liczbę dzieci. Wszystkie parametry rodzica wpływają na dziecko np. zmieniając pozycję rodzica, przemieścimy wszystkie jego dzieci oraz dzieci tych dzieci (wnuki) itd. Dodatkowo akcje jak aktualizowanie (funkcja \textbf{update}) albo renderowanie w trybie debugowania (funkcja \textbf{render}) działają pierw na rodzica, a następnie na jego wszystkie dzieci.
             
             Moduł implementuje dodatkowo wiele klas, bez których program nie mógłby funkcjonować:
             \begin{itemize}
@@ -405,13 +418,13 @@
             \end{itemize}
             
         \subsection{Moduł \textit{rendering}}
-            Najważniejszym klasą modułu to \textbf{PathTracer}. Implementuje ona obliczanie koloru pochodzącego z danego kierunku. Korzysta z dwóch pomocniczych klas:
+            Najważniejsza klasa modułu to \textbf{PathTracer}. Implementuje ona obliczanie koloru pochodzącego z danego kierunku. Korzysta z dwóch pomocniczych klas:
             \begin{itemize}
                 \item \textbf{AccStruct} -- interfejs struktury obliczającej przecięcie danego promienia z najbliższym trójkątem. Przykładowa implementacja to \textbf{EmbreeWrapper}, która wykorzystuje bibliotekę Embree do obliczania przecięć. 
                 \item \textbf{SkyLightSampler} -- klasa obliczająca kolor nieba oraz próbkująca promienie pochodzące od słońca
             \end{itemize}
             
-            Dodatkowo w głównym folderze moduły znajduje się podfolder \textit{ASky}, w którym modelu nieba opisany i zaimplementowany przez pracowników z Uniwersytetu z Utah \cite{sky}.
+            Dodatkowo w głównym folderze modułu znajduje się podfolder \textit{ASky}, zawierający implementację modelu nieba udostępnioną przez pracowników z Uniwersytetu z Utah\cite{sky}.
             
         \subsection{Moduł \textit{generating}}
             Implementacje wszystkich zagadnień opisanych w pracy znajdują się w tym folderze. Duża część kodu zawiera implementację różnych symboli z L--systemów. Bazą jest klasa \textbf{Symbol}, która udostępnia dwie metody wirtualne: \textbf{vector \textless SymbolPtr \textgreater produce()} oraz \textbf{void process(ProcessContext\&)}. Pierwsza metoda służy do produkcji słowa dla aktualnego stanu symbolu. Pozwala to implementować zarówno parametryczne jak i losowe symbole. Druga metoda służy do wpływania na aktualny stan przetwarzania słowa z wygenerowanego L--systemu. Operuje ona na obiekcie struktury \textbf{ProcessContext}. Stuktura składuje między innymi: aktualny stan żółwia (klasa \textbf{Turtle}), stos odłożonych stanów żółwia (przy pomocy operatora rozgałęziania) oraz wygenerowany do tej pory model.
@@ -422,8 +435,8 @@
             
             Pozostałe klasy, na które warto zwrócić uwagę to:
             \begin{itemize}
-                \item \textbf{DiamonSquareTerrain} -- klasa implementująca algorytm \textit{Diamond--square}. Udostępniająca również metodę do obliczania wysokości terenu dla zdanego punktu oraz optymalne umiejscowienie kamery.
-                \item \textbf{SpawnerActor} -- specjalny rodzaj aktora, który rozmieszcza wygenerowane modele w zależności od konfiguracji z pliku \textit{.lsys} 
+                \item \textbf{DiamondSquareTerrain} -- klasa implementująca \textit{Diamond--square algorithm}. Udostępnia również metodę do obliczania wysokości terenu dla zdanego punktu oraz optymalnego umiejscowienia kamery.
+                \item \textbf{SpawnerActor} -- specjalny rodzaj aktora, który rozmieszcza wygenerowane modele w zależności od konfiguracji z pliku \textit{.spawner} 
             \end{itemize}
             
         \subsection{Moduł \textit{utils}}
