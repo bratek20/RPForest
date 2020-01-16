@@ -8,12 +8,13 @@
 #include "Color.h"
 
 class Shader {
+    char infoLog[512];
 protected:
     GLuint id;
 
 public:
     Shader() {}
-    Shader(std::string vsName, std::string fsName);
+    Shader(const std::string& vsPath, const std::string& fsPath);
 
     void clear();
     void use();    
@@ -22,6 +23,10 @@ public:
     void applyFloat(const char* name, float value) const;
     void applyColor(const char* name, const Color& c) const;
     void applyColor(const char* name, const glm::vec3& c) const;
+
+private:
+    GLuint makeProgram(const std::string& vsPath, const std::string& fsPath); 
+    GLuint compileShader(const std::string& path, GLuint type);
 };
 
 #endif
