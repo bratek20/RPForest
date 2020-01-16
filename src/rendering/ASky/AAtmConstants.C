@@ -139,7 +139,7 @@ void  ASunSky::CreateConstants()
 
 
 
-ASpectrum ASunSky::GetNeta(AReal theta, AReal v) const
+ASpectrum ASunSky::GetNeta(AReal theta, AReal /*v*/) const
 {
     theta = theta*180.0/M_PI * 10;
     AReal u = theta - (int)theta;

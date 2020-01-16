@@ -82,7 +82,7 @@ bool Assets::loadConfig(const std::string& path, ConfigParser& config) {
 
 bool Assets::loadConfig(const std::string& folder, const std::string& name, ConfigParser& config) {
     string insidePath = folder == "" ? name : folder + "/" + name; 
-    loadConfig(CONFIGS_PREFIX_PATH + CONFIG_FOLDER + "/" + insidePath, config);
+    return loadConfig(CONFIGS_PREFIX_PATH + CONFIG_FOLDER + "/" + insidePath, config);
 }
 
 void Assets::clear(){

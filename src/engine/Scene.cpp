@@ -140,8 +140,7 @@ void Scene::debugRay() {
     Ray r(origin, direction);
 
     for (int i = 0; i < c.samples; i++) {
-        PathTracer::CastData data = PathTracer::cast(
-            r, c.maxRayBounces, accStruct, sky->getLightSampler());
+        PathTracer::cast(r, c.maxRayBounces, accStruct, sky->getLightSampler());
     }
 
     PathTracer::drawLines = false;

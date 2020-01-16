@@ -17,7 +17,7 @@ Mesh::Mesh(vector<vec3> vertices) : material(Materials::DEBUG) {
     for (auto& v : vertices) {
         this->vertices.push_back(Vertex(v));
     }
-    for (int i = 0; i < vertices.size(); i++) {
+    for (unsigned int i = 0; i < vertices.size(); i++) {
         indices.push_back(i);
     }
     setup(false);
@@ -126,7 +126,7 @@ void Mesh::setupTriangles(bool genNormals) {
     }
 
     if(genNormals){
-        for(int i=0;i<vertices.size();i++){
+        for(unsigned int i=0;i<vertices.size();i++){
             vertices[i].normal = normalize(normals[i] * (1.0f / count[i]));
             if(Utils::hasNaN(vertices[i].normal)){
                 vertices[i].normal = Utils::VY;

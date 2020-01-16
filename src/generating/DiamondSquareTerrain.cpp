@@ -2,6 +2,8 @@
 #include "Assets.h"
 #include "Random.h"
 
+#include <algorithm>
+
 using namespace std;
 using namespace glm;
 
@@ -78,7 +80,9 @@ void DiamondSquareTerrain::generateHeights(int n,
 
     float minHeight = Utils::INF;
     for(auto& heightsRow : heights) {
-        minHeight = std::min(minHeight, *min_element(heightsRow.begin(), heightsRow.end()));
+        for(float height : heightsRow) {
+            minHeight = std::min(minHeight, height);
+        }
     }
     for(auto& heightsRow : heights) {
         for(auto& height : heightsRow) {

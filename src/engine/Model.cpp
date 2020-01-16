@@ -57,7 +57,7 @@ void Model::draw(Shader shader) {
 void Model::matchHeight(float height) {
     auto& tris = getTriangles();
     vector<vec3> poses(tris.size() * 3);
-    for(int i=0; i < tris.size(); i++) {
+    for(unsigned int i=0; i < tris.size(); i++) {
         auto triPoses = tris[i]->getPositions();
         for(int k=0;k<3;k++){
             poses[3*i+k]=triPoses[k];

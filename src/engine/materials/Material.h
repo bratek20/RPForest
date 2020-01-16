@@ -20,7 +20,7 @@ public:
     virtual glm::vec3 calcDiffuse(glm::vec3 pos) const { return pos; };
     virtual glm::vec3 calcAmbient(glm::vec3 pos) const { return calcDiffuse(pos); };
     virtual glm::vec3 calcSpecular(glm::vec3 pos) const { return pos; };
-    virtual glm::vec3 calcEmissive(glm::vec3 pos) const { return glm::vec3(); };
+    virtual glm::vec3 calcEmissive(glm::vec3) const { return glm::vec3(); };
 };
 
 #endif

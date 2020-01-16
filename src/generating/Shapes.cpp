@@ -33,7 +33,6 @@ MeshPtr Shapes::genCone(float downRadius, float upRadius, float height, const Ma
     auto down = genCirclePoints(CONE_BASE_POINTS_NUM, downRadius, 0);
     auto up = genCirclePoints(CONE_BASE_POINTS_NUM, upRadius, height);
 
-    vec3 center = vec3(0, height/2, 0);
     vector<Vertex> vertices(CONE_BASE_POINTS_NUM * 2);
     for (int i = 0; i < CONE_BASE_POINTS_NUM; i++) {
         vertices[i] = Vertex(down[i], normalize(vec3(down[i].x, 0, down[i].z)));

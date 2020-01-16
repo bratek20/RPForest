@@ -94,7 +94,7 @@ inline AReal ASpectrum::GetMaxLambda(){
    return A_SPECTRUM_MAX_LAMBDA; 
 }
 
-inline AReal ASpectrum::GetBinWidth(int i){
+inline AReal ASpectrum::GetBinWidth(int /*i*/){
    return (A_SPECTRUM_MAX_LAMBDA-A_SPECTRUM_MIN_LAMBDA)/A_SPECTRUM_N_LAMBDA ;
 }
 

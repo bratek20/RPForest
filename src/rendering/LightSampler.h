@@ -16,7 +16,7 @@ class LightSampler {
 public:    
     virtual ~LightSampler(){}
 
-    virtual LightSampleData sample() {};
+    virtual LightSampleData sample() = 0;
 };
 
 #endif

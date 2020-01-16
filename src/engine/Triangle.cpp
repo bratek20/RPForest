@@ -48,7 +48,7 @@ glm::vec3 Triangle::getNormal(glm::vec2 baryPos) const {
             baryPos.y * v3.normal;
 }
 
-glm::vec3 Triangle::getNormal(glm::vec3 pos) const {
+glm::vec3 Triangle::getNormal(glm::vec3 /*pos*/) const {
     return calcBaseNormal(); // TODO_BR implement it properly
 }
 
