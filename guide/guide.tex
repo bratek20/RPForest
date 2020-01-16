@@ -53,9 +53,8 @@
     
     Celem programu napisanego w ramach tej pracy jest generowanie prostego krajobrazu leśnego, a następnie względnie realistyczny rendering stworzonego środowiska. Sam program jest wysoce sparametryzowany, dzięki czemu użytkownik może realnie wpływać na finalny rezultat.
     
-    W tym rozdziale przedstawię najważniejsze rozwiązania, które zastosowałem w swoim programie. Postaram przybliżyć się najważniejsze zagadnienia głownie po to, aby potencjalny użytkownik programu świadomie mógł wpływać na jego działanie. 
-    
 \chapter{Generowanie proceduralne krajobrazów}
+
     \section{Rośliny}
         Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L--systemów. Jest to sposób reprezentacji modelu jako reguł tworzących gramatykę. Zaczynając od jednego symbolu jesteśmy w stanie wygenerować zbiór symboli -- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
         \begin{align*}
@@ -66,7 +65,7 @@
         Produkcje aplikowane są jednocześnie w obrębie jednej iteracji. Podając liczbę iteracji możemy generować coraz dłuższe ciągi. Dla $N = 1$ otrzymujemy $\alpha\beta\alpha$, a dla $N = 2$ mamy $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$.
         
         Finalnym produktem L--systemu jest słowo, które możemy potraktować jako polecenia dla rysującego żółwia. Żółw czytając słowo od lewej do prawej będzie interpretować każdy symbol jako komendę. Przykłady poleceń to: idź prosto rysując linię albo skręć w lewo o wcześniej ustalony kąt. W przypadku gdy żółw nie zna symbolu nie robi nic i czyta dalej. Rysunek \ref{fig:turtleExample} przedstawia przykładową interpretację słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$ gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.
-        \begin{figure}[H]
+        \begin{figure}[h]
             \centering
             \includegraphics[width=0.4\linewidth]{turtleExample.png}
             \caption{Interpretacja dla słowa $\alpha\beta\alpha\beta\beta\alpha\beta\alpha$, gdzie $\alpha$ to idź naprzód, a $\beta$ skręć w lewo o 30\degree.}
@@ -159,8 +158,6 @@
     \section{Path tracer}
         Głównym zadaniem path tracer'a jest obliczanie koloru docierającego do kamery z ustalonego kierunku. Kolor w tym przypadku to nic innego jak promień światła, który po wielu odbiciach dotarł do kamery. Postaramy odtworzyć się to zjawisko, z tym wyjątkiem, że promień zostanie wypuszczony od kamery i będzie podążać do światła. Cały proces jest wysoce losowy, jako że promień mógł dotrzeć do nas wieloma różnymi ścieżkami. W celu otrzymania jak najlepszych wyników w jednym kierunku będziemy puszczać wiele promieni, a na końcu je uśrednimy.
         
-        \textbf{TODO(czy jeszcze coś tu cytować, sama technika jest ogólnie znana, a wzór pewnie nie został wymyślony w PBRT)} 
-        
         Aby otrzymać realistyczny obraz, path tracer przy obliczaniu koloru będzie korzystać z tak zwanego \textit{równania renderingu} \cite{pbrt}. Samo równanie korzystając z zasady zachowania energii wylicza radiancję światła wychodzącą z ustalonego punktu na płaszczyźnie dla zadanego kierunku. Wygląda ono następująco:
         
         \begin{equation*}
@@ -207,11 +204,21 @@
     W poprzednich dwóch rozdziałach opisano rozwiązania zastosowane w programie. Ten skupi się jak go uruchomić oraz przedstawi w jaki sposób wpływać na rendering i generowane elementy.
     
     \section{Uruchomienie programu}
-        Program powinien być uruchamiany na systemie operacyjnym \textit{Linux}.
+        Program był pisany i testowany na systemie operacyjnym \textit{Ubuntu 18.04}. Użyty język programowania to \textit{C++14}.
         Repozytorium można sklonować z adresu: \url{https://github.com/bratek20/RPForest}.
-        \textbf{TODO podać wymagane biblioteki do zainstalowania}
         
-        W celu kompilacji programu należy uruchomić skrypt \textit{build.sh} w głównym katalogu. Skrypt tworzy folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake}. Dodatkowo w folderze \textit{bin} pojawi się plik binarny do uruchamiania programu -- \textit{rpforest.exe}. Należy uruchomić go z linii poleceń. Program posiada dwa opcjonalne argumenty wywołania. 
+        Program korzysta z następujących narzędzi i bibliotek:
+        \begin{itemize}
+            \item \textit{cmake}
+            \item \textit{GLM}
+            \item \textit{GLEW}
+            \item \textit{GLFW3}
+            \item \textit{Embree3}
+            \item \textit{OpenEXR}
+        \end{itemize}
+
+        
+        W celu instalacji programu należy uruchomić skrypt \textit{install.sh} w głównym katalogu. Skrypt instaluje wszystkie wymagane biblioteki oraz przydatne narzędzia. Na końcu uruchamia skrypt budujący program -- \textit{build.sh}. Tworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake} i go uruchamia. Na końcu w folderze \textit{bin} pojawi się plik binarny programu -- \textit{rpforest.exe}. Należy uruchomić go z linii poleceń. Program posiada dwa opcjonalne argumenty wywołania. 
         
         Pierwszy to nazwa folderu z plikami konfiguracyjnymi. Katalog musi znajdować się w folderze \textit{configs}. Znajduje się tam domyślna konfiguracja \textit{default}, która jest wczytywana jeśli użytkownik nie poda żadnego argumentu. 
         
@@ -341,7 +348,23 @@
             \item \textit{Prod : char $>$ string } -- pojedyncza definicja produkcji. Plik może zawierać kilka takich wpisów (każdy w osobnej linii) i wszystkie zostaną uwzględnione. Poprawny zapis to symbol, znak $>$ (dla lepszej czytelności) i produkowane słowo np. \textit{Prod A $>$ ABC}. 
         \end{itemize}
         
-        \textbf{TODO spis wszystkich symboli}
+        Dostępne symbole sterujące żółwiem to:
+        \begin{itemize}
+            \item \textit{F} -- idź w przód tworząc cylinder
+            \item \textit{f} -- idź w przód
+            \item {[} -- rozpocznij tworzenie gałęzi
+            \item {]} -- zakończ tworzenie gałęzi
+            \item + -- obróć się w prawo o \textit{TurnAngle}
+            \item --- -- obróć się w lewo o \textit{TurnAngle}
+            \item \^{} -- obróć się w górę o \textit{PitchAngle}
+            \item \& -- obróć się w dół o \textit{PitchAngle}
+            \item \textbackslash -- obróć się wokół osi zgodnie z ruchem wskazówek zegara o \textit{RollAngle}
+            \item \text{/} -- obróć się wokół osi przeciwnie do ruchu wskazówek zegara o \textit{RollAngle}
+            \item $|$ -- obróć się w lewo o 180\degree
+            \item \textbraceleft -- zacznij tworzyć wielokąt
+            \item . -- zapisz aktualną pozycję jako wierzchołek wielokąta
+            \item \textbraceright -- skończ tworzyć wielokąt
+        \end{itemize}
         
         \subsection{Ustawienia predefiniowanych L--systemów}
         W programie zostały zaimplementowane dwa L--systemy: jeden do generowania drzew, drugi do liści.
@@ -386,13 +409,16 @@
         
 \chapter{Szczegóły programistyczne}
     \section{Wykaz użytych narzędzi}
-        Większość obliczeń matematycznych korzysta z typów i operacji zawartych w bibliotece \textbf{GLM}.
+        Program napisany jest w języku \textbf{C++}. Można w nim pisać obiektowo, a zarazem dbać o efektywność programu. Dostępne jest wiele bibliotek graficznych, które są dobrze udokumentowane. Z uwagi na popularność języka w przypadku jakichkolwiek trudność, łatwo można znaleźć materiały z propozycją rozwiązania problemu.        
+        
+        Większość obliczeń matematycznych korzysta z typów i operacji zawartych w bibliotece \textbf{GLM}. Jest to mała i prosta w użyciu biblioteka zawierająca wszystkie przydatne funkcje matematyczne. Udostępnia również typy takie jak \textit{vec3} lub \textit{mat4}, które są często używane w grafice komputerowej. 
         
         Tryb debugowania korzysta z OpenGL w celu wyświetlania świata. Użyte biblioteki to \textbf{GLEW} oraz \textbf{GLFW3}. Są one ogólnie dostępne, dobrze udokumentowane i łatwe w użyciu. 
         
-        Path tracer korzysta z biblioteki \textbf{Embree3}. Pozwala w bardzo szybki sposób obliczać przecięcia promieni z trójkątami, co jest kluczowym elementem path tracingu. 
+        Path tracer korzysta z biblioteki \textbf{Embree3}. Pozwala ona w bardzo szybki sposób obliczać przecięcia promieni z trójkątami, co jest kluczowym elementem path tracingu. 
         
-        Do tworzenia obrazów w formacie \textit{.exr} wykorzystana została biblioteka \textbf{OpenEXR}. Pliki w tym formacie można wyświetlić np. przy pomocy programu \textit{exrdisplay}. 
+        Do tworzenia obrazów w formacie \textit{.exr} wykorzystana została biblioteka \textbf{OpenEXR}. Format zapisu pozwala na manipulowanie wieloma parametrami wygenerowanego obrazu w celu poprawienia wyglądu. 
+        Pliki w tym formacie można wyświetlić np. przy pomocy programu \textit{exrdisplay}.
         
     \section{Struktura projektu}
         Program składa się z czterech modułów:
@@ -424,7 +450,7 @@
                 \item \textbf{SkyLightSampler} -- klasa obliczająca kolor nieba oraz próbkująca promienie pochodzące od słońca
             \end{itemize}
             
-            Dodatkowo w głównym folderze modułu znajduje się podfolder \textit{ASky}, zawierający implementację modelu nieba udostępnioną przez pracowników z Uniwersytetu z Utah\cite{sky}.
+            Dodatkowo w głównym folderze modułu znajduje się podfolder \textit{ASky}, zawierający implementację modelu nieba udostępnioną przez pracowników z Uniwersytetu z Utah \cite{sky}.
             
         \subsection{Moduł \textit{generating}}
             Implementacje wszystkich zagadnień opisanych w pracy znajdują się w tym folderze. Duża część kodu zawiera implementację różnych symboli z L--systemów. Bazą jest klasa \textbf{Symbol}, która udostępnia dwie metody wirtualne: \textbf{vector \textless SymbolPtr \textgreater produce()} oraz \textbf{void process(ProcessContext\&)}. Pierwsza metoda służy do produkcji słowa dla aktualnego stanu symbolu. Pozwala to implementować zarówno parametryczne jak i losowe symbole. Druga metoda służy do wpływania na aktualny stan przetwarzania słowa z wygenerowanego L--systemu. Operuje ona na obiekcie struktury \textbf{ProcessContext}. Stuktura składuje między innymi: aktualny stan żółwia (klasa \textbf{Turtle}), stos odłożonych stanów żółwia (przy pomocy operatora rozgałęziania) oraz wygenerowany do tej pory model.
@@ -447,7 +473,10 @@
                 \item \textbf{Random} -- implementuje wiele losowych metod jak np. losowanie wektora na półsferze, obliczanie szumu perlina albo wybieranie elementu z tablicy
                 \item \textbf{Timer} -- prosta klasa do mierzenia czasu  
             \end{itemize}
+            
 \chapter{Przykłady użycia}
+
+\chapter{Porównanie z istniejącymi rozwiązaniami}
 
 %%%%% BIBLIOGRAFIA
 
