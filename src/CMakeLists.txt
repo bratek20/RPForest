@@ -21,7 +21,7 @@ include_directories(generating/lsystems/family)
 
 add_executable(${EXE_FILE} ${ALL_SRC})
 
-set(embree_DIR ../lib/embree-3.7.0.x86_64.linux)
+set(embree_DIR ../lib/embree-3.6.1.x86_64.linux)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
