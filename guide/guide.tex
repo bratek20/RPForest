@@ -49,14 +49,14 @@
     
     To co widzą ludzie na ekranie komputera to finalny efekt procesu zwanego renderingiem. Zaczyna się on od zdefiniowania modelu. Opisuje on wszystko to co chcielibyśmy pokazać. Przykładowa reprezentacja to zbiór trójkątów rozmieszczonych w przestrzeni z uwzględnieniem dodatkowych informacji takich np. kolor. Następnie komputer zamienia tak zapisane dane na obraz. To w jaki sposób odbywa się zamiana wpływa na jakość tego co zostanie pokazane. Komputer może generować nawet kilkaset różnych klatek obrazu na sekundę jeśli nie jest wymagana wysoka realistyczność obrazu. Jeśli chcemy, żeby efekt końcowy dawał złudzenie fotorealizmu musimy zastosować bardziej skomplikowane algorytmy wymagające większej mocy obliczeniowej. Ta praca skupia się na drugim przypadku.  
     
-    Sam model, często przygotowywany przy człowieka, może być stworzony w całości przez komputer. Na tym polega generowanie proceduralne. Model to efekt algorytmu. Człowiek może wpływać na jego działanie poprzez zmienianie parametrów jednak nie musi być zaangażowany w sam proces tworzenia. Jest to bardzo wydajna metoda pozwalająca na generowanie nieskończenie wielu różnych modeli o zadanych właściwościach jak np. rośliny.
+    Sam model, często przygotowywany przy człowieka, może być stworzony w całości przez komputer. Na tym polega generowanie proceduralne. Model to efekt algorytmu. Człowiek może wpływać na jego działanie poprzez zmienianie parametrów, jednak nie musi być zaangażowany w sam proces tworzenia. Jest to bardzo wydajna metoda pozwalająca na generowanie nieskończenie wielu różnych modeli o zadanych właściwościach jak np. rośliny.
     
     Celem pracy było napisanie programu, który generuje proceduralnie prosty krajobraz leśny, a następnie realistycznie renderuje stworzone środowisko.
     Sam program jest wysoce sparametryzowany pozwalając użytkownikowi wpływać na większość generowanych rzeczy oraz sam proces renderingu.
     
     Rozdział 2 i 3 opisują rozwiązania zaimplementowane w programie. Pierwszy z nich skupia się na generowaniu proceduralnym poszczególnych części krajobrazu. Kolejny przedstawia jak można w sposób realistyczny wyświetlić wygenerowany wcześniej świat.
     
-    Rozdział 4 to poradnik użytkowania. Prezentuje jak pobrać i zainstalować program. Przedstawia przydatne dla użytkownika informacje na temat programu. Dodatkowo krótko pokazuje jak wpływać na jego konfigurację.
+    Rozdział 4 to poradnik użytkowania. Prezentuje jak pobrać i zainstalować program. Przedstawia przydatne dla użytkownika informacje na temat programu oraz jak wpływać na jego konfigurację.
     
     Rozdział 5 zawiera informacje dla programistów. Opisuje i argumentuje użycie wszystkich technologi. Przedstawia strukturę projektu oraz nakreśla zaimplementowaną architekturę.
     
@@ -489,6 +489,18 @@
             
 \chapter{Przykłady użycia}
 
+        \begin{figure}[H]
+            \includegraphics[width=\linewidth]{ground.png}
+            \caption{Ziemia.} 
+            \label{fig:ground}
+        \end{figure}
+        
+        \begin{figure}[H]
+            \includegraphics[width=\linewidth]{mountain.png}
+            \caption{Ziemia.} 
+            \label{fig:mountain}
+        \end{figure}
+        
 \chapter{Porównanie z istniejącymi rozwiązaniami}
 
 %%%%% BIBLIOGRAFIA
