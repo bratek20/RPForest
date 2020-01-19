@@ -1,7 +1,7 @@
-CameraOffset -3.5 8
+CameraOffset -3 5
 
 XGridN 2
-ZGridN 5
+ZGridN 2
 CellSize 3
 
 GeneratorType Tree

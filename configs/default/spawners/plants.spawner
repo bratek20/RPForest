@@ -1,12 +1,12 @@
 CameraOffset 0 4
 
-XGridN 4
-ZGridN 6
-CellSize 0.5
+XGridN 10
+ZGridN 10
+CellSize 0.3
 
 GeneratorType Plant
 SpawnProbability 0.8
 
 RandomPositionPercentage 0.8
-MinElementScale 0.8
-MaxElementScale 1.2
+MinElementScale 0.5
+MaxElementScale 0.8
