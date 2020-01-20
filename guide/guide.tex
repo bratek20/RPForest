@@ -29,7 +29,7 @@
 %%%%% WLASNE DODATKOWE PAKIETY
 %
 %\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
-\usepackage{graphicx, amsmath, gensymb, float, textcomp, enumitem, hyperref}
+\usepackage{graphicx, amsmath, gensymb, float, textcomp, enumitem, hyperref, url}
 %
 %%%%% WŁASNE DEFINICJE I POLECENIA
 \graphicspath{{./pictures/}}
@@ -60,9 +60,7 @@
     
     Rozdział 5 zawiera informacje dla programistów. Opisuje i argumentuje użycie wszystkich technologi. Przedstawia strukturę projektu oraz nakreśla zaimplementowaną architekturę.
     
-    Rozdział 6 przedstawia kilka przykładowych obrazów stworzonych przez program. 
-    
-    Rozdział 7 porównuje efekty programu z komercyjnymi implementacjami.
+    Rozdział 6 przedstawia kilka przykładowych obrazów stworzonych przez program. Wskazuje dobre praktyki używania oraz nakreśla potencjalne problemy i ograniczenia. Dodatkowo porównuje wygenerowane obrazy z profesjonalnymi, stworzonymi przy pomocy komercyjnych programów.  
     
     
     
@@ -231,7 +229,7 @@
         \end{itemize}
 
         
-        W celu instalacji programu należy uruchomić skrypt \textit{install.sh} w głównym katalogu. Skrypt instaluje wszystkie wymagane biblioteki oraz przydatne narzędzia. Na końcu uruchamia skrypt budujący program -- \textit{build.sh}. Tworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake} i go uruchamia. Na końcu w folderze \textit{bin} pojawi się plik binarny programu -- \textit{rpforest.exe}. Należy uruchomić go z linii poleceń. Program posiada dwa opcjonalne argumenty wywołania. 
+        W celu instalacji programu należy uruchomić skrypt \textit{install.sh} w głównym katalogu. Skrypt instaluje wszystkie wymagane biblioteki oraz przydatne narzędzia. Na końcu uruchamia skrypt budujący program -- \textit{build.sh}. Tworzy on folder \textit{build}, który posłuży jako miejsce dla plików programu \textit{cmake} i go uruchamia. Na końcu w folderze \textit{bin} pojawi się plik binarny programu -- \textit{rpforest.exe}. Należy uruchomić go z linii poleceń w folderze \textit{bin}. Program posiada dwa opcjonalne argumenty wywołania. 
         
         Pierwszy to nazwa folderu z plikami konfiguracyjnymi. Katalog musi znajdować się w folderze \textit{configs}. Znajduje się tam domyślna konfiguracja \textit{default}, która jest wczytywana jeśli użytkownik nie poda żadnego argumentu. 
         
@@ -487,22 +485,38 @@
                 \item \textbf{Timer} -- prosta klasa do mierzenia czasu  
             \end{itemize}
             
-\chapter{Przykłady użycia}
-
+\chapter{Zastosowanie}
+    \section{Przykłady użycia}
         \begin{figure}[H]
             \includegraphics[width=\linewidth]{ground.png}
-            \caption{Ziemia.} 
+            \caption{Przykładowy render dla konfiguracji \textit{default}.} 
             \label{fig:ground}
         \end{figure}
         
         \begin{figure}[H]
             \includegraphics[width=\linewidth]{mountain.png}
-            \caption{Ziemia.} 
+            \caption{Przykładowy render dla konfiguracji \textit{default} z wymuszeniem kamery na szczycie góry.} 
             \label{fig:mountain}
         \end{figure}
         
-\chapter{Porównanie z istniejącymi rozwiązaniami}
-
+        \begin{figure}[H] 
+            \includegraphics[width=\linewidth]{dead.png}
+            \caption{Przykładowy render dla konfiguracji \textit{dead}.} 
+            \label{fig:dead}
+        \end{figure}
+        
+    \section{Porównanie z komercyjnymi rozwiązaniami}
+        \begin{figure}[H] 
+            \includegraphics[width=\linewidth]{terragen.png}
+            \caption{Obraz stworzony przy pomocy programu Terragen przez Jeff'a Boser'a \cite{terragen}.} 
+            \label{fig:terragen}
+        \end{figure}
+        
+        \begin{figure}[H] 
+            \includegraphics[width=\linewidth]{vue.png}
+            \caption{Obraz stworzony przy pomocy programu VUE przez Ryan'a Bliss'a \cite{vue}.} 
+            \label{fig:vue}
+        \end{figure}
 %%%%% BIBLIOGRAFIA
 
 \bibliographystyle{unsrt}
