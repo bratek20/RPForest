@@ -1,7 +1,7 @@
 % Opcje klasy 'iithesis' opisane sa w komentarzach w pliku klasy. Za ich pomoca
 % ustawia sie przede wszystkim jezyk i rodzaj (lic/inz/mgr) pracy, oraz czy na
 % drugiej stronie pracy ma byc skladany wzor oswiadczenia o autorskim wykonaniu.
-\documentclass[inz,longabstract]{iithesis}
+\documentclass[inz,shortabstract]{iithesis}
 
 \usepackage[utf8]{inputenc}
 
@@ -13,8 +13,12 @@
 % polecenia \fmlinebreak.
 \polishtitle    {Realistyczny rendering krajobrazów leśnych\fmlinebreak generowanych proceduralnie}
 \englishtitle   {Realistic rendering of procedural generated forest landscapes}
-\polishabstract {Strzeszczenie po polsku\ldots}
-\englishabstract{English abstract\ldots}
+\polishabstract {
+    Praca przedstawia program, który realistycznie renderuje wcześniej wygenerowane krajobrazy leśne. Opisuje zastosowane rozwiązania z dziedziny generowania proceduralnego i realistycznej grafiki. Należą do nich między innymi: L--systemy, algorytm Diamond-Square oraz path tracing. Pokazuje jak uruchomić program i wpływać na jego działanie przy pomocy plików konfiguracyjnych. Wyjaśnia podstawową architekturę aplikacji i użyte narzędzia. Prezentuje przykładowe efekty i porównuje je z komercyjnymi implementacjami.  
+}
+\englishabstract{
+    The paper presents a program that realistically renders previously generated forest landscapes. It describes used solutions from procedural generation  and realistic graphics fields. Some of them are: L--systems, the Diamond-Square algorithm and path tracing. It shows how to run the program and affects its effects with configuration files. Explains the basic application architecture and used tools. Presents example effects and compares it to commercial implementations.
+}
 % w pracach wielu autorow nazwiska mozna oddzielic poleceniem \and
 \author         {Bartosz Rudzki}
 % w przypadku kilku promotorow, lub koniecznosci podania ich afiliacji, linie
@@ -262,7 +266,7 @@
         
         Jeśli nie jest sprecyzowana nazwa pliku, a jedynie rozszerzenie to znaczy, że może być wiele plików konfigurującą daną funkcjonalność. W takim przypadku użytkownik może tworzyć nowe pliki lub usuwać istniejące.
         
-        \subsection{Ustawienia path tracingu}
+        \subsection{Ustawienia path tracingu} \label{pathTracerConfig}
         Plik opisujący path tracing umieszczony jest w głównym folderze konfiguracyjnym i ma nazwę \textit{pathTracer.conf}.
         
         Można zdefiniować następujące parametry:
@@ -273,7 +277,7 @@
             \item \textit{MaxRayBounces : int = 5} -- maksymalna dopuszczalna liczba odbić jednego promienia  
         \end{itemize}
 
-        \subsection{Ustawienia kamery}
+        \subsection{Ustawienia kamery} \label{cameraConfig}
         Plik opisujący ustawienia kamery z głównego folderu: \textit{camera.conf}.
         
         Parametry:
@@ -285,7 +289,7 @@
             \item \textit{ExpectedPositionY : float = 0} -- oczekiwana pozycja Y, na której powinna zostać umieszczona kamera. Dzięki temu można wymuszać np. robienie zdjęć ze szczytów gór poprzez ustawienie bardzo dużej wartości (kamera zawsze będzie \textit{LookHeight} nad ziemią). 
         \end{itemize}
         
-        \subsection{Ustawienia debugowania}
+        \subsection{Ustawienia debugowania} \label{debugConfig}
         Plik do zmiany ustawień debugowania znajdujący się w głównym folderze: \textit{debug.conf}.
         
         Parametry:
@@ -487,36 +491,56 @@
             
 \chapter{Zastosowanie}
     \section{Przykłady użycia}
-        \begin{figure}[H]
+        Program posiada wiele parametrów wpływających na generowany obraz. Konfiguracja \textit{default} powstała, by potencjalny użytkownik nie musiał pisać wszystkiego od początku. Przykładowy wygenerowany obraz został przedstawiony na rysunku \ref{fig:ground}. Ustawienia path tracer'a to 256 próbek dla rozdzielczości 1920 x 1080 (patrz ustawienie path tracer'a \ref{pathTracerConfig}).
+        \begin{figure}[h]
             \includegraphics[width=\linewidth]{ground.png}
             \caption{Przykładowy render dla konfiguracji \textit{default}.} 
             \label{fig:ground}
         \end{figure}
         
-        \begin{figure}[H]
+        Zmieniając oczekiwaną wysokość kamery (patrz konfiguracja kamery \ref{cameraConfig}) w łatwy sposób można otrzymać zdjęcia ze szczytu góry -- rysunek \ref{fig:mountain}. Możliwe, że początkowe ustawienie kamery nie będzie idealne. Często warto wymusić tryb debugowania, aby ręcznie je poprawić (patrz konfiguracja trybu debugowania \ref{debugConfig}). 
+        \begin{figure}[h]
             \includegraphics[width=\linewidth]{mountain.png}
             \caption{Przykładowy render dla konfiguracji \textit{default} z wymuszeniem kamery na szczycie góry.} 
             \label{fig:mountain}
         \end{figure}
         
+        Dobrą praktyką jest kopiowanie konfiguracji \textit{default} w celu utworzenia nowej. W kopii możemy zmieniać interesujące nas parametry. W taki sposób powstała konfiguracja \textit{debug} oraz \textit{dead}. Pierwsza z nich ma mniejszą rozdzielczość oraz liczbę próbek w celu obniżenia czasu tworzenia obrazka. Zdjęcie ma widoczny szum ale generuje się kilka sekund -- rysunek \ref{fig:debug}. Jest to przydatne do testowania różnych ustawień programu.
+        \begin{figure}[h] 
+            \includegraphics[width=\linewidth]{debug.png}
+            \caption{Przykładowy render dla konfiguracji \textit{debug}.} 
+            \label{fig:debug}
+        \end{figure}
+       
+        Konfiguracja \textit{dead} to przykład jak w łatwy sposób otrzymać widocznie różny efekt od konfiguracji \textit{default}. Zmieniona kolorystyka, brak liści oraz wymuszenie ustawiania drzew w ścieżkę sprawiają, że finalny obraz \ref{fig:dead} znacząco różni się od poprzednich.
         \begin{figure}[H] 
             \includegraphics[width=\linewidth]{dead.png}
             \caption{Przykładowy render dla konfiguracji \textit{dead}.} 
             \label{fig:dead}
         \end{figure}
+        \newpage
+        
+        Jedynym z limitów programu jest liczba generowanych obiektów na scenie. Niska optymalizacja modeli tworzonych przy pomocy L--systemów wpływa na to, że każdy z nich składa się z kilkunastu tysięcy trójkątów. Warto mieć to na uwadzę i na scenie tworzyć ich nie więcej niż 100. 
         
     \section{Porównanie z komercyjnymi rozwiązaniami}
+        Generowanie i realistyczne renderowanie krajobrazów jest często potrzebne między innymi w grach lub przemyśle filmowym. Z tego powodu powstało wiele komercyjnych rozwiązań, które owy koncept dopracowały praktycznie do granic perfekcji. 
+        
+        Jednym z popularniejszych programów tego typu jest \textit{Terragen} firmy \textit{Planetside Software}. Na swojej stronie udostępniają wiele przykładów powstałych dzięki ich oprogramowaniu. Jednym z nich jest render stworzony przez Jeff'a Boser'a przedstawiony na rysunku \ref{fig:terragen}. 
         \begin{figure}[H] 
             \includegraphics[width=\linewidth]{terragen.png}
-            \caption{Obraz stworzony przy pomocy programu Terragen przez Jeff'a Boser'a \cite{terragen}.} 
+            \caption{Obraz stworzony przy pomocy programu \textit{Terragen} przez Jeff'a Boser'a \cite{terragen}.} 
             \label{fig:terragen}
         \end{figure}
         
+        Inny program pozwalający osiągać bardzo realistyczne wyniki to \textit{VUE} od firmy \textit{e-on software}. Obraz Ryan'a Bliss'a \ref{fig:vue} jest tego najlepszym przykładem.
         \begin{figure}[H] 
             \includegraphics[width=\linewidth]{vue.png}
-            \caption{Obraz stworzony przy pomocy programu VUE przez Ryan'a Bliss'a \cite{vue}.} 
+            \caption{Obraz stworzony przy pomocy programu \textit{VUE} przez Ryan'a Bliss'a \cite{vue}.} 
             \label{fig:vue}
         \end{figure}
+        
+        Program zaprezentowany w ramach tej pracy generuje zauważalnie słabsze obrazy. Ma problemy, które zostały już tam rozwiązane takie jak maksymalna liczba elementów na scenie, ich różnorodność i fotorealistyczny rendering. Warto jednak zauważyć, że rozwiązania wykorzystywane przez firmy komercyjne, bazują w dużej mierze na opisanych wcześniej zagadnieniach. Dobra ich znajomość poparta przykładową implementacją to dobry punkt startowy dla osób zainteresowanych tą tematyką.
+        
 %%%%% BIBLIOGRAFIA
 
 \bibliographystyle{unsrt}

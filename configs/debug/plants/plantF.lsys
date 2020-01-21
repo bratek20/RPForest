@@ -1,0 +1,7 @@
+N 5
+TurnAngle 22.5
+Height 0.5
+InitRadius 0.7
+Axiom X
+Prod X > F-[[X]+X]+F[+FX]-X
+Prod F > FF 
