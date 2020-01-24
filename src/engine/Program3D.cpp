@@ -1,6 +1,6 @@
 #include "Program3D.h"
 
-Program3D::Program3D(std::string vsPath, std::string fsPath) : Shader(vsPath, fsPath) {
+Program3D::Program3D(const std::string& vsCode, const std::string& fsCode) : Shader(vsCode, fsCode) {
     MVPId = glGetUniformLocation(id, "MVP");
     viewMatId = glGetUniformLocation(id, "V");
 	worldMatId = glGetUniformLocation(id, "M");

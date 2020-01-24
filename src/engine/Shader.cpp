@@ -6,14 +6,14 @@
 
 using namespace std;
 
-Shader::Shader(const string& vsPath, const string& fsPath) {
-    id = makeProgram(vsPath, fsPath);
+Shader::Shader(const string& vsCode, const string& fsCode) {
+    id = makeProgram(vsCode, fsCode);
     use();
 }
 
-GLuint Shader::makeProgram(const string& vsPath, const string& fsPath) {
-    GLuint vertexId = compileShader(vsPath, GL_VERTEX_SHADER);
-    GLuint fragmentId = compileShader(fsPath, GL_FRAGMENT_SHADER);
+GLuint Shader::makeProgram(const string& vsCode, const string& fsCode) {
+    GLuint vertexId = compileShader(vsCode, GL_VERTEX_SHADER);
+    GLuint fragmentId = compileShader(fsCode, GL_FRAGMENT_SHADER);
 
     GLuint id = glCreateProgram();
     glAttachShader(id, vertexId);
@@ -32,33 +32,17 @@ GLuint Shader::makeProgram(const string& vsPath, const string& fsPath) {
     return id;
 }
 
-GLuint Shader::compileShader(const string& path, GLuint type) {
-    string shaderCode;
-    ifstream shaderFile;
-    shaderFile.exceptions(ifstream::failbit | ifstream::badbit);
-    try {
-        shaderFile.open(path);
-
-        stringstream shaderStream;
-        shaderStream << shaderFile.rdbuf();
-        shaderCode = shaderStream.str();
-
-        shaderFile.close();
-    } catch (ifstream::failure e) {
-        cout << "Failed ot read shader file: " << path << endl;
-    }
-
-    const char* cShaderCode = shaderCode.c_str();
+GLuint Shader::compileShader(const string& code, GLuint type) {
+    const char* shaderCode = code.c_str();
     GLuint id = glCreateShader(type);
-    glShaderSource(id, 1, &cShaderCode, NULL);
+    glShaderSource(id, 1, &shaderCode, NULL);
     glCompileShader(id);
 
     int success;
     glGetShaderiv(id, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(id, 512, NULL, infoLog);
-        cerr << "Shader compilation failed for: " << path << "\n"
-             << infoLog << endl;
+        cerr << "Shader compilation failed for: " << infoLog << endl;
     };
 
     return id;

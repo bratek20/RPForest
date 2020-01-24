@@ -14,7 +14,7 @@ protected:
 
 public:
     Shader() {}
-    Shader(const std::string& vsPath, const std::string& fsPath);
+    Shader(const std::string& vsCode, const std::string& fsCode);
 
     void clear();
     void use();    
@@ -25,8 +25,8 @@ public:
     void applyColor(const char* name, const glm::vec3& c) const;
 
 private:
-    GLuint makeProgram(const std::string& vsPath, const std::string& fsPath); 
-    GLuint compileShader(const std::string& path, GLuint type);
+    GLuint makeProgram(const std::string& vsCode, const std::string& fsCode); 
+    GLuint compileShader(const std::string& program, GLuint type);
 };
 
 #endif

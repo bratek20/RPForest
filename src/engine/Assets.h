@@ -22,9 +22,7 @@
 #include "DebugConfig.h"
 
 class Assets {
-    static const std::string CONFIGS_PREFIX_PATH;
-    static const std::vector<std::string> POSSIBLE_PATH_PREFIXES;
-    static std::string CONFIG_FOLDER;
+    static std::string CONFIG_PATH;
 
 public:
     static Program3D PROGRAM_3D;
@@ -46,11 +44,10 @@ public:
     static MaterialConfig LEAF_MATERIAL_CONFIG;
     static MaterialConfig BARK_MATERIAL_CONFIG;
     
-    static void init(const std::string& configFolder);
+    static void init(const std::string& configPath);
     static void loadProgram3D();
     static void clear();
 
-    static std::string validPath(const std::string& path);
     static std::string photoSavePath(const std::string& name);
 
     static const std::vector<GeneratorPtr>& getGenerators(const std::string& generatorType);

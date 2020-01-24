@@ -24,7 +24,7 @@ public:
     static const int MAX_LIGHTS;
 
     Program3D(){}
-    Program3D(std::string vsPath, std::string fsPath);
+    Program3D(const std::string& vsCode, const std::string& fsCode);
 
     void setProjectionMat(const glm::mat4& mat);
     void setViewMat(const glm::mat4& mat);

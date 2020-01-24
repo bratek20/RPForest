@@ -26,7 +26,11 @@ void debugRay() {
 }
 
 int main(int argc, char* argv[]){
-	string configFolder = argc >= 2 ? argv[1] : "default";    
+	if(argc < 2){
+		cerr << "Config path not provided. Example program execution: ./rpforest.exe ../configs/default" << endl;
+		return -1;
+	}
+	string configFolder = argv[1];    
 	unsigned seed = argc > 2 ? atoi(argv[2]) : Random::SEED_NOT_SET;
 	
 	Random::init(seed);
