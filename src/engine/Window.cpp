@@ -6,7 +6,7 @@ GLFWwindow *Window::window;
 float Window::ratio;
 
 bool Window::open(const std::string &name) {
-    auto& c = Assets::DEBUG_CONFIG;
+    auto& c = Assets::VIEW_MODE_CONFIG;
     setRatio(c.resolution.x, c.resolution.y);
     if (!c.enabled) {
         return true;

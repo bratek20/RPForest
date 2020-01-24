@@ -19,7 +19,7 @@
 #include "SpawnerConfig.h"
 #include "MaterialConfig.h"
 #include "PathTracerConfig.h"
-#include "DebugConfig.h"
+#include "ViewModeConfig.h"
 
 class Assets {
     static std::string CONFIG_PATH;
@@ -31,7 +31,7 @@ public:
     static TerrainConfig TERRAIN_CONFIG;
     static CameraConfig CAMERA_CONFIG;
     static PathTracerConfig PATH_TRACER_CONFIG;
-    static DebugConfig DEBUG_CONFIG;
+    static ViewModeConfig VIEW_MODE_CONFIG;
     static std::vector<SpawnerConfig> SPAWNER_CONFIGS;
 
     static std::vector<GeneratorPtr> PLANT_GENERATORS;

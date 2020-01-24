@@ -48,7 +48,7 @@ int main(int argc, char* argv[]){
 	if(Globals::debug){		
 		Input::init();
 		Input::onKeyPressed(GLFW_KEY_P, takePhoto);
-		Input::onKeyPressed(GLFW_KEY_L, debugRay);
+		//Input::onKeyPressed(GLFW_KEY_L, debugRay);
 
 		while(!Window::shouldClose()){
 			Input::handle();

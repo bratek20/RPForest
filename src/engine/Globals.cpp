@@ -15,7 +15,7 @@ void Globals::init(){
     currentFrameTime = glfwGetTime();
 	deltaTime = 1.0f / 60.0f; 
 	previousFrameTime = currentFrameTime - deltaTime;
-    debug = Assets::DEBUG_CONFIG.enabled;
+    debug = Assets::VIEW_MODE_CONFIG.enabled;
 }
 
 void Globals::updateTime(){

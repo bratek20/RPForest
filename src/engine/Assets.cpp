@@ -21,7 +21,7 @@ SkyConfig Assets::SKY_CONFIG;
 TerrainConfig Assets::TERRAIN_CONFIG;
 CameraConfig Assets::CAMERA_CONFIG;
 PathTracerConfig Assets::PATH_TRACER_CONFIG;
-DebugConfig Assets::DEBUG_CONFIG;
+ViewModeConfig Assets::VIEW_MODE_CONFIG;
 vector<SpawnerConfig> Assets::SPAWNER_CONFIGS;
 
 vector<GeneratorPtr> Assets::PLANT_GENERATORS;
@@ -44,7 +44,7 @@ void Assets::init(const std::string& configPath){
     loadConfig("", "terrain.conf", TERRAIN_CONFIG);
     loadConfig("", "camera.conf", CAMERA_CONFIG);
     loadConfig("", "pathTracer.conf", PATH_TRACER_CONFIG);
-    loadConfig("", "debug.conf", DEBUG_CONFIG);
+    loadConfig("", "viewMode.conf", VIEW_MODE_CONFIG);
     
     SPAWNER_CONFIGS = loadConfigs<SpawnerConfig>("spawners", ".spawner");
 
@@ -64,7 +64,7 @@ void Assets::init(const std::string& configPath){
 }
 
 void Assets::loadProgram3D() {
-    if(DEBUG_CONFIG.enabled) {
+    if(VIEW_MODE_CONFIG.enabled) {
         PROGRAM_3D = Program3D(ShaderCodes::VS_3D, ShaderCodes::FS_3D);
     }
 }
