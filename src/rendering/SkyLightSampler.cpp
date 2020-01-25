@@ -65,7 +65,9 @@ vec3 SkyLightSampler::calcColor(vec3 skyPos) {
     vec3 ans =
         toRGB(Assets::SKY_CONFIG.skyLuminanceFactor * radiance.z, radiance.x, radiance.y);
 
-    if (isnan(ans.x) || isnan(ans.x) || isnan(ans.x)) {
+    if (Utils::hasNaN(ans)) {
+        ans =
+        toRGB(Assets::SKY_CONFIG.skyLuminanceFactor * radiance.z, radiance.x, radiance.y);
         return vec3(0);
     }
     return ans;
@@ -83,6 +85,9 @@ vec3 SkyLightSampler::toRGB(float luminance, float xChroma, float yChroma) {
     static auto adj = [](float C) {
         if (abs(C) < 0.0031308) {
             return 12.92 * C;
+        }
+        if(C < 0){
+            return 0.0;
         }
         return 1.055 * pow(C, 0.41666) - 0.055;
     };

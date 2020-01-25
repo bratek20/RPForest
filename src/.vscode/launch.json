@@ -6,7 +6,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/../bin/rpforest.exe",
-      "args": [],
+      "args": ["${workspaceFolder}/../configs/debug", "7415"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

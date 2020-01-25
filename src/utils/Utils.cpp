@@ -78,7 +78,7 @@ float Utils::average(vec3 v) {
 }
 
 bool Utils::hasNaN(glm::vec3 v) {
-    return isnan(v.x) || isnan(v.y) || isnan(v.z); 
+    return isnanf(v.x) || isnanf(v.y) || isnanf(v.z); 
 }
 
 vec3 Utils::mixColors(const MaterialConfig& config, glm::vec3 pos) {
