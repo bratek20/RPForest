@@ -51,7 +51,7 @@
 \chapter{Wprowadzenie}
     Oba zagadnienia z tytułu pracy: realistyczny rendering oraz generowanie proceduralne przynależą do poddziedziny informatyki zwanej grafiką komputerową. Nauka ta, w dużym uproszczeniu, skupia się, w jaki sposób przy pomocy komputera tworzyć obraz zrozumiały dla człowieka. 
     
-    To, co widzą ludzie na ekranie komputera to finalny efekt procesu zwanego renderingiem. Zaczyna się on od zdefiniowania modelu. Opisuje on wszystko to, co chcielibyśmy pokazać. Przykładowa reprezentacja to zbiór trójkątów rozmieszczonych w przestrzeni z uwzględnieniem dodatkowych informacji takich np. kolor. Następnie komputer zamienia tak zapisane dane na obraz. To, w jaki sposób odbywa się zamiana, wpływa na jakość tego, co zostanie pokazane. Komputer może generować nawet kilkaset różnych klatek obrazu na sekundę, jeśli nie jest wymagana wysoka realistyczność obrazu. Jeśli chcemy, żeby efekt dawał złudzenie fotorealizmu, musimy zastosować bardziej skomplikowane algorytmy wymagające większej mocy obliczeniowej. Ta praca skupia się na drugim przypadku.  
+    To, co widzą ludzie na ekranie komputera, to finalny efekt procesu zwanego renderingiem. Zaczyna się on od zdefiniowania modelu. Opisuje on wszystko to, co chcielibyśmy pokazać. Przykładowa reprezentacja to zbiór trójkątów rozmieszczonych w przestrzeni z uwzględnieniem dodatkowych informacji takich jak np. kolor. Następnie komputer zamienia tak zapisane dane na obraz. To, w jaki sposób odbywa się zamiana, wpływa na jakość tego, co zostanie pokazane. Komputer może generować nawet kilkaset różnych klatek obrazu na sekundę, jeśli nie jest wymagana wysoka realistyczność obrazu. Jeśli chcemy, żeby efekt dawał złudzenie fotorealizmu, musimy zastosować bardziej skomplikowane algorytmy wymagające większej mocy obliczeniowej. Ta praca skupia się na drugim przypadku.  
     
     Sam model, często przygotowywany przy dużym udziale człowieka, może być stworzony w całości przez komputer. Na tym polega generowanie proceduralne. Model to efekt algorytmu. Człowiek może wpływać na jego działanie poprzez zmienianie parametrów, jednak nie musi być zaangażowany w sam proces tworzenia. Jest to bardzo wydajna metoda pozwalająca na generowanie nieskończenie wielu różnych modeli o zadanych właściwościach jak np. rośliny.
     
@@ -62,16 +62,16 @@
     
     Rozdział 4 to poradnik użytkowania. Prezentuje jak pobrać i zainstalować program. Przedstawia przydatne dla użytkownika informacje na temat programu oraz jak wpływać na jego konfigurację.
     
-    Rozdział 5 zawiera informacje dla programistów. Opisuje i argumentuje użycie wszystkich technologi. Przedstawia strukturę projektu oraz nakreśla zaimplementowaną architekturę.
+    Rozdział 5 zawiera informacje dla programistów. Opisuje i argumentuje użycie wszystkich technologii. Przedstawia strukturę projektu oraz nakreśla zaimplementowaną architekturę.
     
-    Rozdział 6 przedstawia kilka przykładowych obrazów stworzonych przez program. Wskazuje dobre praktyki używania oraz nakreśla potencjalne problemy i ograniczenia. Dodatkowo porównuje wygenerowane obrazy z profesjonalnymi, stworzonymi przy pomocy komercyjnych programów.  
+    Rozdział 6 prezentuje kilka przykładowych obrazów stworzonych przez program. Wskazuje dobre praktyki używania oraz nakreśla potencjalne problemy i ograniczenia. Dodatkowo porównuje wygenerowane obrazy z profesjonalnymi, stworzonymi przy pomocy komercyjnych programów.  
     
     
     
 \chapter{Generowanie proceduralne krajobrazów}
 
     \section{Rośliny}
-        Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L--systemów. Jest to sposób reprezentacji modelu jako reguł tworzących gramatykę. Zaczynając od jednego symbolu, jesteśmy w stanie wygenerować zbiór symboli -- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L-System może wyglądać następująco:
+        Kształt roślin posiada wiele regularności. Dzięki temu można opisać je przy pomocy tak zwanych L--systemów. Jest to sposób reprezentacji modelu jako reguł tworzących gramatykę. Zaczynając od jednego symbolu, jesteśmy w stanie wygenerować zbiór symboli -- słowo. Osiągamy to poprzez zdefiniowanie dodatniej liczby różnych produkcji. Są to reguły zamieniania wybranego symbolu na słowo. Przykładowy L--system może wyglądać następująco:
         \begin{align*}
             axiom &: \alpha \\
             prod1 &: \alpha \rightarrow \alpha\beta\alpha \\
@@ -156,7 +156,7 @@
         \end{equation}
         \begin{gather*}
             gdzie \\
-            factor = clamp(noise(pos3D * posF) * valF, 0, 1)
+            factor = clamp(noise(pos3D \cdot posF) \cdot valF, 0, 1)
         \end{gather*}
         
 
@@ -172,7 +172,7 @@
         Zaprezentowane rozwiązanie okazało się wystarczające, aby osiągnąć zadowalające rezultaty. Jest łatwe do implementacji, ujednolicone dla użytkownika oraz na tyle rozbudowane, aby wyrażać niebanalną kolorystkę.
         
     \section{Rozmieszczanie roślin}
-        Po wygenerowaniu wystarczającej liczby modeli roślin trzeba je umieścić w świecie. Można to robić w mniej lub bardziej wyszukany sposób. W tym przypadku zastosowano jedno z najprostszych rozwiązań -- losowe rozmieszczanie wewnątrz komórek kraty. Krata o wymiarach $N$ x $M$ posiada $N \cdot M$ kwadratowych komórek o ustalonym rozmiarze. Wewnątrz takiej komórki z pewnym prawdopodobieństwem możemy umieścić losowy model. Pozycja modelu wewnątrz kraty również jest losowa i może zostać ograniczona przez parametr, mówiący jak bardzo od środka powinna zostać wylosowana. Przykładowo dla wartości 0 obiekt zawsze będzie umieszczany w środku kraty, a dla 1 może pojawić się w całej kracie. 
+        Po wygenerowaniu wystarczającej liczby modeli roślin, trzeba je umieścić w świecie. Można to robić w mniej lub bardziej wyszukany sposób. W tym przypadku zastosowano jedno z najprostszych rozwiązań -- losowe rozmieszczanie wewnątrz komórek kraty. Krata o wymiarach $N$ x $M$ posiada $N \cdot M$ kwadratowych komórek o ustalonym rozmiarze. Wewnątrz takiej komórki z pewnym prawdopodobieństwem możemy umieścić losowy model. Pozycja modelu wewnątrz kraty również jest losowa i może zostać ograniczona przez parametr, mówiący jak bardzo od środka powinna zostać wylosowana. Przykładowo dla wartości 0 obiekt zawsze będzie umieszczany w środku kraty, a dla 1 może pojawić się w całej kracie. 
         
         Przy generowaniu tak dużego świata musimy liczyć się z ograniczeniami sprzętowymi. Niezoptymalizowane modele otrzymywane z L--systemów mają nawet po kilkanaście tysięcy trójkątów! W takim przypadku dobrym sposobem tworzenia sceny jest umieszczenia wszystkich generowanych modeli względnie blisko kamery, która renderuje obraz. Duże modele będą zasłaniać znaczną część pola widzenia, ukrywając niewypełnioną przestrzeń. Rozwiązanie nie jest idealne, ale ma szanse wygenerować scenę o zadowalającym rezultacie. To podejście ma swoje odwzorowanie w implementacji rozmieszczania roślin, które jest robione zależnie od położenia kamery.
         
@@ -229,7 +229,7 @@
     
     \section{Uruchomienie programu}
         Program był pisany i testowany na systemie operacyjnym \textit{Ubuntu 18.04}. Użyty język programowania to \textit{C++14}.
-        Repozytorium można sklonować z adresu: \url{https://github.com/bratek20/RPForest}.
+        Repozytorium można sklonować z adresu: \url{https://github.com/bratek20/RPForest} (branch master).
         
         Program korzysta z następujących narzędzi i bibliotek:
         \begin{itemize}
@@ -246,7 +246,7 @@
         
         Pierwszy to ścieżka do folderu z plikami konfiguracyjnymi. Kilka przykładowych konfiguracji znajduje się w folderze \textit{configs}.
         
-        Opcjonalny drugi argument to ziarno losowości. W przypadku nieustawienia żadnego zostanie wybrane losowe -- zależne od czasu. W logach programu można znaleźć ziarno dla danego uruchomienia. Możemy wybrać je podobnie, jeśli chcemy wygenerować ten sam świat. 
+        Opcjonalny drugi argument to ziarno losowości. W przypadku nieustawienia żadnego zostanie wybrane losowe -- zależne od czasu. W logach programu można znaleźć ziarno dla danego uruchomienia. Możemy wybrać je ponownie, jeśli chcemy wygenerować ten sam świat. 
     
         Przykładowa komenda uruchomienia programu z folderu \textit{bin} dla konfiguracji \textit{default}: 
         \begin{description}
@@ -278,7 +278,7 @@
             \item \textit{NazwaParametru : typ = wartość domyślna, jeśli istnieje} -- opis
         \end{itemize}
         
-        Jeśli nie jest sprecyzowana nazwa pliku, a jedynie rozszerzenie to znaczy, że może być wiele plików konfigurującą daną funkcjonalność. W takim przypadku użytkownik może tworzyć nowe pliki lub usuwać istniejące. Znajdują się one zawsze w podfolderach. Jeśli nie ma żadnego pliku sam podfolder i tak powinien istnieć.
+        Jeśli nie jest sprecyzowana nazwa pliku, a jedynie rozszerzenie to znaczy, że może być wiele plików, które konfigurują daną funkcjonalność. W takim przypadku użytkownik może tworzyć nowe pliki lub usuwać istniejące. Znajdują się one zawsze w podfolderach. Jeśli nie ma żadnego pliku sam podfolder i tak powinien istnieć.
         
         \subsection{Ustawienia path tracing'u} \label{pathTracerConfig}
         Plik opisujący path tracing umieszczony jest w głównym folderze konfiguracyjnym i ma nazwę \textit{pathTracer.conf}.
@@ -338,16 +338,25 @@
         
         \begin{itemize}
             \item \textit{N : int} -- wpływa na liczbę elementów mapy wysokości. Finalny rozmiar to $2^N+1$ x $2^N+1$.
-            \item \textit{Size : float} -- wielkość generowane terenu 
-            \item \textit{InitHeight : float} -- wartość do wyliczania początkowych wartości na rogach mapy. Zostaną wylosowane z przedziału $(-\textit{InitHeight}:\textit{InitHeight})$.
-            \item \textit{Spread : float} -- początkowa rozpiętość losowej wysokości dodawanej do uśrednianych wartości. Losowa wysokość losowana jest z przedziału $(-\textit{Spread}:\textit{Spread})$, gdzie \textit{Spread} będzie maleć z każdą iteracją algorytmu.
+            \item \textit{Size : float} -- długość boku kwadratu, na którym umieszczony będzie wygenerowany teren 
+            \item \textit{InitHeight : float} -- wartość do wyliczania początkowych wysokości na rogach mapy. Zostaną wylosowane z przedziału $(-\textit{InitHeight}:\textit{InitHeight})$.
+            \item \textit{Spread : float} -- początkowa rozpiętość losowej wysokości dodawanej do uśrednianych wartości. Losowa wysokość wybierana jest z przedziału $(-\textit{Spread}:\textit{Spread})$, gdzie \textit{Spread} będzie maleć z każdą iteracją algorytmu.
             \item \textit{SpreadReductionRate : float} -- jak zmienia się rozpiętość względem kolejnych iteracji algorytmu. Parametr powinien mieć wartość mniejszą niż 1. 
             \item \textit{RockStartY : float = 10} -- od jakiej wysokości powinien być aplikowany materiał skał
             \item \textit{GroundEndY : float = 20} -- do jakiej wysokości powinien być aplikowany materiał gruntu. Parametr powinien mieć wartość większą niż \textit{RockStartY}. 
         \end{itemize}
         
         \subsection{Ustawienia tekstur}
-        Wszystkie pliki konfiguracyjne materiałów znajdują się w folderze \textit{materials} i mają rozszerzenie \textit{.mat}. W plikach ustala się wartości parametrów ze wzoru \ref{eqn:material}. 
+        Wszystkie pliki konfiguracyjne materiałów znajdują się w folderze \textit{materials}. Są to:
+        \begin{itemize}
+            \item \textit{bark.mat} -- materiał kory drzew
+            \item \textit{ground.mat} -- materiał gruntu
+            \item \textit{leaf.mat} -- materiał liści
+            \item \textit{plant.mat} -- materiał roślin, nie będących drzewami
+            \item \textit{rock.mat} -- materiał skał
+        \end{itemize}
+        
+        W plikach ustala się wartości parametrów ze wzoru \ref{eqn:material}. 
         \begin{itemize}
             \item \textit{Color1 : vec3} -- pierwszy kolor do mieszania
             \item \textit{Color2 : vec3} -- drugi kolor do mieszania
@@ -428,7 +437,7 @@
             \item \textit{XGridN : int = 1} -- liczba komórek kraty wzdłuż osi X
             \item \textit{ZGridN : int = 1} -- liczba komórek kraty wzdłuż osi Z
             \item \textit{CellSize : float = 0} -- rozmiar pojedynczej komórki
-            \item \textit{GeneratorType : string} -- typ użytego generatorów (Tree, Plant)
+            \item \textit{GeneratorType : string} -- typ użytego generatora (Tree, Plant)
             \item \textit{SpawnProbability : float = 1} -- szansa na stworzenie pojedynczego elementu 
             \item \textit{RandomPositionPercentage : float = 0.5} -- na jak dużym obszarze wokół środka komórki mogą być tworzone elementy
             \item \textit{MinElementScale : float = 0.5} -- minimalna wartość, która może zostać wybrana do skalowania pojedynczego elementu
@@ -437,6 +446,7 @@
     
         
 \chapter{Szczegóły programistyczne}
+
     \section{Wykaz użytych narzędzi}
         Program napisany jest w języku \textbf{C++}. Można w nim pisać obiektowo, a zarazem dbać o efektywność programu. Dostępne jest wiele bibliotek graficznych, które są dobrze udokumentowane. Z uwagi na popularność języka w przypadku jakichkolwiek trudności, łatwo można znaleźć materiały z propozycją rozwiązania problemu.        
         
@@ -447,7 +457,8 @@
         Path tracer korzysta z biblioteki \textbf{Embree3}. Pozwala ona w bardzo szybki sposób obliczać przecięcia promieni z trójkątami, co jest kluczowym elementem path tracing'u. 
         
         Do tworzenia obrazów w formacie o wysokim zakresie dynamicznym \textit{.exr} wykorzystana została biblioteka \textbf{OpenEXR}. Format zapisu pozwala na manipulowanie wieloma parametrami wygenerowanego obrazu w celu poprawienia wyglądu. 
-        Pliki w tym formacie można wyświetlić np. przy pomocy programu \textit{exrdisplay}, który jest instalowany przez instalator razem z potrzebnymi bibliotekami. Jeśli dodatkowo chcemy przekonwertować obraz do innych formatów (jpg, png), możemy skorzystać z bardziej rozbudowanego programu jak na przykład: \textit{Luminance HDR} \cite{luminanceHDR}.  
+        Pliki w tym formacie można wyświetlić np. przy pomocy programu \textit{exrdisplay}, który jest instalowany przez instalator razem z potrzebnymi bibliotekami. Jeśli dodatkowo chcemy przekonwertować obraz do innych formatów (jpg, png), możemy skorzystać z bardziej rozbudowanego programu jak np. \textit{Luminance HDR} \cite{luminanceHDR}.  
+        \vfill
         
     \section{Struktura projektu}
         Program składa się z czterech modułów:
@@ -475,7 +486,7 @@
         \subsection{Moduł \textit{rendering}}
             Najważniejsza klasa modułu to \textbf{PathTracer}. Implementuje ona obliczanie koloru pochodzącego z danego kierunku. Korzysta z dwóch pomocniczych klas:
             \begin{itemize}
-                \item \textbf{AccStruct} -- interfejs struktury obliczającej przecięcie danego promienia z najbliższym trójkątem. Przykładowa implementacja to \textbf{EmbreeWrapper}, która wykorzystuje bibliotekę Embree do obliczania przecięć. 
+                \item \textbf{AccStruct} -- interfejs struktury obliczającej przecięcie danego promienia z najbliższym trójkątem. Przykładowa implementacja to \textbf{EmbreeWrapper}, która wykorzystuje bibliotekę \textit{Embree} do obliczania przecięć. 
                 \item \textbf{SkyLightSampler} -- klasa obliczająca kolor nieba oraz próbkująca promienie pochodzące od słońca
             \end{itemize}
             
@@ -506,54 +517,61 @@
 \chapter{Zastosowanie}
     \section{Przykłady użycia}
         Program posiada wiele parametrów wpływających na generowany obraz. Konfiguracja \textit{default} powstała, by potencjalny użytkownik nie musiał pisać wszystkiego od początku. Przykładowy wygenerowany obraz został przedstawiony na rysunku \ref{fig:ground}. Ustawienia path tracer'a to 256 próbek dla rozdzielczości 1920 x 1080 (patrz ustawienie path tracer'a \ref{pathTracerConfig}).
-        \begin{figure}[h]
+        \begin{figure}[!htbp]
             \includegraphics[width=\linewidth]{ground.png}
             \caption{Przykładowy render dla konfiguracji \textit{default}.} 
             \label{fig:ground}
         \end{figure}
         
         Zmieniając oczekiwaną wysokość kamery (patrz konfiguracja kamery \ref{cameraConfig}) w łatwy sposób można otrzymać zdjęcia ze szczytu góry -- rysunek \ref{fig:mountain}. Możliwe, że początkowe ustawienie kamery nie będzie idealne. Często warto wymusić tryb podglądu, aby ręcznie je poprawić (patrz konfiguracja trybu podglądu \ref{viewModeConfig}). 
-        \begin{figure}[h]
+        \begin{figure}[!htbp]
             \includegraphics[width=\linewidth]{mountain.png}
             \caption{Przykładowy render dla konfiguracji \textit{default} z wymuszeniem kamery na szczycie góry.} 
             \label{fig:mountain}
         \end{figure}
-        
+
         Dobrą praktyką jest kopiowanie konfiguracji \textit{default} w celu utworzenia nowej. W kopii możemy zmieniać interesujące nas parametry. W taki sposób powstała konfiguracja \textit{debug} oraz \textit{dead}. Pierwsza z nich ma mniejszą rozdzielczość oraz liczbę próbek w celu obniżenia czasu tworzenia obrazka. Zdjęcie ma widoczny szum, ale generuje się kilka sekund -- rysunek \ref{fig:debug}. Jest to przydatne do testowania różnych ustawień programu.
-        \begin{figure}[h] 
+
+        \begin{figure}[!htbp] 
             \includegraphics[width=\linewidth]{debug.png}
             \caption{Przykładowy render dla konfiguracji \textit{debug}.} 
             \label{fig:debug}
         \end{figure}
-       
+        
         Konfiguracja \textit{dead} to przykład jak w łatwy sposób otrzymać widocznie różny efekt od konfiguracji \textit{default}. Zmieniona kolorystyka, brak liści oraz wymuszenie ustawiania drzew w ścieżkę sprawiają, że finalny obraz \ref{fig:dead} znacząco różni się od poprzednich.
-        \begin{figure}[H] 
+
+        \begin{figure}[!htbp] 
             \includegraphics[width=\linewidth]{dead.png}
             \caption{Przykładowy render dla konfiguracji \textit{dead}.} 
             \label{fig:dead}
         \end{figure}
-        \newpage
         
-        Jedynym z limitów programu jest liczba generowanych obiektów na scenie. Niska optymalizacja modeli tworzonych przy pomocy L--systemów wpływa na to, że każdy z nich składa się z kilkunastu tysięcy trójkątów. Warto mieć to na uwadze i na scenie tworzyć ich nie więcej niż 100. 
+        Jedynym z limitów programu jest liczba generowanych obiektów na scenie. Niska optymalizacja modeli tworzonych przy pomocy L--systemów wpływa na to, że każdy z nich składa się z kilkunastu tysięcy trójkątów. Warto mieć to na uwadze i na scenie tworzyć ich nie więcej niż 100.
+        \newpage
         
     \section{Porównanie z komercyjnymi rozwiązaniami}
         Generowanie i realistyczne renderowanie krajobrazów jest często potrzebne między innymi w grach lub przemyśle filmowym. Z tego powodu powstało wiele komercyjnych rozwiązań, które owe pojęcie dopracowały praktycznie do granic perfekcji. 
         
         Jednym z popularniejszych programów tego typu jest \textit{Terragen} firmy \textit{Planetside Software}. Na swojej stronie udostępniają wiele przykładów powstałych dzięki ich oprogramowaniu. Jednym z nich jest render stworzony przez Jeff'a Boser'a przedstawiony na rysunku \ref{fig:terragen}. 
+        
+        
+        Inny program pozwalający osiągać bardzo realistyczne wyniki to \textit{VUE} od firmy \textit{e-on software}. Obraz Ryan'a Bliss'a \ref{fig:vue} jest tego najlepszym przykładem.
+        
+        Program zaprezentowany w ramach tej pracy generuje zauważalnie słabsze obrazy. Ma problemy, które zostały już tam rozwiązane takie jak maksymalna liczba elementów na scenie, ich różnorodność i fotorealistyczny rendering. Warto jednak zauważyć, że rozwiązania wykorzystywane przez firmy komercyjne, bazują w dużej mierze na opisanych wcześniej zagadnieniach. Dobra ich znajomość poparta przykładową implementacją to dobry punkt startowy dla osób zainteresowanych tą tematyką. 
+                
         \begin{figure}[H] 
             \includegraphics[width=\linewidth]{terragen.png}
             \caption{Obraz stworzony przy pomocy programu \textit{Terragen} przez Jeff'a Boser'a \cite{terragen}.} 
             \label{fig:terragen}
         \end{figure}
         
-        Inny program pozwalający osiągać bardzo realistyczne wyniki to \textit{VUE} od firmy \textit{e-on software}. Obraz Ryan'a Bliss'a \ref{fig:vue} jest tego najlepszym przykładem.
         \begin{figure}[H] 
             \includegraphics[width=\linewidth]{vue.png}
             \caption{Obraz stworzony przy pomocy programu \textit{VUE} przez Ryan'a Bliss'a \cite{vue}.} 
             \label{fig:vue}
         \end{figure}
         
-        Program zaprezentowany w ramach tej pracy generuje zauważalnie słabsze obrazy. Ma problemy, które zostały już tam rozwiązane takie jak maksymalna liczba elementów na scenie, ich różnorodność i fotorealistyczny rendering. Warto jednak zauważyć, że rozwiązania wykorzystywane przez firmy komercyjne, bazują w dużej mierze na opisanych wcześniej zagadnieniach. Dobra ich znajomość poparta przykładową implementacją to dobry punkt startowy dla osób zainteresowanych tą tematyką. 
+
         
 %%%%% BIBLIOGRAFIA
 

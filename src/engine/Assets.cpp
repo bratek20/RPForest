@@ -54,7 +54,10 @@ void Assets::init(const std::string& configPath){
         loadGenerators<LSysGenerator, LSysConfig>("trees", ".lsys"),
         loadGenerators<Honda, HondaConfig>("trees", ".honda"));
 
-    LEAF_GENERATORS = loadGenerators<Family, FamilyConfig>("leafs", ".family");
+    LEAF_GENERATORS = Utils::merge<GeneratorPtr>(
+        loadGenerators<LSysGenerator, LSysConfig>("leafs", ".lsys"),
+        loadGenerators<Family, FamilyConfig>("leafs", ".family"));
+        
 
     loadConfig("materials", "ground.mat", GROUND_MATERIAL_CONFIG);
     loadConfig("materials", "rock.mat", ROCK_MATERIAL_CONFIG);
