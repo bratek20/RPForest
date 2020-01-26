@@ -4,17 +4,20 @@
 #include "LightSampler.h"
 #include "ASunSky.H"
 #include "AccStruct.h"
+#include "Model.h"
 
 class SkyLightSampler : public LightSampler {
     float radius;
     ASunSky sunSky;
+    ModelPtr sunModel;
+
     std::vector<TrianglePtr> lightSources;
     std::vector<float> thresholds;
 
 public:
     SkyLightSampler(float radius);
     
-    void initLightSources(const std::vector<TrianglePtr>& lightSources);
+    void initLightSources(ModelPtr sunModel);
     
     LightSampleData sample() override;
     glm::vec3 cast(Ray r);

@@ -14,7 +14,7 @@ SkyActorPtr SkyActor::create() {
     vec3 sunPos = sky->lightSampler.getSunPos();
     sky->getModel()->apply(Utils::getRotateGlobalMat(normalize(sunPos)));
     sky->setPosition(sunPos);
-    sky->lightSampler.initLightSources(sky->genFlatModel()->getTriangles());
+    sky->lightSampler.initLightSources(sky->genFlatModel());
     return sky;
 }
 

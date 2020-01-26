@@ -15,9 +15,9 @@ SkyLightSampler::SkyLightSampler(float radius)
              Assets::SKY_CONFIG.timeOfDay,
              Assets::SKY_CONFIG.turbidity) {}
 
-void SkyLightSampler::initLightSources(
-    const std::vector<TrianglePtr>& lightSources) {
-    this->lightSources = lightSources;
+void SkyLightSampler::initLightSources(ModelPtr sunModel) {
+    this->sunModel = sunModel;
+    lightSources = sunModel->getTriangles();
 
     thresholds.clear();
     for (auto& tri : lightSources) {
