@@ -7,13 +7,8 @@ using namespace std;
 using namespace glm;
 
 SkyLightSampler::SkyLightSampler(float radius)
-    : radius(radius),
-      sunSky(Assets::SKY_CONFIG.latitude,
-             Assets::SKY_CONFIG.longitude,
-             Assets::SKY_CONFIG.standardMeridian,
-             Assets::SKY_CONFIG.julianDay,
-             Assets::SKY_CONFIG.timeOfDay,
-             Assets::SKY_CONFIG.turbidity) {}
+    : radius(radius), sunSky(createSunSky(Assets::SKY_CONFIG.timeOfDay)){
+    }
 
 void SkyLightSampler::initLightSources(ModelPtr sunModel) {
     this->sunModel = sunModel;
@@ -54,14 +49,27 @@ glm::vec3 SkyLightSampler::cast(Ray r) {
 }
 
 vec3 SkyLightSampler::getSunPos() const {
-    vec3 pos = sunSky.GetSunPosition();
+    vec3 pos = sunSky->GetSunPosition();
     swap(pos.y, pos.z);
     return pos * radius;
 }
 
+void SkyLightSampler::setTime(float time) {
+    sunSky = createSunSky(time);
+}
+
+ASunSkyPtr SkyLightSampler::createSunSky(float time) {
+    return ASunSkyPtr(new ASunSky(Assets::SKY_CONFIG.latitude,
+             Assets::SKY_CONFIG.longitude,
+             Assets::SKY_CONFIG.standardMeridian,
+             Assets::SKY_CONFIG.julianDay,
+             time,
+             Assets::SKY_CONFIG.turbidity));
+}
+
 vec3 SkyLightSampler::calcColor(vec3 skyPos) {
     swap(skyPos.y, skyPos.z);
-    vec3 radiance = sunSky.GetSkyxyYRadiance(skyPos);
+    vec3 radiance = sunSky->GetSkyxyYRadiance(skyPos);
     vec3 ans =
         toRGB(Assets::SKY_CONFIG.skyLuminanceFactor * radiance.z, radiance.x, radiance.y);
 

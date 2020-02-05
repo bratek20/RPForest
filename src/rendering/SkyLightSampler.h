@@ -6,9 +6,11 @@
 #include "AccStruct.h"
 #include "Model.h"
 
+using ASunSkyPtr = std::unique_ptr<ASunSky>;
+
 class SkyLightSampler : public LightSampler {
     float radius;
-    ASunSky sunSky;
+    ASunSkyPtr sunSky;
     ModelPtr sunModel;
 
     std::vector<TrianglePtr> lightSources;
@@ -24,7 +26,11 @@ public:
     
     glm::vec3 getSunPos() const;
 
+    void setTime(float time);
+    
 private:
+    ASunSkyPtr createSunSky(float time);
+
     glm::vec3 calcColor(glm::vec3 skyPos);
     float calcTheta(glm::vec3 v);
     float calcPhi(glm::vec3 v);

@@ -94,6 +94,10 @@ std::vector<ActorPtr> Actor::getChilds() const{
     return childs;
 }
 
+void Actor::setModel(ModelPtr model) {
+    this->model = model;
+}
+
 void Actor::setPosition(glm::vec3 position){
     this->position = position;
 }

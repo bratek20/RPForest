@@ -27,6 +27,8 @@ protected:
     Scene();
 
 private:
+    std::string calcFrameName(int frame); 
+    void makePhoto(const std::string& name, EmbreeWrapper& accStruct);
     void createWorld();
 };
 #endif

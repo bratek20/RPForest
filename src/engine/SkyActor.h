@@ -12,6 +12,7 @@ class SkyActor : public Actor {
 public:
     static SkyActorPtr create();
     
+    void setTime(float time);
     SkyLightSampler& getLightSampler();
 
 protected:

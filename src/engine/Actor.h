@@ -35,6 +35,7 @@ public:
     int childsNum() const;
     std::vector<ActorPtr> getChilds() const;
     
+    void setModel(ModelPtr model);
     void setPosition(glm::vec3 position);
     void setScale(glm::vec3 scale);
     void setRotation(glm::vec3 rotation);

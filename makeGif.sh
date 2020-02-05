@@ -2,7 +2,7 @@
 
 cd $1
 
-for img in *.exr
+for img in frame*.exr
 do 
 	name=${img%%.exr}
 	echo $name

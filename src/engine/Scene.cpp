@@ -67,7 +67,6 @@ void Scene::takePhotoPathTracing() {
     const PathTracerConfig& c = Assets::PATH_TRACER_CONFIG;
     float xRes = c.resolution.x;
     float yRes = c.resolution.y;
-    PhotoSaver photo(xRes, yRes);
 
     vec3 origin = camera->getWorldPosition();
     cout << "Camera position: " << origin << endl;
@@ -82,7 +81,43 @@ void Scene::takePhotoPathTracing() {
     EmbreeWrapper accStruct(meshes);
     Timer::stop();
 
-    Timer::start("Path tracing");
+    if(c.animationFrames <= 1){
+        makePhoto(c.photoName, accStruct);
+    }
+    else{
+        float interval = (c.animationEndTime - c.animationStartTime) / (c.animationFrames - 1);
+        for(int frame = 1; frame <= c.animationFrames; frame++){
+            float time = c.animationStartTime + interval * (frame - 1);
+            cout << "Time of a day: " << time << endl;
+            sky->setTime(time);
+            string frameName = calcFrameName(frame);
+            makePhoto(frameName, accStruct);
+        }
+    }
+
+}
+
+string Scene::calcFrameName(int frame) {
+    string prefix = "";
+    if(frame < 10) {
+        prefix += "0";
+    }
+    if(frame < 100) {
+        prefix += "0";
+    }
+    return "frame" + prefix + to_string(frame);
+}
+
+void Scene::makePhoto(const std::string& name, EmbreeWrapper& accStruct) {
+    Timer::start("Make photo " + name);
+
+    const PathTracerConfig& c = Assets::PATH_TRACER_CONFIG;
+    float xRes = c.resolution.x;
+    float yRes = c.resolution.y;
+    PhotoSaver photo(xRes, yRes);
+    
+    
+    vec3 origin = camera->getWorldPosition();
     vec3 leftTop = camera->getLeftTop();
     vec3 leftBottom = camera->getLeftBottom();
     vec3 rightTop = camera->getRightTop();
@@ -114,9 +149,9 @@ void Scene::takePhotoPathTracing() {
     cout << endl;
     Timer::stop();
 
-    string photoSavePath = Assets::photoSavePath(c.photoName);
+    string photoSavePath = Assets::photoSavePath(name);
     photo.save(photoSavePath);
-    cout << "Photo taken and saved to: " << photoSavePath << endl;
+    cout << "Photo made and saved to: " << photoSavePath << endl;
 }
 
 void Scene::debugRay() {

@@ -85,6 +85,7 @@
         "memory_resource": "cpp",
         "set": "cpp",
         "string": "cpp",
-        "*.def": "cpp"
+        "*.def": "cpp",
+        "ASpectralCurve.C": "cpp"
     }
 }

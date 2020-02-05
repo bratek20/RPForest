@@ -10,6 +10,10 @@ struct PathTracerConfig : public ConfigParser {
     int maxRayBounces = 5;
     bool debugMode = false;
     
+    float animationStartTime = 8;
+    float animationEndTime = 20;
+    int animationFrames = 0;
+
     PathTracerConfig() {
         customParse("#", [](std::ifstream& file){
             std::string comment;
@@ -21,6 +25,10 @@ struct PathTracerConfig : public ConfigParser {
         parse("Samples", &samples);
         parse("MaxRayBounces", &maxRayBounces);
         parse("DebugMode", &debugMode);
+        
+        parse("AnimationStartTime", &animationStartTime);
+        parse("AnimationEndTime", &animationEndTime);
+        parse("AnimationFrames", &animationFrames);
     }
 };
 
